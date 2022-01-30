@@ -36,8 +36,8 @@ https://leetcode-cn.com/circle/article/wGp7Y9/
 - [x] [链表：听说过两天反转链表又写不出来了？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247488728&idx=2&sn=21e84293fb6c91ed9c438438ad93d7d2&scene=21#wechat_redirect)
 - [x] [链表：删除链表倒数第N个节点，怎么删？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247488822&idx=2&sn=f431fba72493f4527d379bd077364a54&scene=21#wechat_redirect)
 - [x] [链表：链表相交](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247488961&idx=2&sn=b14c2e7b54a8e44b0135128978685a8b&scene=21#wechat_redirect)
-- [ ] [链表：环找到了，那入口呢？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247488853&idx=2&sn=f35789bdd87ec7f87d31f9a844ba8699&scene=21#wechat_redirect)
-- [ ] [链表：总结篇！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489101&idx=2&sn=17b7a79d40231570e7fb57f140f68719&scene=21#wechat_redirect)
+- [x] [链表：环找到了，那入口呢？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247488853&idx=2&sn=f35789bdd87ec7f87d31f9a844ba8699&scene=21#wechat_redirect)
+- [x] [链表：总结篇！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489101&idx=2&sn=17b7a79d40231570e7fb57f140f68719&scene=21#wechat_redirect)
 
 ### 4. 哈希表
 

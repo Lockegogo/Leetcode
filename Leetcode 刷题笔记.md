@@ -1074,8 +1074,9 @@ class Solution:
         while fast and fast.next:
             slow = slow.next
             fast = fast.next.next
-            # 如果相遇
+            # 如果相遇，说明有环
             if slow == fast:
+                # 重新定义两个指针
                 p = head
                 q = slow
                 while p!=q:
