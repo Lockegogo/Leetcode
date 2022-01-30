@@ -948,6 +948,7 @@ class Solution:
             curB=curB.next
             countB+=1
 
+        # 让 curA 指向长链表
         if countA<countB:
             curA=headB
             curB=headA
@@ -957,6 +958,7 @@ class Solution:
             
         gap = abs(countA-countB)
         for i in range(gap):
+            # 末尾对齐
             curA=curA.next
         
         while curA!=None:
@@ -966,7 +968,11 @@ class Solution:
             curB=curB.next
 ```
 
-#### 5.2 快慢法则
+#### 5.2 快慢指针法
+
+可以这么理解，两个指针同时从头节点开始移动，有的链表长，有的链表短，如果有交点，说明它们有一段路是共用的（如果相遇，一定在共用的路上相遇），当指针开始走时，短的先到，可以想象成两段路一样长，但是短的链表的指针走的快，如果有交点，他们最终一定会在共用路段的第一个节点（交点）相遇。why?
+
+这还需要用到一点数学知识。
 
 ```python
 class Solution:
@@ -989,21 +995,102 @@ class Solution:
         return cur_a
 ```
 
+### 6. 环形链表
 
+> 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 `null`。如果链表中有某个节点，可以通过连续跟踪 `next` 指针再次到达，则链表中存在环。为了表示给定链表中的环，评测系统内部使用整数 `pos` 来表示链表尾连接到链表中的位置（索引从 0 开始）。如果 `pos` 是 `-1`，则在该链表中没有环。
+>
+> 不允许修改链表。
+>
+> <img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201302332897.png" alt="img" style="zoom:80%;" />
+>
+> 输入：head = [3,2,0,-4], pos = 1
+> 输出：返回索引为 1 的链表节点
+> 解释：链表中有一个环，其尾部连接到第二个节点
 
+这道题目，不仅考察对链表的操作，而且还需要一些数学运算。
 
+- 判断链表是否有环
+- 如果有环，如何找到这个环的入口
 
+#### 6.1 判断链表是否有环
 
+可以使用==快慢指针法==，  分别定义 fast 和 slow 指针，从头结点出发，fast 指针每次移动两个节点，slow 指针每次移动一个节点，如果 fast 和 slow 指针在途中相遇 ，说明这个链表有环。
 
+为什么 fast 走两个节点，slow 走一个节点，有环的话，一定会在环内相遇呢，而不是永远的错开呢？
 
+首先第一点：**fast 指针一定先进入环中，如果 fast 指针和 slow 指针相遇的话，一定是在环中相遇，这是毋庸置疑的。**
 
+那么来看一下，**为什么 fast 指针和 slow 指针一定会相遇呢？**
 
+可以画一个环，然后让 fast 指针在任意一个节点开始追赶 slow 指针。会发现最终都是这种情况， 如下图：
 
+![图片](https://gitee.com/lockegogo/markdown_photo/raw/master/202201302340577.webp)
 
+fast 和 slow 各自再走一步， fast 和 slow 就相遇了。这是因为 fast 是走两步，slow 是走一步，**其实相对于 slow 来说，fast 是一个节点一个节点的靠近 slow 的**，所以 fast 一定可以和 slow 重合。
+
+#### 6.2 如何找到环的入口
+
+假设从头结点到环形入口节点 的节点数为 $x$。环形入口节点到 fast 指针与 slow 指针相遇节点节点数为 $y$。从相遇节点再到环形入口节点节点数为 $z$。如图所示：
+
+![图片](https://gitee.com/lockegogo/markdown_photo/raw/master/202201302348173.webp)
+
+那么相遇时：slow 指针走过的节点数为 $x+y$，fast 指针走过的节点数为 $x+y+n(y+z)$，$n$ 为 fast 指针在环内走了 $n$ 圈才遇到 slow 指针。
+
+> 为什么第一次在环中相遇，slow 的 步数 是 x+y 而不是 x + 若干环的长度 + y 呢？
+>
+> 因为 slow 进环的时候，fast 一定是先进来了，而且在环的任意一个位置：
+>
+> ![图片](https://gitee.com/lockegogo/markdown_photo/raw/master/202201310007789.webp)
+>
+> 那么 fast 指针走到环入口 3 的时候，已经走了 $k+n$ 个节点，slow 相应走了 $(k+n)/2$ 个节点，因为 $k$ 小于 $n$，所以 $(k+n)/2$ 一定小于 $n$，这说明 slow  一定没有走到环入口 3，而 fast 已经到环入口 3 了，也就是**在 slow 开始走的那一环已经和 fast 相遇了**。
+
+因为 fast 指针是一步走两个节点，slow 指针一步走一个节点， 所以 fast 指针走过的节点数 = slow 指针走过的节点数 * 2：
+$$
+\begin{aligned}
+(x+y) * 2&=x+y+n(y+z)\\
+x+y&=n(y+z)
+\end{aligned}
+$$
+因为要找环形的入口，那么要求的是 x，因为 x 表示 头结点到 环形入口节点的的距离。整理如下：
+$$
+x=(n-1)(y+z)+z
+$$
+这就意味着，**从头结点出发一个指针，从相遇节点也出发一个指针，这两个指针每次只走一个节点， 那么当这两个指针相遇的时候就是 环形入口的节点**。
+
+操作步骤如下：
+
+1. 找到相遇节点；
+2. 在头节点和相遇节点同时定义两个指针，按链表行走，两个指针相遇的地方就是环的入口处。
+
+```python
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:
+        slow, fast = head, head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            # 如果相遇
+            if slow == fast:
+                p = head
+                q = slow
+                while p!=q:
+                    p = p.next
+                    q = q.next
+                #你也可以return q
+                return p
+
+        return None
+```
 
 
 
 ## 参考资料
 
 1. 微信公众号：代码随想录
+1. https://github.com/youngyangyang04/leetcode-master/tree/master/problems
 

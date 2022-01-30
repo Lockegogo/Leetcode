@@ -26,6 +26,7 @@ class Solution:
             curB=curB.next
             countB+=1
 
+        # 让 curA 指向长链表
         if countA<countB:
             curA=headB
             curB=headA
@@ -35,6 +36,7 @@ class Solution:
             
         gap = abs(countA-countB)
         for i in range(gap):
+            # 末尾对齐
             curA=curA.next
         
         while curA!=None:
