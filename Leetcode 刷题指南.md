@@ -41,8 +41,8 @@ https://leetcode-cn.com/circle/article/wGp7Y9/
 
 ### 4. 哈希表
 
-- [ ] [关于哈希表，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489134&idx=2&sn=a0b218da8ffd81a7fe0d3ec6a52e00c9&scene=21#wechat_redirect)
-- [ ] [哈希表：可以拿数组当哈希表来用，但哈希值不要太大](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489168&idx=2&sn=641154d0d86892a03430d3fa1d87d66d&scene=21#wechat_redirect)
+- [x] [关于哈希表，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489134&idx=2&sn=a0b218da8ffd81a7fe0d3ec6a52e00c9&scene=21#wechat_redirect)
+- [x] [哈希表：可以拿数组当哈希表来用，但哈希值不要太大](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489168&idx=2&sn=641154d0d86892a03430d3fa1d87d66d&scene=21#wechat_redirect)
 - [ ] [哈希表：查找常用字符](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489268&idx=2&sn=3dccbfa246505b30433c40ccae567bbc&scene=21#wechat_redirect)
 - [ ] [哈希表：哈希值太大了，还是得用set](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489200&idx=2&sn=ec0648614a6ffda417e997632eac185f&scene=21#wechat_redirect)
 - [ ] [哈希表：用set来判断快乐数](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489252&idx=2&sn=3f1019d1c62614321779d8b4ff8b7d88&scene=21#wechat_redirect)

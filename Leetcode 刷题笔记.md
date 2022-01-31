@@ -1032,7 +1032,7 @@ fast 和 slow 各自再走一步， fast 和 slow 就相遇了。这是因为 fa
 
 假设从头结点到环形入口节点 的节点数为 $x$。环形入口节点到 fast 指针与 slow 指针相遇节点节点数为 $y$。从相遇节点再到环形入口节点节点数为 $z$。如图所示：
 
-![图片](https://gitee.com/lockegogo/markdown_photo/raw/master/202201302348173.webp)
+<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201302348173.webp" alt="图片" style="zoom:80%;" />
 
 那么相遇时：slow 指针走过的节点数为 $x+y$，fast 指针走过的节点数为 $x+y+n(y+z)$，$n$ 为 fast 指针在环内走了 $n$ 圈才遇到 slow 指针。
 
@@ -1040,7 +1040,7 @@ fast 和 slow 各自再走一步， fast 和 slow 就相遇了。这是因为 fa
 >
 > 因为 slow 进环的时候，fast 一定是先进来了，而且在环的任意一个位置：
 >
-> ![图片](https://gitee.com/lockegogo/markdown_photo/raw/master/202201310007789.webp)
+> <img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201310007789.webp" alt="图片" style="zoom:80%;" />
 >
 > 那么 fast 指针走到环入口 3 的时候，已经走了 $k+n$ 个节点，slow 相应走了 $(k+n)/2$ 个节点，因为 $k$ 小于 $n$，所以 $(k+n)/2$ 一定小于 $n$，这说明 slow  一定没有走到环入口 3，而 fast 已经到环入口 3 了，也就是**在 slow 开始走的那一环已经和 fast 相遇了**。
 
@@ -1087,6 +1087,163 @@ class Solution:
 
         return None
 ```
+
+## 哈希表
+
+哈希表是根据关键码的值而直接进行访问的数据结构，直白来讲数组就是一张哈希表。哈希表中关键码就是数组的索引下表，然后通过下表直接访问数组中的元素，如下图所示：
+
+<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201311522910.webp" alt="图片" style="zoom:67%;" />
+
+**哈希表可以用来快速判断一个元素是否出现在集合里。**例如要查询一个名字是否在这所学校里。要枚举的话时间复杂度是 O (n)，但如果使用哈希表的话， 只需要 O (1) 就可以做到。我们只需要初始化把这所学校里学生的名字都存在哈希表里，在查询的时候通过索引直接就可以知道这位同学在不在这所学校里了。将学生姓名映射到哈希表上就涉及到了 **hash function ，也就是==哈希函数==**。
+
+哈希函数通过 hashCode 把名字转化为数值，一般 hashcode 是通过特定编码方式，可以将其他数据格式转化为不同的数值，这样就把学生名字映射为哈希表上的索引数字了。
+
+<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201311525968.webp" alt="图片" style="zoom:67%;" />
+
+如果 hashCode 得到的数值大于哈希表的大小怎么办？
+
+为了保证映射出来的索引数值都落在哈希表上，我们会再对数值做一个==取模==的操作。
+
+但如果学生的数量大于哈希表的大小怎么办，此时就算哈希函数计算的再均匀，也避免不了会有几位学生的名字同时映射到哈希表同一个索引下标的位置。
+
+### 1. ==哈希碰撞==
+
+<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201311530990.webp" alt="图片" style="zoom:67%;" />
+
+哈希碰撞有两种解决办法，拉链法和线性探测法。
+
+#### 1.1 拉链法
+
+将发生冲突的元素存储再链表中：
+
+<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201311532491.webp" alt="图片" style="zoom:67%;" />
+
+#### 1.2 线性探测法
+
+使用线性探测法，一定要保证 `tableSize` 大于 `dataSize`。我们需要依靠哈希表中的空位来解决碰撞问题。
+
+例如冲突的位置，放了小李，那么就向下找一个空位放置小王的信息。所以要求 `tableSize` 一定要大于 `dataSize` ，要不然哈希表上就没有空置的位置来存放 冲突的数据了。如图所示：
+
+<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201311533135.webp" alt="图片" style="zoom:67%;" />
+
+
+
+==总结一下==：当我们遇到了要快速判断一个元素是否出现在集合里，就要考虑哈希法，但是哈希法也是牺牲了空间换取时间，因为我们要使用额外的数组，set 或者 map 来存放数据，才能实现快速的查找。
+
+### 2. 有效的字母异位词
+
+> 给定两个字符串 s  和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
+>
+> 注意：如果 s 和 t 中每个字符出现的次数都相同，则称 s 和 t 互为字母异位词。
+>
+> 输入: s = "anagram", t = "nagaram"
+> 输出: true
+>
+> 进阶：如果输入字符串包含 `unicode` 字符怎么办？你能否调整你的解法来应对这种情况？
+
+数组其实就是一个简单哈希表，而且这道题目中字符串只有小写字符，那么就可以定义一个数组，来记录字符串 s 里字符出现的次数。
+
+需要定义一个多大的数组呢？定义一个数组 record，大小为 26 就可以了，初始化为 0，因为字符 a 到字符 z 的 ASCII 就是 26 个连续的数值，**字符 a 映射为下表 0，相应的字符 z 映射为下表 25。**遍历第一个字符时，字母出现一次对应位置元素加一；遍历第二个字符时，字母出现一次，对应位置元素减一；最后检查 record 数组如果有的元素不为 0，说明 字符串 s 和 t 一定是谁多了字符或者谁少了字符，`return false`。反之 `return true`。
+
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        record = [0] * 26
+        for i in range(len(s)):
+            #并不需要记住字符a的ASCII，只要求出一个相对数值就可以了
+            record[ord(s[i]) - ord("a")] += 1
+        # print(record)
+        for i in range(len(t)):
+            record[ord(t[i]) - ord("a")] -= 1
+        for i in range(26):
+            if record[i] != 0:
+                #record数组如果有的元素不为零0，说明字符串s和t 一定是谁多了字符或者谁少了字符。
+                return False
+                #如果有一个元素不为零，则可以判断字符串s和t不是字母异位词
+                break
+        return True
+
+sol = Solution()
+s = "anagram"
+t = "nagaram"
+print(sol.isAnagram(s,t))
+```
+
+> 函数`ord()`是 `chr()` 函数（对于 8 位的 ASCII 字符串）或 `unichr()` 函数（对于 Unicode 对象）的配对函数，它以一个字符（长度为 1 的字符串）作为参数，返回对应的 ASCII 数值，或者 Unicode 数值，如果所给的 Unicode 字符超出了你的 Python 定义范围，则会引发一个 `TypeError` 的异常。
+
+### 3. 查找共用字符
+
+> 给你一个字符串数组 words ，请你找出所有在 words 的每个字符串中都出现的共用字符（ 包括重复字符），并以数组形式返回。你可以按任意顺序返回答案。例如，如果一个字符在每个字符串中出现 3 次，但不是 4 次，则需要在最终答案中包含该字符 3 次。
+>
+> 输入：words = ["bella","label","roller"]
+> 输出：["e","l","l"]
+
+这道题目一眼看上去，就是用哈希法，**“小写字符”，“出现频率”， 这些关键字都是为哈希法量身定做的啊**。
+
+可以使用==暴力解法==，一个字符串一个字符串去搜，时间复杂度为 $O(n^m)$，$n$ 是字符串长度，$m$ 是有几个字符串。可以看出这是指数级别的时间复杂度，非常高，而且代码实现也不容易，因为要统计重复的字符，还要适当的替换或去重。
+
+==哈希法==：整体思路就是统计出搜索字符串里 26 个字符的出现的频率，然后取每个字符频率最小值，最后转成输出格式就可以了。
+
+<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201312112275.webp" alt="图片" style="zoom:67%;" />
+
+```python
+from typing import List
+
+class Solution:
+    def commonChars(self, words: List[str]) -> List[str]:
+        if not words: return []
+        result = []
+        # 用来统计所有字符串里字符出现的最小频率
+        hash = [0] * 26
+        # 用第一个字符给 hash 初始化
+        for i,c in enumerate(words[0]):
+            hash[ord(c) - ord('a')] += 1
+        # 统计除第一个字符串外字符的出现频率
+        for i in range(1,len(words)):
+            hashOtherStr = [0] * 26
+            for j in range(len(words[i])):
+                hashOtherStr[ord(words[i][j]) - ord('a')] += 1
+            # 更新 hash, 保证 hash 里统计 26 个字符在所有字符串里出现的最小
+            for k in range(26):
+                hash[k] = min(hash[k], hashOtherStr[k])
+        # 将 hash 统计的字符次数，转换成输出形式
+        for i in range(26):
+            # 注意这里是 while，多个重复字符
+            while hash[i] != 0:
+                result.extend(chr(i+ord('a')))
+                hash[i] -= 1
+        return result
+
+words = ["bella","label","roller"]
+sol = Solution()
+print(sol.commonChars(words))
+```
+
+```python
+# l
+import collections
+class Solution:
+    def commonChars(self, words: List[str]) -> List[str]:
+        tmp = collections.Counter(words[0])
+        result = []
+        for i in range(1,len(words)):
+            # 使用 & 取交集: Counter({'l':2, 'e': 1})
+            tmp = tmp & collections.Counter(words[i])
+
+        # 剩下的就是每个单词都出现的字符（键），个数（值）
+        for j in tmp:
+            v = tmp[j]
+            while(v):
+                result.append(j)
+                v -= 1
+        return result
+
+words = ["bella","label","roller"]
+sol = Solution()
+print(sol.commonChars(words))
+```
+
+
 
 
 
