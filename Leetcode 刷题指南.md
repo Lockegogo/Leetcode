@@ -49,9 +49,9 @@ https://leetcode-cn.com/circle/article/wGp7Y9/
 - [x] [哈希表：map等候多时了](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489352&idx=2&sn=743bd14f974eb33b70d531b3b1eb1e98&scene=21#wechat_redirect)
 - [x] [哈希表：四数相加](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489557&idx=2&sn=24d6b7a605bdb3dd753a76f1ed2a79a8&scene=21#wechat_redirect)
 - [x] [哈希表：赎金信](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489727&idx=2&sn=0f6ba349e436768476b8403bc3ba268e&scene=21#wechat_redirect)
-- [ ] [哈希表：解决了两数之和，那么能解决三数之和么？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489452&idx=2&sn=7ad880757abee96758b64e2adc14271b&scene=21#wechat_redirect)
-- [ ] [双指针法：一样的道理，能解决四数之和](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489586&idx=2&sn=ca748544a1f1a785538b8ac4945d3cc3&scene=21#wechat_redirect)
-- [ ] [哈希表：总结篇！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489830&idx=2&sn=19305594c2b46b3b5e9e0083a04cf29f&scene=21#wechat_redirect)
+- [x] [哈希表：解决了两数之和，那么能解决三数之和么？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489452&idx=2&sn=7ad880757abee96758b64e2adc14271b&scene=21#wechat_redirect)
+- [x] [双指针法：一样的道理，能解决四数之和](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489586&idx=2&sn=ca748544a1f1a785538b8ac4945d3cc3&scene=21#wechat_redirect)
+- [x] [哈希表：总结篇！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489830&idx=2&sn=19305594c2b46b3b5e9e0083a04cf29f&scene=21#wechat_redirect)
 
 ### 5. 字符串
 

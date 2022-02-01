@@ -1432,8 +1432,6 @@ class Solution:
 1. 为了不暴露赎金信字迹，要从杂志上搜索各个需要的字母，组成单词来表达意思，说明杂志里面的字母不可重复使用
 2. 你可以假设两个字符串均只含有小写字母
 
-#### 8.1 哈希解法
-
 因为题目只有小写字母，那可以采用空间换取时间的哈希策略，用一个长度为 26 的数组去记录 magazine 里字母出现的次数。
 
 然后再用 `ransomNote` 去验证这个数组是否包含了 `ransomNote` 所需要的所有字母：依然是数组在哈希法中的应用。
@@ -1477,15 +1475,133 @@ class Solution:
 > 输入：`nums = [-1,0,1,2,-1,-4]`
 > 输出：`[[-1,-1,2],[-1,0,1]]`
 
+两层 for 循环就可以确定 a 和 b 的数值了，可以使用哈希法来确定 $0-(a+b)$ 是否在数组里出现过，但是题目要求不可以包含重复的三元组，把符合条件的三元组放进 vector 中，然后再去重，这样是非常费时的，很容易超时，去重的过程不好处理，有很多小细节，如果在面试中很难想到位。时间复杂度可以做到 $O (n^2)$，但还是比较费时的，因为不好做剪枝操作。
 
+所以，这道题使用哈希法并不合适，因为在去重的操作中有很多细节需要注意，==双指针法==比哈希法高效一些。
 
+![图片](https://gitee.com/lockegogo/markdown_photo/raw/master/202202011742067.gif)
 
+1. 将数组排序，一层 for 循环，$i$ 从下标 0 的地方开始，同时定一个下标 left 定义在 $i+1$ 的位置上，定义下标 right 在数组结尾的位置上
+2. 依然还是在数组中找到 `abc` 使得 $a + b +c =0$，我们这里相当于  `a = nums [i], b = nums [left], c = nums [right]`
+3. 如果 `nums [i] + nums [left] + nums [right] > 0`  就说明此时三数之和大了，因为数组是排序后的，所以 right 就应该向左移动，这样才能让三数之和小一些
+4. 如果 `nums [i] + nums [left] + nums [right] < 0` 说明此时三数之和小了，left 就向右移动，才能让三数之和大一些，直到 left 与 right 相遇为止
 
+三数之和的==双指针解法==是一层 for 循环 `num[i]` 为确定值，然后循环内有 left 和 right 作为双指针，找到  `nums [i] + nums [left] + nums [right] == 0`。
 
+```python
+from typing import List
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        nums.sort()
+        for i in range(len(nums)):
+            left = i + 1
+            right = len(nums) - 1
+            if nums[i] > 0:
+                break
+            if i >= 1 and nums[i] == nums[i-1]:
+                continue
+            while left < right:
+                total = nums[i] + nums[left] + nums[right]
+                if total == 0:
+                    # 将满足条件的数组存起来
+                    result.append((nums[i], nums[left], nums[right]))
+                    # 因为结果不能有重复的三元组，所以遇到相同的元素指针继续移动
+                    while left != right and nums[left] == nums[left + 1]:
+                        left += 1
+                    while left != right and nums[right] == nums[right - 1]:
+                        right -= 1
+                    # 如果左边连续的两个不相同，右边也不相同，那么左右指针可以同时移动
+                    # 因为如果只移动一个只变动一个值，三元组的和一定不再等于 0，逻辑推断可以帮助我们减少一次判断
+                    left += 1
+                    right -= 1
+                elif total > 0:
+                    right -= 1
+                elif total < 0:
+                    left += 1
+        return result
 
+nums = [-1, 0, 1, 2, -1, -4]
+sol = Solution()
+print(sol.threeSum(nums))
+```
 
+### 10. 四数之和
 
+> 给你一个由 n 个整数组成的数组 `nums` ，和一个目标值 `target` 。请你找出并返回满足下述全部条件且不重复的四元组 `[nums[a], nums[b], nums[c], nums[d]]` （若两个四元组元素一一对应，则认为两个四元组重复）：
+>
+> 1. `0 <= a, b, c, d < n`
+> 2. a、b、c 和 d 互不相同
+> 3. `nums[a] + nums[b] + nums[c] + nums[d] == target`
+>
+> 输入：`nums = [1,0,-1,0,-2,2], target = 0`
+> 输出：`[[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]`
 
+四数之和的双指针解法是两层 for 循环 `nums [k] + nums [i]`为确定值，依然是循环内有 left 和 right 作为双指针，找出 `nums [k] + nums [i] + nums [left] + nums [right] == target`的情况，三数之和的时间复杂度是 $O(n^2)$，四数之和的时间复杂度是 $O(n^3)$。
+
+> 和==四数相加==不同，四数相加是四个独立的数组，只要找到 `A [i] + B [j] + C [k] + D [l] = 0`就可以，不用考虑有重复的四个元素相加等于 0 的情况；而本题==四数之和==要求在一个集合中找出四个数相加等于 target，同时四元组不能重复。还是使用==双指针法==。
+
+```python
+from typing import List
+class Solution:
+    """
+    双指针法
+    """
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        result = []
+        nums.sort()
+        for j in range(len(nums)):
+            # 去重
+            if j > 0 and nums[j] == nums[j-1]:
+                # continue: 跳出本次循环，继续进行下一轮循环
+                # break: 结束所有循环
+                continue
+            for i in range(j+1,len(nums)):
+                # 去重
+                if i > j + 1 and nums[i] == nums[i-1]:
+                    continue
+                left = i + 1
+                right = len(nums) - 1
+                while left < right:
+                    total = nums[j] + nums[i] + nums[left] + nums[right]
+                    if total == target:
+                        # 将满足条件的数组存起来
+                        result.append((nums[j], nums[i], nums[left], nums[right]))
+                        # 因为结果不能有重复的三元组，所以遇到相同的元素指针继续移动
+                        while left != right and nums[left] == nums[left + 1]:
+                            left += 1
+                        while left != right and nums[right] == nums[right - 1]:
+                            right -= 1
+                        # 如果左边连续的两个不相同，右边也不相同，那么左右指针可以同时移动
+                        # 因为如果只移动一个只变动一个值，三元组的和一定不再等于 0，逻辑推断可以帮助我们减少一次判断
+                        left += 1
+                        right -= 1
+                    elif total > target:
+                        right -= 1
+                    elif total < target:
+                        left += 1
+        return result
+
+nums = [2,2,2,2,2,2]
+target = 8
+sol = Solution()
+print(sol.fourSum(nums, target))
+```
+
+> 知识点：==跳出本次循环，继续进行下一轮循环==
+>
+> - for - continue
+> - while - i++
+
+## 字符串
+
+#### 1. 反转字符串
+
+> 编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 s 的形式给出。
+>
+> 不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O (1) 的额外空间解决这一问题。
+>
+> 
 
 
 ## 参考资料
