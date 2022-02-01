@@ -43,19 +43,19 @@ https://leetcode-cn.com/circle/article/wGp7Y9/
 
 - [x] [关于哈希表，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489134&idx=2&sn=a0b218da8ffd81a7fe0d3ec6a52e00c9&scene=21#wechat_redirect)
 - [x] [哈希表：可以拿数组当哈希表来用，但哈希值不要太大](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489168&idx=2&sn=641154d0d86892a03430d3fa1d87d66d&scene=21#wechat_redirect)
-- [ ] [哈希表：查找常用字符](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489268&idx=2&sn=3dccbfa246505b30433c40ccae567bbc&scene=21#wechat_redirect)
-- [ ] [哈希表：哈希值太大了，还是得用set](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489200&idx=2&sn=ec0648614a6ffda417e997632eac185f&scene=21#wechat_redirect)
-- [ ] [哈希表：用set来判断快乐数](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489252&idx=2&sn=3f1019d1c62614321779d8b4ff8b7d88&scene=21#wechat_redirect)
-- [ ] [哈希表：map等候多时了](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489352&idx=2&sn=743bd14f974eb33b70d531b3b1eb1e98&scene=21#wechat_redirect)
-- [ ] [哈希表：四数相加](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489557&idx=2&sn=24d6b7a605bdb3dd753a76f1ed2a79a8&scene=21#wechat_redirect)
-- [ ] [哈希表：赎金信](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489727&idx=2&sn=0f6ba349e436768476b8403bc3ba268e&scene=21#wechat_redirect)
+- [x] [哈希表：查找常用字符](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489268&idx=2&sn=3dccbfa246505b30433c40ccae567bbc&scene=21#wechat_redirect)
+- [x] [哈希表：哈希值太大了，还是得用set](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489200&idx=2&sn=ec0648614a6ffda417e997632eac185f&scene=21#wechat_redirect)
+- [x] [哈希表：用set来判断快乐数](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489252&idx=2&sn=3f1019d1c62614321779d8b4ff8b7d88&scene=21#wechat_redirect)
+- [x] [哈希表：map等候多时了](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489352&idx=2&sn=743bd14f974eb33b70d531b3b1eb1e98&scene=21#wechat_redirect)
+- [x] [哈希表：四数相加](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489557&idx=2&sn=24d6b7a605bdb3dd753a76f1ed2a79a8&scene=21#wechat_redirect)
+- [x] [哈希表：赎金信](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489727&idx=2&sn=0f6ba349e436768476b8403bc3ba268e&scene=21#wechat_redirect)
 - [ ] [哈希表：解决了两数之和，那么能解决三数之和么？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489452&idx=2&sn=7ad880757abee96758b64e2adc14271b&scene=21#wechat_redirect)
 - [ ] [双指针法：一样的道理，能解决四数之和](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489586&idx=2&sn=ca748544a1f1a785538b8ac4945d3cc3&scene=21#wechat_redirect)
 - [ ] [哈希表：总结篇！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489830&idx=2&sn=19305594c2b46b3b5e9e0083a04cf29f&scene=21#wechat_redirect)
 
 ### 5. 字符串
 
-- [ ] [符串：这道题目，使用库函数一行代码搞定](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489858&idx=2&sn=1a123ccb64c6085ddfeb1da9f536d554&scene=21#wechat_redirect)
+- [ ] [字符串：这道题目，使用库函数一行代码搞定](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489858&idx=2&sn=1a123ccb64c6085ddfeb1da9f536d554&scene=21#wechat_redirect)
 - [ ] [字符串：简单的反转还不够！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489910&idx=2&sn=1e6c0f3a4ed6d675e258920fcebee7fb&scene=21#wechat_redirect)
 - [ ] [字符串：替换空格](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489941&idx=2&sn=d37ec39ffe951d192c0c881aa8bd72af&scene=21#wechat_redirect)
 - [ ] [字符串：花式反转还不够！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489967&idx=2&sn=a2ecb515d22c78f65e67586760e75f8e&scene=21#wechat_redirect)
@@ -197,7 +197,7 @@ https://leetcode-cn.com/circle/article/wGp7Y9/
 
 ==背包问题系列：==
 
-- [ ] [态规划：关于01背包问题，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486598&idx=1&sn=dd7d0530dd7a5caef7ce70cc3d6eee3f&scene=21#wechat_redirect)
+- [ ] [动态规划：关于01背包问题，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486598&idx=1&sn=dd7d0530dd7a5caef7ce70cc3d6eee3f&scene=21#wechat_redirect)
 - [ ] [动态规划：关于01背包问题，你该了解这些！（滚动数组）](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486624&idx=2&sn=96e8c6344dc25f57462b675b55ccd6e7&scene=21#wechat_redirect)
 - [ ] [动态规划：分割等和子集可以用01背包！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486632&idx=1&sn=4bb229e3f3f5774ac684c0127c88c984&scene=21#wechat_redirect)
 - [ ] [动态规划：最后一块石头的重量 II](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486644&idx=1&sn=548c90df36b47d67290b5667c7cec3d3&scene=21#wechat_redirect)

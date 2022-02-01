@@ -1220,7 +1220,7 @@ print(sol.commonChars(words))
 ```
 
 ```python
-# l
+# 另一种解法
 import collections
 class Solution:
     def commonChars(self, words: List[str]) -> List[str]:
@@ -1242,6 +1242,247 @@ words = ["bella","label","roller"]
 sol = Solution()
 print(sol.commonChars(words))
 ```
+
+### 4. 两个数组的交集
+
+> 给定两个数组`nums1`和`nums2`，返回它们的交集。输出结果中的每个元素一定是 **唯一** 的。我们可以 **不考虑输出结果的顺序** 。
+>
+> 输入：nums1 = [1,2,2,1], nums2 = [2,2]
+> 输出：[2]
+
+这道题目我们要学会使用一种哈希数据结构：`unordered_set`，这个数据结构可以解决很多类似的问题。注意题目特意说明：**输出结果中的每个元素一定是唯一的，也就是说输出的结果的去重的， 同时可以不考虑输出结果的顺序**。
+
+使用数组来做哈希的题目，是因为题目都限制了数值的大小。而这道题目没有限制数值的大小，就无法使用数组来做哈希表了。而且如果哈希值比较少，特别分散或者跨度非常大，使用数组就造成空间的极大浪费，此时就需要使用另一种结构体：`set`。
+
+<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201312215331.webp" alt="图片" style="zoom: 67%;" />
+
+```python
+from typing import List
+class Solution:
+    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        setA = set(nums1)
+        setB = set(nums2)
+        result = list(setA & setB)
+        return result
+
+nums1 = [1,2,2,1]
+nums2 = [2,2]
+sol = Solution()
+print(sol.intersection(nums1, nums2))
+```
+
+为什么我们遇到哈希问题不直接用 set，用什么数组？
+
+因为直接使用 set 不仅占用空间比数组大，而且速度要比数组慢，set 把数值映射到 key 上都要做 hash 计算。
+
+### 5. 快乐数
+
+> 编写一个算法来判断一个数 n 是不是快乐数。
+>
+> ==快乐数== 定义为：
+>
+> - 对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和。
+> - 然后重复这个过程直到这个数变为 1，也可能是无限循环 但始终变不到 1。
+> - 如果这个过程结果为 1，那么这个数就是快乐数。
+> - 如果 n 是快乐数就返回 true ；不是，则返回 false 。
+
+题目说了会无限循环，那么也就是说**求和的过程中，sum 会重复出现，这对解题很重要！所以这道题目使用哈希法，来判断这个 sum 是否重复出现，如果重复了就是 return false， 否则一直找到 sum 为 1 为止。**
+
+```python
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        def calculate_happy(num):
+            sum_ = 0
+            
+            # 从个位开始依次取，平方求和
+            while num:
+                # %: 取模，返回除法的余数
+                sum_ += (num % 10) ** 2
+                # //: 取整除，返回商的整数部分（向下取整）
+                num = num // 10
+            return sum_
+
+        # 记录中间结果
+        record = set()
+
+        while True:
+            n = calculate_happy(n)
+            if n == 1:
+                return True
+            
+            # 如果中间结果重复出现，说明陷入死循环了，该数不是快乐数
+            if n in record:
+                return False
+            else:
+                record.add(n)
+
+sol = Solution()
+n = 1985
+print(sol.isHappy(n))
+```
+
+### 6. 两数之和
+
+> 给定一个整数数组 `nums` 和一个整数目标值 `target`，请你在该数组中找出和为目标值 `target` 的那两个整数，并返回它们的数组下标。
+>
+> 输入：`nums = [2,7,11,15], target = 9`
+> 输出：`[0,1]`
+> 解释：因为 `nums[0] + nums[1] == 9` ，返回 `[0, 1]`。
+
+很明显暴力的解法是两层 for 循环查找，时间复杂度是 $O(n^2)$。
+
+```python
+from typing import List
+class Solution:
+    """
+    暴力算法
+    """
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        for i in range(len(nums)):
+            for j in range(len(nums)):
+                if i != j:
+                    sum = nums[i] + nums[j]
+                    if sum == target:
+                        return list([i,j])
+
+nums = [2,7,11,15]
+target = 18
+sol = Solution()
+print(sol.twoSum(nums,target))
+```
+
+本题我们使用 map，先看下使用数组和 set 来做哈希法的局限：
+
+- 数组的大小是受限制的，而且如果元素很少，而哈希值太大会造成内存空间的浪费；
+- set 是一个集合，里面放的元素只能是一个 key，而两数之和这道题目，不仅要判断 $y$ 是否存在而且还要记录 $y$ 的下标位置，所以 set 也不能用。
+
+此时就要选择另一种数据结构：map ，map 是一种 key-value 的存储结构，可以用 key 保存数值，用 value 在保存数值所在的下表。
+
+```python
+# 更好的解法
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        records = dict()
+        # 用枚举更方便，就不需要通过索引再去取当前位置的值
+        for idx, val in enumerate(nums):
+            # 寻找 target - val 是否在 map 中
+            if target - val not in records:
+                records[val] = idx
+            else:
+                return [records[target - val], idx] # 如果存在就返回字典记录索引和当前索引
+
+nums = [2,7,11,15]
+target = 18
+sol = Solution()
+print(sol.twoSum(nums,target))
+```
+
+### 7. 四数相加
+
+> 给你四个整数数组 `nums1`、`nums2`、`nums3` 和 `nums4`，数组长度都是 $n$ ，请你计算有多少个元组 $(i, j, k, l)$ 能满足：
+>
+> - $0 <= i, j, k, l < n$
+> - 有`nums1[i] + nums2[j] + nums3[k] + nums4[l] == 0`
+>
+> 输入：`nums1 = [1,2], nums2 = [-2,-1], nums3 = [-1,2], nums4 = [0,2]`
+> 输出：2
+
+==本题解题思路==：
+
+1. 首先定义一个字典，key 放 a 和 b 两数之和，value 放 a 和 b 两数之和出现的次数
+2. 遍历 A 和 B 数组，统计两个数组之和以及出现的次数，放在字典中
+3. 定义变量 count，用来统计 $a+b+c+d = 0$ 出现的次数
+4. 继续遍历 C 和 D 数组，找到如果 0-(c+d) 在字典中出现过的话，就用 count 把字典中 key 对应的 value 也就是出现次数统计出来
+5. 最后返回统计值 count 就可以了
+
+```python
+from typing import List
+
+class Solution:
+    def fourSumCount(self, nums1: List[int], nums2: List[int], nums3: List[int], nums4: List[int]) -> int:
+        result = {}
+        count = 0
+        for i in nums1:
+            for j in nums2:
+                temp = i+j
+                if temp not in result:
+                    result[temp] = 1
+                else:
+                    result[temp] += 1
+        for k in nums3:
+            for t in nums4:
+                temp = -(k+t)
+                if temp in result:
+                    count += result[temp]
+        return count
+```
+
+### 8. 赎金信
+
+> 给你两个字符串：ransomNote 和 magazine ，判断 ransomNote 能不能由 magazine 里面的字符构成。如果可以，返回 true ；否则返回 false 。magazine 中的每个字符只能在 ransomNote 中使用一次。
+>
+> 输入：`ransomNote = "a", magazine = "b"`
+> 输出：false
+>
+> 输入：`ransomNote = "aa", magazine = "aab"`
+> 输出：true
+
+本题需要注意两点：
+
+1. 为了不暴露赎金信字迹，要从杂志上搜索各个需要的字母，组成单词来表达意思，说明杂志里面的字母不可重复使用
+2. 你可以假设两个字符串均只含有小写字母
+
+#### 8.1 哈希解法
+
+因为题目只有小写字母，那可以采用空间换取时间的哈希策略，用一个长度为 26 的数组去记录 magazine 里字母出现的次数。
+
+然后再用 `ransomNote` 去验证这个数组是否包含了 `ransomNote` 所需要的所有字母：依然是数组在哈希法中的应用。
+
+为什么不用 map 呢？其实在本题，使用 map 的空间消耗要比数组大一些，因为 map 需要维护红黑树或者哈希表，而且还要做哈希函数，是费时的，数据量大的话就能体现出差别来了。
+
+下面给出用字典做赎金信的代码：
+
+```python
+class Solution:
+    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+        def str2dict(x):
+            result = {}
+            for i in x:
+                if i not in result:
+                    result[i] = 1
+                else:
+                    result[i] += 1
+            return result
+        ransomNote = str2dict(ransomNote)
+
+        # 去杂志中找，找到就减一
+        for t in magazine:
+            if t in ransomNote:
+                ransomNote[t] -= 1
+
+        # 遍历字典，如果还有 value 值大于 0，说明赎金信中还有字母没有在杂志中找到，返回 False
+        for key in ransomNote:
+            if ransomNote[key] > 0:
+                return False
+        
+        return True
+```
+
+### 9. 三数之和
+
+> 给你一个包含 n 个整数的数组 `nums`，判断 `nums` 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。
+>
+> 注意：答案中不可以包含重复的三元组。
+>
+> 输入：`nums = [-1,0,1,2,-1,-4]`
+> 输出：`[[-1,-1,2],[-1,0,1]]`
+
+
+
+
+
+
+
 
 
 
