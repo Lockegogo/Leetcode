@@ -1942,6 +1942,69 @@ def getnext(needle):
 
 
 
+### 7. 重复的子字符串
+
+> 给定一个非空的字符串 `s` ，检查是否可以通过由它的一个子串重复多次构成。
+>
+> 输入: s = "abab"
+> 输出: true
+> 解释: 可由子串 "ab" 重复两次构成
+
+又是一道标准的 KMP 题目。
+
+在一个串中查找是否出现过另一个串，这是 KMP 的看家本领。那么寻找重复子串怎么也涉及到 KMP 算法了呢？
+
+我们知道`next` 数组记录的最长相同前后缀，如果 `next [len - 1] != -1`，则说明字符串有最长相同的前后缀，且最长相等前后缀的长度为：`next [len - 1] + 1`
+
+如果 `len % (len - (next [len - 1] + 1)) == 0` ，则说明 (数组长度 - 最长相等前后缀的长度) 正好可以被 数组的长度整除，说明有该字符串有重复的子字符串。
+
+数组长度减去最长相同前后缀的长度相当于是第一个周期的长度，也就是一个周期的长度，如果这个周期可以被整除，就说明整个数组就是这个周期的循环。
+
+![图片](https://gitee.com/lockegogo/markdown_photo/raw/master/202202102223512.webp)
+
+`next [len - 1] = 7，next [len - 1] + 1 = 8`，8 就是此时字符串 `asdfasdfasdf` 的最长相同前后缀的长度。
+
+`(len - (next [len - 1] + 1))` 也就是：12 (字符串的长度) - 8 (最长公共前后缀的长度) = 4， 4 正好可以被 12 (字符串的长度) 整除，所以说明有重复的子字符串（`asdf`）。
+
+```python
+class Solution:
+    def repeatedSubstringPattern(self, s: str) -> bool:
+        if len(s) == 0:
+            return False
+        nxt = [0] * len(s)
+        self.getNext(nxt, s)
+        if nxt[-1] != -1 and len(s) % (len(s) - (nxt[-1] + 1)) == 0:
+            return True
+        return False
+
+    def getNext(self, nxt, s):
+        """
+        前缀表统一减一得到 next 数组
+        """
+        nxt[0] = -1
+        j = -1
+        # i 在 j 的后面
+        for i in range(1, len(s)):
+            # 如果 i 和 j+1 指向的字母不对，j 往前跳
+            # 直到跳到和 i 指向相同的位置或者初始位置 -1
+            while j >= 0 and s[i] != s[j+1]:
+                j = nxt[j]
+            if s[i] == s[j+1]:
+                j += 1
+            nxt[i] = j
+        return nxt
+```
+
+
+
+### 双指针法
+
+
+
+
+
+
+
 
 
 ## 参考资料
