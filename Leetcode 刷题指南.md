@@ -55,11 +55,11 @@ https://leetcode-cn.com/circle/article/wGp7Y9/
 
 ### 5. 字符串
 
-- [ ] [字符串：这道题目，使用库函数一行代码搞定](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489858&idx=2&sn=1a123ccb64c6085ddfeb1da9f536d554&scene=21#wechat_redirect)
-- [ ] [字符串：简单的反转还不够！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489910&idx=2&sn=1e6c0f3a4ed6d675e258920fcebee7fb&scene=21#wechat_redirect)
-- [ ] [字符串：替换空格](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489941&idx=2&sn=d37ec39ffe951d192c0c881aa8bd72af&scene=21#wechat_redirect)
-- [ ] [字符串：花式反转还不够！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489967&idx=2&sn=a2ecb515d22c78f65e67586760e75f8e&scene=21#wechat_redirect)
-- [ ] [字符串：反转个字符串还有这个用处？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490027&idx=2&sn=253aa8265830757e2c60f4c890e55ba8&scene=21#wechat_redirect)
+- [x] [字符串：这道题目，使用库函数一行代码搞定](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489858&idx=2&sn=1a123ccb64c6085ddfeb1da9f536d554&scene=21#wechat_redirect)
+- [x] [字符串：简单的反转还不够！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489910&idx=2&sn=1e6c0f3a4ed6d675e258920fcebee7fb&scene=21#wechat_redirect)
+- [x] [字符串：替换空格](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489941&idx=2&sn=d37ec39ffe951d192c0c881aa8bd72af&scene=21#wechat_redirect)
+- [x] [字符串：花式反转还不够！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247489967&idx=2&sn=a2ecb515d22c78f65e67586760e75f8e&scene=21#wechat_redirect)
+- [x] [字符串：反转个字符串还有这个用处？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490027&idx=2&sn=253aa8265830757e2c60f4c890e55ba8&scene=21#wechat_redirect)
 - [ ] [字符串：KMP算法精讲](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490330&idx=1&sn=2d648a82ac1127d71918ddc5f09b2835&scene=21#wechat_redirect)
 - [ ] [字符串：KMP算法还能干这个！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490351&idx=2&sn=5049d24aa9dab51651e7772b67955006&scene=21#wechat_redirect)
 - [ ] [字符串：总结篇！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490373&idx=2&sn=17090268424fe4cfc14bd64e05aa17d7&scene=21#wechat_redirect)
