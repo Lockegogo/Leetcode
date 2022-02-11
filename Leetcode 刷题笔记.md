@@ -1995,13 +1995,93 @@ class Solution:
         return nxt
 ```
 
+## 栈与队列
 
+- ==队列==：先进先出
+- ==栈==：先进后出
 
-### 双指针法
+![图片](https://gitee.com/lockegogo/markdown_photo/raw/master/202202102303567.webp)
 
+栈提供 push 和 pop 等接口，所有元素必须符合先进后出规则，所有栈不提供走访功能，也不提供迭代器。
 
+### 1.  用栈实现队列
 
+> 请你仅使用两个栈实现先入先出队列。队列应当支持一般队列支持的所有操作（push、pop、peek、empty）：
+>
+> 实现 MyQueue 类：
+> `void push(int x)` 将元素 x 推到队列的末尾
+> `int pop()` 从队列的开头移除并返回元素
+> `int peek()` 返回队列开头的元素
+> `boolean empty()` 如果队列为空，返回 true ；否则，返回 false
 
+使用栈来模拟队列的行为，如果仅仅用一个栈，是一定不行的，所以需要两个栈：一个输入栈，一个输出栈。
+
+![图片](D:\Dropbox\工作计划\Leetcode\pics\4.gif)
+
+在 push 数据的时候，只要数据放进输入栈就好，但是在 pop 的时候，操作就复杂一些，输出栈如果为空，就把进栈数据==全部导入==，再从出栈弹出数据，如果输出栈不为空，则直接从出栈弹出数据就可以了。
+
+最后如何判断队列为空呢？如果进栈和出栈都为空的话，说明模拟的队列为空了。
+
+> 注意，在工业级代码开发中，最忌讳就是实现一个类似的函数，直接把代码粘贴过来改一改，这样代码会越来越乱，一定要懂得复用，功能相近的函数要抽象出来。
+
+```python
+class MyQueue:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        # python 内置数据结构 list 可以用来实现栈
+        # append() 向栈顶添加元素
+        # pop() 可以以后进先出的顺序删除元素（从尾巴删除）
+        # 列表的问题是：列表是动态数组，当列表扩大却没有新空间保存新的元素时，会自动重新分配内存块，并将原来的内存中的值复制到新的内存块中，导致 append() 操作会消耗更多的时间
+        self.stack1 = list()
+        self.stack2 = list()
+
+    def push(self, x: int) -> None:
+        """
+        Push element x to the back of queue.
+        """
+        # self.stack1用于接受元素
+        self.stack1.append(x)
+
+    def pop(self) -> int:
+        """
+        Removes the element from in front of queue and returns that element.
+        """
+        # self.stack2 用于弹出元素，如果 self.stack2 为 [],则将 self.stack1 中元素全部弹出给 self.stack2
+        if self.stack2 == []:
+            while self.stack1:
+                tmp = self.stack1.pop()
+                self.stack2.append(tmp)
+        return self.stack2.pop()
+
+    def peek(self) -> int:
+        """
+        Get the front element.
+        """
+        if self.stack2 == []:
+            while self.stack1:
+                tmp = self.stack1.pop()
+                self.stack2.append(tmp)
+        return self.stack2[-1]
+
+    def empty(self) -> bool:
+        """
+        Returns whether the queue is empty.
+        """
+        return self.stack1 == [] and self.stack2 == []
+```
+
+### 2. 用队列实现栈
+
+> 请你仅使用两个队列实现一个后入先出（LIFO）的栈，并支持普通栈的全部四种操作（`push`、`top`、`pop`和`empty`）。
+
+队列模拟栈，其实一个队列就够了。
+
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv6QYtsghRUccTciaMXjtJDFHib6dxnuIvt6j9OGPpJo9Bib7Rh67lCANhpykcDQ9aVdp4GbGAvhnHMwA/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
+
+不过这道题目用一个队列就够了：一个队列在模拟栈弹出元素的时候只要将队列头部的元素（除了最后一个元素外）重新添加进队列尾部，此时在再去弹出元素就是栈的顺序了。
 
 
 
