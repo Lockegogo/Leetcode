@@ -14,5 +14,24 @@
 
 class Solution:
     def isValid(self, s: str) -> bool:
-        a = []
-        
+        stack = []
+        for i in range(len(s)):
+            if s[i] == '(':
+                stack.append(')')
+            elif s[i] == '[':
+                stack.append(']')
+            elif s[i] == '{':
+                stack.append('}')
+            elif stack and s[i] == stack[-1]:
+                stack.pop()
+            else:
+                return False
+        # 如果 stack 为空，返回 True
+        return stack == []
+
+
+sol = Solution()
+s = "["
+print(sol.isValid(s))
+
+
