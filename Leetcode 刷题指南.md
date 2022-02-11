@@ -81,7 +81,7 @@ https://leetcode-cn.com/circle/article/wGp7Y9/
 
 - [x] [栈与队列：来看看栈和队列不为人知的一面](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490126&idx=2&sn=c97f24b140e5903fdb8b0a70912df3c2&scene=21#wechat_redirect)
 - [x] [栈与队列：我用栈来实现队列怎么样？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490253&idx=2&sn=d6280c36828541d6a2cef23b9aba8c1f&scene=21#wechat_redirect)
-- [ ] [栈与队列：用队列实现栈还有点别扭](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490455&idx=2&sn=ef686ebd3cf122307bd5fc20b4f4c7a0&scene=21#wechat_redirect)
+- [x] [栈与队列：用队列实现栈还有点别扭](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490455&idx=2&sn=ef686ebd3cf122307bd5fc20b4f4c7a0&scene=21#wechat_redirect)
 - [ ] [栈与队列：系统中处处都是栈的应用](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490500&idx=2&sn=19daeb8d0aeab7a69cd9335f4fa13dba&scene=21#wechat_redirect)
 - [ ] [栈与队列：匹配问题都是栈的强项](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490525&idx=2&sn=897f03d57c1b6d1158b207e4af412d0a&scene=21#wechat_redirect)
 - [ ] [栈与队列：有没有想过计算机是如何处理表达式的？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490612&idx=2&sn=9cd3ad9541c5b4e050c81842bf670695&scene=21#wechat_redirect)
