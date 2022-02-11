@@ -2131,6 +2131,215 @@ class Solution:
 
 ### 3. 删除字符串中的所有相邻重复项
 
+> 有效的算符包括 +、-、*、/ 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。
+>
+> 逆波兰表达式是一种==后缀表达式==，算符写在后面。其优点是：
+>
+> 1. 去掉括号后表达式无歧义
+> 2. 适合用栈操作运算：遇到数字则入栈，遇到算符则取出栈顶两个元素进行计算，并将结果压入栈中。
+>
+> 注意两个整数之间的除法只保留整数部分。
+> 可以保证给定的逆波兰表达式总是有效的。换句话说，表达式总会得出有效数值且不存在除数为 0 的情况。
+>
+> 输入：tokens = ["2","1","+","3","*"]
+> 输出：9
+
+其实波兰表达式相当于是二叉树中的后序遍历，大家可以把运算符作为中间节点，按照后序遍历的规则画出一个二叉树。
+
+```python
+class Solution:
+    def evalRPN(self, tokens):
+        stack = list()
+        cal = ["+", "-", "*", "/"]
+        for i in range(len(tokens)):
+            if tokens[i] not in cal:
+                stack.append(tokens[i])
+            else:
+                # 第一个出来的数应该在运算符的后面
+                a = int(stack.pop())
+                # 第二个出来的数应该在运算符的前面
+                b = int(stack.pop())
+                # 注意 a 和 b 与运算符的位置
+                # eval: 好新颖的表达方式
+                result = int(eval(f'{b}{tokens[i]}{a}'))
+                stack.append(result)
+        return int(stack.pop())
+```
+
+### 4. 滑动窗口最大值
+
+> 给你一个整数数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。
+>
+> 返回 滑动窗口中的最大值 。
+>
+> 输入：nums = [1,3,-1,-3,5,3,6,7], k = 3
+> 输出：[3,3,5,5,6,7]
+> 滑动窗口的位置         最大值
+> [1  3  -1] -3  5  3  6  7    3
+> 1 [3  -1  -3] 5  3  6  7    3
+>  1  3 [-1  -3  5] 3  6  7    5
+>  1  3  -1 [-3  5  3] 6  7    5
+>  1  3  -1  -3 [5  3  6] 7    6
+>  1  3  -1  -3  5 [3  6  7]    7
+
+这是使用单调队列的经典题目。==难点==是如何求一个区间的最大值。
+
+暴力方法，遍历一遍的过程中每次从窗口中在找到最大的数值，这样很明显是 $O (n * k)$ 的算法。
+
+有的同学可能会想用一个**大顶堆（优先级队列）**来存放这个窗口里的 k 个数字，这样就可以知道最大的最大值是多少了， 但是问题是这个窗口是移动的，而大顶堆每次只能弹出最大值，我们无法移除其他数值，这就造成大顶堆维护的不是滑动窗口里面的数值了。
+
+此时我们需要一个队列，随着窗口的移动，队列也一进一出，每次移动之后，队列告诉我们里面的最大值是什么。
+
+每次窗口移动的时候，调用 `que.pop` (滑动窗口中移除元素的数值)，`que.push` (滑动窗口添加元素的数值)，然后 `que.front ()` 就返回我们要的最大值。
+
+为实现这一点，队列里面的元素一定需要排序，而且最大值放在出口，但如果把窗口里的元素都放进队列里，窗口移动的时候，队列需要弹出元素。
+
+那么问题来了，已经排序之后的队列 怎么能把窗口要移除的元素（这个元素可不一定是最大值）弹出呢。
+
+其实队列没有必要维护窗口里的所有元素，只需要维护**有可能**成为窗口里最大值的元素就可以了，同时保证队列里面的元素数值是从大到小的
+
+那么这个维护元素单调递减的队列就叫做**单调队列，即单调递减或单调递增的队列。**
+
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv4mCxur8W49qtZmumwtiax6R0axb2Svoib5fzy1ibMlLRFslLlq9TSG84soSCoicvH5jmlQUpKwHiaXZ6A/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
+
+对于窗口里的元素 {2, 3, 5, 1 ,4}，单调队列里只维护 {5, 4} 就够了，保持单调队列里单调递减，此时队列出口元素就是窗口里最大元素。
+
+设计单调队列的时候，pop 和 push 操作要保持如下规则：
+
+1. pop (value)：如果窗口移除的元素 value 等于单调队列的出口元素，那么队列弹出元素，否则不用任何操作
+2. push (value)：如果 push 的元素 value 大于入口元素的数值，那么就将队列入口的元素弹出，直到 push 元素的数值小于等于队列入口元素的数值为止
+
+保持如上规则，每次窗口移动的时候，只要问 `que.front ()` 就可以返回当前窗口的最大值。
+
+为了更直观的感受到单调队列的工作过程，以题目示例为例，输入: `nums = [1,3,-1,-3,5,3,6,7]`, 和 `k = 3`，动画如下：
+
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv4mCxur8W49qtZmumwtiax6RTqVY4F0yIyztfaEjM6VMst2jUgoMZA3UUpsib0ZF3jPS907uLpSia42w/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
+
+```python
+from collections import deque
+class MyQueue():
+    """
+    定义单调队列类: 从大到小
+    """
+
+    def __init__(self) -> None:
+        self.queue = deque()
+
+    def pop(self, value):
+        """
+        每次弹出时比较当前弹出的数值是否等于队列出口元素的数值，如果相等则直接弹出
+        """
+        if self.queue and value == self.queue[0]:
+            # 弹出队首元素
+            self.queue.popleft()
+
+    def push(self, value):
+        """
+        如果 push 的数值大于入口元素的数值，那么就将队列后端的数值弹出，直到 push 的数值小于等于队列入口元素的数值为止。保证队列由大到小。
+        """
+        # 如果队列非空并且队尾元素的值小于新加进来的值
+        while self.queue and self.queue[-1] < value:
+            # 弹出队尾元素，相当于让 value 一直往前插队超过比它小的人
+            self.queue.pop()
+        self.queue.append(value)
+
+    def front(self):
+        """
+        查询当前队列里的最大值，直接返回 front
+        """
+        return self.queue[0]
+
+class Solution:
+    def maxSlidingWindow(self, nums, k):
+        que = MyQueue()
+        result = []
+        # 先将前 k 的元素放进队列
+        for i in range(k):
+            que.push(nums[i])
+        result.append(que.front())
+        for i in range(k, len(nums)):
+            # 滑动窗口移除最前面元素
+            que.pop(nums[i - k])
+            # 滑动窗口前加入最后面的元素
+            que.push(nums[i])
+            # 记录对应的最大值
+            result.append(que.front())
+        return result
+
+sol = Solution()
+nums = [1,3,-1,-3,5,3,6,7]
+k = 3
+print(sol.maxSlidingWindow(nums,k))
+```
+
+### 5. [前 K 个高频元素](https://leetcode-cn.com/problems/top-k-frequent-elements/)
+> 给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。
+> 
+> 输入: `nums = [1,1,1,2,2,3], k = 2`
+输出: [1,2]
+
+> 进阶：你所设计算法的时间复杂度 必须 优于 O(n log n) ，其中 n 是数组大小。
+
+这个题目主要涉及如下三块内容：
+
+1. 要统计元素出现频率：字典
+2. 对频率排序：==优先级队列==
+3. 找出前 k 个高频元素
+
+==什么是优先级队列？==
+
+其实就是一个披着队列外衣的堆，因为优先级队列对外接口只是从队列取元素，从队尾添加元素，再无其他取元素的方式，看起来就是一个队列。
+
+而优先级队列内部元素是自动依照元素的权值排列的，怎么做到的？
+
+缺省情况下 priority_queue 利用 max-heap（大顶堆）完成对元素的排序，这个大顶堆是以 vector 为表现形式的 complete binary tree（完全二叉树）。
+
+**堆是一颗完全二叉树，树中每个结点的值都不小于（或不大于）其左右孩子的值。** 如果父亲结点是大于等于左右孩子就是大顶堆，小于等于左右孩子就是小顶堆。
+
+本题我们就要使用==优先级队列==来对部分频率进行==排序==。为什么不用快排，使用快排需要将 map 转换为 vector 结构，然后对整个数组进行排序，而在这种场景下，我们其实只需要维护 k 个有序的序列就可以了，所以使用优先级队列是最优的。
+
+==**所以我们要用小顶堆，因为要统计最大前 k 个元素，只有小顶堆每次将最小的元素弹出，最后小顶堆里积累的才是前 k 个最大元素。**==
+
+寻找前 k 个最大元素流程如图所示：（图中的频率只有三个，所以正好构成一个大小为 3 的小顶堆，如果频率更多一些，则用这个小顶堆进行扫描）
+
+<img src="https://mmbiz.qpic.cn/mmbiz_jpg/ciaqDnJprwv7UUhQ00bAh5bicicl1ia840WOm4WC58QMfMH1dmEcCEBCfyRbKmj2j7xbMbPYIl0A13RqBeSNMuvCdg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+```python
+from typing import List
+# 时间复杂度：O(nlogk)
+# 空间复杂度：O(n)
+import heapq
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        # 要统计元素出现频率
+        map_ = {}  # nums[i]:对应出现的次数
+        for i in range(len(nums)):
+            # get(key, default) 函数返回指定键的值，如果不存在返回 default
+            map_[nums[i]] = map_.get(nums[i], 0) + 1
+
+        # 对频率排序
+        # 定义一个小顶堆，大小为 k
+        pri_que = []  # 小顶堆
+        # 用固定大小为 k 的小顶堆，扫面所有频率的数值
+        for key, freq in map_.items():
+            # heapq: 只能构建小根堆，也是一种优先队列，它能以任意顺序增加对象，并且能在任意时间找到或移除最小的元素
+            heapq.heappush(pri_que, (freq, key))
+            if len(pri_que) > k:  # 如果堆的大小大于了 K，则队列弹出，保证堆的大小一直为 k
+                heapq.heappop(pri_que)
+
+        # 找出前 K 个高频元素，因为小顶堆先弹出的是最小的，所以倒叙来输出到数组
+        result = [0] * k
+        for i in range(k-1, -1, -1):
+            result[i] = heapq.heappop(pri_que)[1]
+        return result
+
+
+sol = Solution()
+nums = [1, 1, 1, 2, 2, 3, 1, 1]
+k = 2
+print(sol.topKFrequent(nums, k))
+```
+
 
 
 ## 参考资料
