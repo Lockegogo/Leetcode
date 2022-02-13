@@ -91,8 +91,8 @@ https://leetcode-cn.com/circle/article/wGp7Y9/
 
 ### 8. 二叉树
 
-- [ ] [关于二叉树，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490787&idx=2&sn=fc919a8f1af5274e3ba2c26f66212299&scene=21#wechat_redirect)
-- [ ] [二叉树：一入递归深似海，从此offer是路人](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490808&idx=2&sn=3fd8757fc1b9311c1de87dab4b6e2881&scene=21#wechat_redirect)
+- [x] [关于二叉树，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490787&idx=2&sn=fc919a8f1af5274e3ba2c26f66212299&scene=21#wechat_redirect)
+- [x] [二叉树：一入递归深似海，从此offer是路人](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490808&idx=2&sn=3fd8757fc1b9311c1de87dab4b6e2881&scene=21#wechat_redirect)
 - [ ] [二叉树：听说递归能做的，栈也能做！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490871&idx=2&sn=08687d3f42fd69e34637686fb75714d5&scene=21#wechat_redirect)
 - [ ] [二叉树：前中后序迭代方式的写法就不能统一一下么？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247490898&idx=2&sn=233cc1e7ac33cebff5e605db95954329&scene=21#wechat_redirect)
 - [ ] [二叉树：层序遍历登场！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247491416&idx=1&sn=1a99afc9cb150f889f8005e0cc63c5fe&scene=21#wechat_redirect)

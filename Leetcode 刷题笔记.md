@@ -2342,7 +2342,80 @@ print(sol.topKFrequent(nums, k))
 
 ## 二叉树
 
+### 1. 二叉树的基本知识
 
+#### 1.1 二叉树的类型
+
+在我们解题过程中二叉树有两种主要的形式：满二叉树和完全二叉树。
+
+==满二叉树==：如果一棵二叉树只有度为 0 的节点和度为 2 的节点，并且度为 0 的节点在同一层上，则这棵二叉树为满二叉树。也可以说深度为 k，有 $2^k-1$ 个节点的二叉树。
+
+==完全二叉树==：在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到了最大值，并且最下面一层的节点都集中在该层最左边的若干位置上。若最底层为第 $h$ 层，则该层包含了 1 ~ $(2^h -1)$  个节点。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4VQjjPNDEmZ3AEPHaA7FJYI02wXUJPyRR5McrVkj8jx9uNRU5Ymf828Jm0niaoSZibgrOILfLOSNCw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+> 优先级队列其实是一个堆，堆就是一颗完全二叉树，同时保证父子节点的顺序关系。
+
+前面介绍的树，都是没有数值的，而==二叉搜索树==是有数值的，二叉搜索树是一个有序树。
+
+- 若它的左子树不空，则左子树上所有结点的值均小于它的根结点的值；
+- 若它的右子树不空，则右子树上所有结点的值均大于它的根结点的值；
+- 它的左、右子树也分别为二叉排序树
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4VQjjPNDEmZ3AEPHaA7FJYhmUrf1vZhSEYfDic3s3se9rSDU29b3giaZqPDh07LLoA9rpQXfQZt9Tw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom: 80%;" />
+
+==平衡二叉搜索树==：又被称为 AVL（Adelson-Velsky and Landis）树，且具有以下性质：它是一棵空树或它的左右两个子树的高度差的绝对值不超过 1，并且左右两个子树都是一棵平衡二叉树。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4VQjjPNDEmZ3AEPHaA7FJYa8wHlYkDjNr9A1MIIq6CqvmRSyTA86mUoGJGSD6EZYcB0rE0OSDNvg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+> 最后一棵不是平衡二叉树，因为它的左右两个子树的高度差的绝对值超过了 1。
+
+#### 1.2 二叉树的存储方式
+
+二叉树可以==链式存储==，也可以==顺序存储==。链式存储用指针，顺序存储用数组。顺序存储的元素在内存是连续分布的，而链式存储则是通过指针把分布在散落在各个地址的节点串联在一起。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4VQjjPNDEmZ3AEPHaA7FJYhOtOVEfpN4JAITOwA0iaspU5KbRKJvibP50RwGz3ULWGK3jtVBQZttWg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+**顺序存储的方式如图：**
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4VQjjPNDEmZ3AEPHaA7FJYziaEFwVGibLU3xqIut1Ab70okYkAPPK1kaKW4nkkxVvmmjnO6r7xsB1Q/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+用数组来存储二叉树如何遍历呢？
+
+如果父节点的数组下表是 $i$，那么它的左孩子就是 $2^i+1$，右孩子就是 $2^i+2$。但是用链式表示的二叉树更有利于我们理解，所以我们一般用链式存储二叉树。
+
+#### 1.3 二叉树的遍历方式
+
+二叉树主要有两种遍历方式：
+
+1. 深度优先遍历：先往深走，遇到叶子节点再往回走；
+   -  前序遍历（递归法，迭代法）：中左右
+   -  中序遍历（递归法，迭代法）：左中右
+   -  后续遍历（递归法，迭代法）：左右中
+2. 广度优先遍历：一层一层的去遍历。
+   - 层次遍历（迭代法）
+
+深度优先遍历中的==前中后==，其实指的就是==中间节点的遍历顺序==。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4VQjjPNDEmZ3AEPHaA7FJY2VYcOOG9mmJI64TLoqVTb7eYPib27Dks3a8Z1MdEaSz4VBlF5Xicibygw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+和二叉树相关的题目，经常会使用递归的方式来实现深度优先遍历，也就是前中后序遍历。
+
+之前我们讲栈和队列的时候，就说过栈其实是递归的一种实现结构，也就是说==前中后序遍历==的逻辑其实都还是可以借助==栈==使用非递归的方式来实现的。而广度优先遍历的实现一般使用队列来实现，这也是队列先进先出的特点所决定的，因为需要先进先出的结构，才能一层一层的来遍历二叉树。
+
+二叉树的定义和链表差不多，相对于链表，二叉树的节点里多了一个指针，有两个指针，指向左右孩子。
+
+> 在现场面试的时候面试官可能要求手写代码，所以数据结构的定义以及简单逻辑的代码一定要锻炼白纸写出来。
+
+
+
+### 2. 二叉树的递归遍历
+
+==递归的三要素==：
+
+1. **确定递归函数的参数和返回值**：确定哪些参数是递归的过程中需要处理的，那么就在递归函数中加上这个参数，并且还要明确每次递归的返回值是什么进而确定递归函数的返回类型。
+2. **确定终止条件**：写完了递归算法，运行的时候，经常会遇到栈溢出的错误，就是没写终止条件或者终止条件写的不对，操作系统也是一个栈的结构来保存每一层递归的信息，如果递归没有终止，操作系统的内存栈必然就会溢出。
+3. **确定单层递归的逻辑**：确定每一层递归需要处理的信息，在这里也就会重复调用自己来实现递归的过程。
 
 
 
