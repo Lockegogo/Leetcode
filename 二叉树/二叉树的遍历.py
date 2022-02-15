@@ -76,20 +76,20 @@ class Solution:
         traversal(root)
         return result
 
-# # 后序遍历-递归-LC145_二叉树的后序遍历
-# class Solution:
-#     def postorderTraversal(self, root):
-#         result = []
+# 后序遍历-递归-LC145_二叉树的后序遍历
+class Solution:
+    def postorderTraversal(self, root):
+        result = []
 
-#         def traversal(root):
-#             if root == None:
-#                 return
-#             traversal(root.left)    # 左
-#             traversal(root.right)   # 右
-#             result.append(root.data)  # 后序
+        def traversal(root):
+            if root == None:
+                return
+            traversal(root.left)    # 左
+            traversal(root.right)   # 右
+            result.append(root.data)  # 后序
 
-#         traversal(root)
-#         return result
+        traversal(root)
+        return result
 
 sol = Solution()
 print(sol.inorderTraversal(root))

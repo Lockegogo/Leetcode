@@ -2417,7 +2417,396 @@ print(sol.topKFrequent(nums, k))
 2. **确定终止条件**：写完了递归算法，运行的时候，经常会遇到栈溢出的错误，就是没写终止条件或者终止条件写的不对，操作系统也是一个栈的结构来保存每一层递归的信息，如果递归没有终止，操作系统的内存栈必然就会溢出。
 3. **确定单层递归的逻辑**：确定每一层递归需要处理的信息，在这里也就会重复调用自己来实现递归的过程。
 
+```python
+# 二叉树的构建
+class Node:
+    def __init__(self, data):
+        # data 是传入的值
+        # 下面三个都是 Node 类的属性，初始化这些属性
+        # 函数内新引入的变量均为局部变量，故无论是设置还是使用它的属性都得利用 self. 的方式
+        # 如果不加 self. 这个变量就无法在 init 函数之外被使用
+        self.left = None
+        self.right = None
+        self.data = data
 
+    def insert(self, data):
+    # 将新值与父节点进行比较
+        if self.data:  # 非空
+            if data < self.data:            #新值较小，放左边
+                if self.left is None:       #若空，则新建插入节点
+                    self.left = Node(data)
+                else:                       #否则，递归往下查找
+                    self.left.insert(data)
+            elif data > self.data:          #新值较大，放右边
+                if self.right is None:      #若空，则新建插入节点
+                    self.right = Node(data)
+                else:                       #否则，递归往下查找
+                    self.right.insert(data)
+        else:
+            self.data = data                
+
+    # 打印这棵树，中序遍历
+    def PrintTree(self):
+        if self.left:
+            self.left.PrintTree()
+        print( self.data),
+        if self.right:
+            self.right.PrintTree()
+
+# 使用insert方法添加节点
+root = Node(12)
+root.insert(6)
+root.insert(14)
+root.insert(3)
+
+root.PrintTree()
+
+
+# 前序遍历-递归-LC144_二叉树的前序遍历
+class Solution:
+    def preorderTraversal(self, root):
+        # 确定递归函数的参数和返回值
+        result = []
+        
+        def traversal(root):
+            # 确定终止条件：什么时候递归结束？
+            # 当前遍历的节点为空，那么本层递归结束
+            if root == None:
+                return
+            # 确定单层递归的逻辑
+            result.append(root.data)  # 前序
+            traversal(root.left)    # 左
+            traversal(root.right)   # 右
+
+        traversal(root)
+        return result
+
+# 中序遍历-递归-LC94_二叉树的中序遍历
+class Solution:
+    def inorderTraversal(self, root):
+        result = []
+
+        def traversal(root):
+            if root == None:
+                return
+            traversal(root.left)    # 左
+            result.append(root.data)  # 中序
+            traversal(root.right)   # 右
+
+        traversal(root)
+        return result
+
+# 后序遍历-递归-LC145_二叉树的后序遍历
+class Solution:
+    def postorderTraversal(self, root):
+        result = []
+
+        def traversal(root):
+            if root == None:
+                return
+            traversal(root.left)    # 左
+            traversal(root.right)   # 右
+            result.append(root.data)  # 后序
+
+        traversal(root)
+        return result
+
+sol = Solution()
+print(sol.inorderTraversal(root))
+```
+
+### 3. 二叉树的迭代遍历
+
+递归的实现就是：每一次递归调用都会把函数的局部变量、参数值和返回地址等压入栈中，然后递归返回的时候，从栈顶弹出上一次递归的各项参数，所以这就是递归为什么可以返回上一层位置的原因。
+
+#### 3.1 前序遍历（迭代法）
+
+前序遍历是中左右，每次先处理的是中间节点，那么先将根节点放入栈中，然后将右孩子加入栈，再加入左孩子。
+
+==为什么先加入右孩子，再加入左孩子？==
+
+因为这样出栈的时候才是中左右的顺序：
+
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv6iaia8CS4C89jib6Vibw1icFhEzZe7WRTdPbhZcSLVGdWItQ8SxEGw6SYu1ib7mKYbtX6XDr31DbSAId2w/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
+
+```python
+# 前序遍历-迭代法
+class Solution:
+    def preorderTraversal(self, root):
+        # 根节点为空则返回空列表
+        if not root:
+            return []
+        stack = [root]
+        result = []
+        while stack:
+            # 中节点先处理
+            node = stack.pop()
+            result.append(node.data)
+            # 右孩子先入栈
+            if node.right:
+                stack.append(node.right)
+            # 左孩子后入栈
+            if node.left:
+                stack.append(node.left)
+
+        return result
+```
+
+#### 3.2 中序遍历（迭代法）
+
+在刚才的迭代过程中其实我们有连个操作：
+
+1. 处理：将元素放进 result 数组中
+2. 访问：遍历节点
+
+前序遍历的代码不能和中序遍历通用，因为前序遍历的顺序是中左右，先访问的元素的==中间节点==，要处理的元素也是==中间节点==；但是中序遍历顺序是左中右，先访问的是二叉树顶部的节点，然后一层一层向下访问，知道达到树左面的==最底部==，再开始处理节点（也就是把节点的数值放进 result 数组中），这就造成了处理顺序和访问顺序是不一致的。
+
+在使用迭代法写中序遍历，就需要借助指针的遍历来帮助访问节点，栈则用来处理节点上的元素。
+
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv6iaia8CS4C89jib6Vibw1icFhEzfibSLW18Y3JricktoAP7PKVwTpgyKLicuE3tMAMEC9VJLb7h05UzGT5Mw/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
+
+#### 3.3 后序遍历（迭代法）
+
+先序遍历是==中左右==，后序遍历是左右中，我们只需要调整一下先序遍历的代码顺序，就变成==中右左==，然后反转 result 数组，输出的结果就是左右中了
+
+==总结==：迭代法的前序遍历和中序遍历完全是两种代码风格，并不像递归法那样对代码稍作调整，就可以实现，==这是因为前序遍历中访问节点和处理节点可以同步处理，但是中序无法做到同步。==
+
+### 4. 二叉树的层序遍历
+
+> 给你一个二叉树，请你返回其按 层序遍历 得到的节点值。（即逐层地，从左到右访问所有节点）。
+>
+> ![img](https://assets.leetcode.com/uploads/2021/02/19/tree1.jpg)
+>
+> 输入：`root = [3,9,20,null,null,15,7]`
+> 输出：`[[3],[9,20],[15,7]]`
+
+二叉树的层序遍历需要借助一个辅助数据结构即队列来实现，队列先进先出，符合一层一层遍历的逻辑，而栈先进后出适合模拟深度优先遍历也就是递归的逻辑。
+
+而层序遍历就是图论中的广度优先遍历，只不过我们应用在二叉树上。
+
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv46LWl4MUIjcWpVpicNJm3DzxtKvgrxiaEqhntgf8JFQaNxvxygnqRJv6LIxmy4ibYbmRXWddn9ibnvrw/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
+
+```python
+from collections import deque
+class Solution:
+    """二叉树层序遍历迭代解法"""
+    def levelOrder(self, root):
+        results = []
+        if not root:
+            return results
+        que = deque([root])
+        while que:
+            size = len(que)
+            result = []
+            for _ in range(size):
+                cur = que.popleft()
+                result.append(cur.val)
+                if cur.left:
+                    que.append(cur.left)
+                if cur.right:
+                    que.append(cur.right)
+            results.append(result)
+
+        return results
+```
+
+
+
+### 5. 翻转二叉树
+
+> 给你一棵二叉树的根节点 `root` ，翻转这棵二叉树，并返回其根节点。
+>
+> ![img](https://assets.leetcode.com/uploads/2021/03/14/invert1-tree.jpg)
+>
+> ```
+> 输入：root = [4,2,7,1,3,6,9]
+> 输出：[4,7,2,9,6,3,1]
+> ```
+
+想要翻转二叉树，其实就是把每一个节点的左右孩子交换一下就可以了，关键在于==遍历顺序==。**前中后序应该选哪一种遍历顺序？**
+
+遍历的过程中去翻转每一个节点的左右孩子就可以达到整体翻转的效果。
+
+这道题目使用前序遍历和后序遍历都可以，唯独中序遍历不行，因为中序遍历会把某些节点的左右孩子翻转两次。
+
+层序遍历也是可以的，只要把每一个节点的左右孩子翻转一下的遍历方式都是可以的。
+
+```python
+class Solution:
+    """
+    递归法翻转二叉树
+    """
+    def invertTree(self, root):
+        # 1. 确定递归函数的参数和返回值
+        # 2. 确定终止条件
+        if not root:
+            return None
+        # 3. 确定单层递归的逻辑：先交换左右孩子节点，然后反转左子树，再反转右子树
+        root.left, root.right = root.right, root.left #中
+        self.invertTree(root.left) #左
+        self.invertTree(root.right) #右
+        return root
+
+
+class Solution:
+    """
+    迭代法：深度优先遍历（前序遍历）
+    """
+    def invertTree(self, root: TreeNode) -> TreeNode:
+        if not root:
+            return root
+        st = []
+        st.append(root)
+        while st:
+            node = st.pop()
+            node.left, node.right = node.right, node.left #中
+            if node.right:
+                st.append(node.right) #右
+            if node.left:
+                st.append(node.left) #左
+        return root
+
+
+
+import collections
+class Solution:
+    """
+    迭代法：广度优先遍历（层序遍历）
+    """
+    def invertTree(self, root):
+        queue = collections.deque() #使用 deque()
+        if root:
+            queue.append(root)
+        while queue:
+            size = len(queue)
+            for i in range(size):
+                node = queue.popleft()
+                node.left, node.right = node.right, node.left #节点处理
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        return root
+```
+
+### 6. 对称二叉树
+
+> 给你一个二叉树的根节点 `root` ， 检查它是否轴对称。
+>
+> ![img](https://assets.leetcode.com/uploads/2021/02/19/symtree1.jpg)
+>
+> ```
+> 输入：root = [1,2,2,3,4,4,3]
+> 输出：true
+> ```
+
+首先要想清楚，判断对称二叉树要比较的是哪两个节点，可不是左右节点！而是要比较跟节点的 左右子树，所以在递归遍历的过程中，也是要==同时遍历两棵树==。   
+
+==那应该如何选择遍历顺序？==
+
+本题遍历顺序只能是”==后序遍历==“，因为我们要通过递归函数的返回值来判断两个子树的内侧节点是否相等。正因为要遍历两棵树而且要比较内侧和外侧节点，所以准确的来说是一个树的遍历顺序是左右中，一个树的遍历顺序是右左中。
+
+#### 6.1递归法
+
+1. 确定递归函数的参数和返回值
+
+因为我们要比较的是根节点的两个子树是否是相互翻转的，进而判断这个树是不是对称树，所以要比较的是两个树，参数自然也是左子树节点和右子树节点；
+
+返回值自然是 bool 类型
+
+2. 确定终止条件
+
+要比较两个节点数值相不相同，首先要把两个节点为空的情况弄清楚！否则后面比较数值的时候就会操作空指针了。
+
+节点为空的情况有：
+
+- 左节点为空，右节点不为空，不对称
+- 左不为空，右为空，不对称
+- 左右都为空，对称
+
+此时已经排除了节点为空的情况，那么剩下就是左右节点不为空：
+
+- 左右都不为空，比较节点数值，不相同就 return false
+
+此时左右节点都不为空，且数值也不相同的情况我们也处理了
+
+3. 确定单层递归的逻辑
+
+此时才进入单层递归的逻辑，单层递归的逻辑就是处理左右节点都不为空，且数值相同的情况：
+
+- 比较二叉树外侧是否对称：传入的是左节点的左孩子，右节点的右孩子
+- 比较内侧是否对称，传入左节点的右孩子，右节点的左孩子
+- 如果左右都对称就返回 true，有一侧不对称就返回 false
+
+```python
+class Solution:
+    """
+    递归法
+    """
+    def isSymmetric(self, root: TreeNode) -> bool:
+        if not root:
+            return True
+        return self.compare(root.left, root.right)
+        
+    def compare(self, left, right):
+        #首先排除空节点的情况
+        if left == None and right != None:
+            return False
+        elif left != None and right == None:
+            return False
+        elif left == None and right == None:
+            return True
+        #排除了空节点，再排除数值不相同的情况
+        elif left.val != right.val:
+            return False
+        
+        #此时就是：左右节点都不为空，且数值相同的情况
+        #此时才做递归，做下一层的判断
+        outside = self.compare(left.left, right.right) #左子树：左、 右子树：右
+        inside = self.compare(left.right, right.left) #左子树：右、 右子树：左
+        isSame = outside and inside #左子树：中、 右子树：中 （逻辑处理）
+        return isSame
+
+```
+
+#### 6.2 迭代法
+
+通过队列来判断根节点的左子树和右子树的内侧和外侧是否相等，如动画所示：
+
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv6wEswj6eibFksDvAa4qKiaqSSzmaHHgdWyepdicDtnMxqXOlOz5jtmN1haIYvh82g6dOZT2JlYKcT5Q/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
+
+### 7. 二叉树的最大深度
+
+> 给定二叉树，找出其最大深度。
+>
+> 二叉树的深度为根节点到最远叶子节点的最长路径上的节点数量。
+>
+> 给定二叉树 `[3,9,20,null,null,15,7]`
+>
+>     3
+>    / \
+>   9  20
+>        /  \
+>      15   7
+
+#### 7.1 递归法
+
+本题可以使用前序（中左右），也可以使用后序遍历（左右中），使用前序求的就是深度，使用后序求的是高度。
+
+**而根节点的高度就是二叉树的最大深度**，所以本题中我们通过后序求的根节点高度来求的二叉树最大深度。
+
+
+
+
+
+
+
+
+
+
+
+
+###                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 
 ## 参考资料
 
