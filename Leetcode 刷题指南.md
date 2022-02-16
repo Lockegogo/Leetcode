@@ -128,9 +128,9 @@ https://leetcode-cn.com/circle/article/wGp7Y9/
 
 ### 9. 回溯算法
 
-- [ ] [关于回溯算法，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494117&idx=2&sn=fbba964bfa8a08e531a289392403a5d5&scene=21#wechat_redirect)
-- [ ] [回溯算法：求组合问题！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494135&idx=2&sn=3a17829d16a597246c20600a3a4bb2ce&scene=21#wechat_redirect)
-- [ ] [回溯算法：求组合总和！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494448&idx=2&sn=08f97a245ce1110a704d0d6051338922&scene=21#wechat_redirect)
+- [x] [关于回溯算法，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494117&idx=2&sn=fbba964bfa8a08e531a289392403a5d5&scene=21#wechat_redirect)
+- [x] [回溯算法：求组合问题！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494135&idx=2&sn=3a17829d16a597246c20600a3a4bb2ce&scene=21#wechat_redirect)
+- [x] [回溯算法：求组合总和！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494448&idx=2&sn=08f97a245ce1110a704d0d6051338922&scene=21#wechat_redirect)
 - [ ] [回溯算法：电话号码的字母组合](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494475&idx=2&sn=e067517cd7d801783d8ce6ba6aad6c49&scene=21#wechat_redirect)
 - [ ] [本周小结！（回溯算法系列一）](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247485330&idx=1&sn=86d963c0cf3db8568217aed1760181dc&scene=21#wechat_redirect)
 - [ ] [回溯算法：求组合总和（二）](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494682&idx=2&sn=45c7642a4b42f589be18cd087d0c3388&scene=21#wechat_redirect)
@@ -156,8 +156,8 @@ https://leetcode-cn.com/circle/article/wGp7Y9/
 
 ### 10. 贪心算法
 
-- [ ] [关于贪心算法，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247495755&idx=2&sn=b79be09ec3627e818104cb33d74ed122&scene=21#wechat_redirect)
-- [ ] [贪心算法：分发饼干](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247495860&idx=2&sn=600764abb6cb64e1cc45d4d2c74f9294&scene=21#wechat_redirect)
+- [x] [关于贪心算法，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247495755&idx=2&sn=b79be09ec3627e818104cb33d74ed122&scene=21#wechat_redirect)
+- [x] [贪心算法：分发饼干](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247495860&idx=2&sn=600764abb6cb64e1cc45d4d2c74f9294&scene=21#wechat_redirect)
 - [ ] [贪心算法：摆动序列](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247495906&idx=2&sn=dbba27808bce2f49ce84056b1480e5fc&scene=21#wechat_redirect)
 - [ ] [贪心算法：最大子序和](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247495922&idx=2&sn=c035a6bfa7a12e8890b6d6257572822d&scene=21#wechat_redirect)
 - [ ] [本周小结！（贪心算法系列一）](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247485825&idx=1&sn=ff9a2f8a296d27b32a07dcc552277323&scene=21#wechat_redirect)
@@ -184,7 +184,7 @@ https://leetcode-cn.com/circle/article/wGp7Y9/
 
 ### 11. 动态规划
 
-- [ ] [关于动态规划，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486381&idx=1&sn=b8b913edabdab1208bf677b9578442e7&scene=21#wechat_redirect)
+- [x] [关于动态规划，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486381&idx=1&sn=b8b913edabdab1208bf677b9578442e7&scene=21#wechat_redirect)
 - [ ] [动态规划：斐波那契数](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486389&idx=1&sn=c04a762fa0d83aad2ef8738aa659523b&scene=21#wechat_redirect)
 - [ ] [动态规划：爬楼梯](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486421&idx=2&sn=2257ee9d1a7a46ba3e53acf965aa38d6&scene=21#wechat_redirect)
 - [ ] [动态规划：使用最小花费爬楼梯](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486432&idx=1&sn=5f449828e7fbe769540742e91b3fe13c&scene=21#wechat_redirect)

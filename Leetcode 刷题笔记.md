@@ -2449,7 +2449,7 @@ class Node:
     def PrintTree(self):
         if self.left:
             self.left.PrintTree()
-        print( self.data),
+        print(self.data),
         if self.right:
             self.right.PrintTree()
 
@@ -2559,17 +2559,69 @@ class Solution:
 1. 处理：将元素放进 result 数组中
 2. 访问：遍历节点
 
-前序遍历的代码不能和中序遍历通用，因为前序遍历的顺序是中左右，先访问的元素的==中间节点==，要处理的元素也是==中间节点==；但是中序遍历顺序是左中右，先访问的是二叉树顶部的节点，然后一层一层向下访问，知道达到树左面的==最底部==，再开始处理节点（也就是把节点的数值放进 result 数组中），这就造成了处理顺序和访问顺序是不一致的。
+前序遍历的代码不能和中序遍历通用，因为前序遍历的顺序是中左右，先访问的元素的==中间节点==，要处理的元素也是==中间节点==；但是中序遍历顺序是左中右，先访问的是二叉树顶部的节点，然后一层一层向下访问，知道达到树左面的==最底部==，再开始处理节点（也就是把节点的数值放进 result 数组中），**这就造成了处理顺序和访问顺序是不一致的。**
 
-在使用迭代法写中序遍历，就需要借助指针的遍历来帮助访问节点，栈则用来处理节点上的元素。
+在使用迭代法写==中序遍历==，就需要借助==指针的遍历==来帮助访问节点，栈则用来处理节点上的元素。
 
 ![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv6iaia8CS4C89jib6Vibw1icFhEzfibSLW18Y3JricktoAP7PKVwTpgyKLicuE3tMAMEC9VJLb7h05UzGT5Mw/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
+
+```python
+# 中序遍历-迭代法: 左中右
+class Solution:
+    def inorderTraversal(self, root):
+        # 根节点为空则返回空列表
+        if not root:
+            return []
+        # 不能提前将节点加入 stack
+        stack = []
+        result = []
+        # 补充一个指针
+        cur = root
+        while cur or stack:
+            # 先迭代访问最底层的左子树节点
+            if cur:
+                stack.append(cur)
+                cur = cur.left
+            # 到达最左节点后处理栈顶节点
+            else:
+                cur = stack.pop()
+                result.append(cur.val)
+                # 取栈顶元素右节点
+                cur = cur.right
+        return result
+```
+
+
 
 #### 3.3 后序遍历（迭代法）
 
 先序遍历是==中左右==，后序遍历是左右中，我们只需要调整一下先序遍历的代码顺序，就变成==中右左==，然后反转 result 数组，输出的结果就是左右中了
 
 ==总结==：迭代法的前序遍历和中序遍历完全是两种代码风格，并不像递归法那样对代码稍作调整，就可以实现，==这是因为前序遍历中访问节点和处理节点可以同步处理，但是中序无法做到同步。==
+
+```python
+# 后序遍历-迭代-LC145_二叉树的后序遍历
+class Solution:
+    def postorderTraversal(self, root: TreeNode) -> List[int]:
+        if not root:
+            return []
+        stack = [root]
+        result = []
+        while stack:
+            node = stack.pop()
+            # 中结点先处理
+            result.append(node.val)
+            # 左孩子先入栈
+            if node.left:
+                stack.append(node.left)
+            # 右孩子后入栈
+            if node.right:
+                stack.append(node.right)
+        # 将最终的数组翻转
+        return result[::-1]
+```
+
+
 
 ### 4. 二叉树的层序遍历
 
@@ -2627,7 +2679,7 @@ class Solution:
 
 遍历的过程中去翻转每一个节点的左右孩子就可以达到整体翻转的效果。
 
-这道题目使用前序遍历和后序遍历都可以，唯独中序遍历不行，因为中序遍历会把某些节点的左右孩子翻转两次。
+这道题目使用前序遍历和后序遍历都可以，唯独中序遍历不行，因为中序遍历会把左子树的左右孩子翻转两次。
 
 层序遍历也是可以的，只要把每一个节点的左右孩子翻转一下的遍历方式都是可以的。
 
@@ -2795,18 +2847,419 @@ class Solution:
 
 **而根节点的高度就是二叉树的最大深度**，所以本题中我们通过后序求的根节点高度来求的二叉树最大深度。
 
+==TO DO==：二叉树做的有点厌倦了，先做回溯算法调节下心情
 
 
 
+## 回溯算法
+
+回溯算法，也叫回溯搜索法，是一种搜索方式。
+
+回溯是递归的副产品，只要有递归就会有回溯。回溯函数就是递归函数。
+
+### 1. 回溯法的基本知识
+
+回溯法并不是高效的算法，因为回溯法的本质是穷举，穷举所有可能，然后选出我们想要的答案，如果想让回溯法高效一些，可以加一些剪枝的操作，但也改变不了回溯法就是穷举的本质。
+
+==回溯法解决的问题==：
+
+- 组合问题：N 个数里面按照一定规则找出 k 个数的集合
+- 切割问题：一个字符串按照 一定规则有几种切割方式
+- 子集问题：一个 N 个数的集合里有多少符合条件的子集
+- 排列问题：N 个数按一定规则全排列，有几种排列方式
+- 棋盘问题：N 皇后，解数独等等
+
+> 组合无序，排列有序。
+
+==如何理解回溯法：==
+
+回溯法解决的问题都可以抽象为树形结构，因为回溯法解决的都是在集合中递归查找子集
+
+- **集合的大小就构成了数的宽度**
+- **递归的深度就构成了树的深度**
+
+递归就要有终止条件，所以必然是一棵高度有限的树（N 叉树）。
+
+==回溯法模板==：
+
+1. 回溯函数模板返回值以及参数
+
+回溯法需要的参数可不像二叉树递归的时候那么容易一次性确定下来，所以一般都是先写逻辑，然后需要什么参数就填什么参数。
+
+2. 回溯函数终止条件
+
+搜索到叶子节点，也就找到了满足条件的一条答案，把这个答案存放起来，并结束本层递归。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv7eH4u8vicR1FRwEE7zdfeGgbR6xCibegiamdWibnnmDlVA71ibOsDWKSdwCymdfJ6xrIlbl9QOnnEoUxQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"  />
+
+```c++
+for (选择：本层集合中元素（树中节点孩子的数量就是集合的大小）) {
+    处理节点;
+    backtracking(路径，选择列表); // 递归
+    回溯，撤销处理结果
+}
+```
+
+for 循环就是遍历集合区间，可以理解一个节点有多少个孩子，这个 for 循环就执行多少次。
+
+backtracking 这里自己调用自己，实现递归。
+
+大家可以从图中看出 **for 循环可以理解是横向遍历，backtracking（递归）就是纵向遍历**，这样就把这棵树全遍历完了，一般来说，搜索叶子节点就是找的其中一个结果了。
+
+```c++
+void backtracking(参数) {
+    if (终止条件) {
+        存放结果;
+        return;
+    }
+
+    for (选择：本层集合中元素（树中节点孩子的数量就是集合的大小）) {
+        处理节点;
+        backtracking(路径，选择列表); // 递归
+        回溯，撤销处理结果
+    }
+}
+```
+
+### 2. 组合
+
+> 给定两个整数 `n` 和 `k`，返回范围 `[1, n]` 中所有可能的 `k` 个数的组合。
+>
+> ```
+> 输入：n = 4, k = 2
+> 输出：
+> [
+>   [2,4],
+>   [3,4],
+>   [2,3],
+>   [1,2],
+>   [1,3],
+>   [1,4],
+> ]
+> ```
+
+直接的解法当然是使用 for 循环，例如示例中 k 为 2，很容易想到 用两个 for 循环，这样就可以输出和示例中一样的结果。
+
+**如果 n 为 100，k 为 50 呢，那就 50 层 for 循环，你写得出来吗**？
+
+**此时就会发现虽然想暴力搜索，但是用 for 循环嵌套连暴力都写不出来！**
+
+回溯搜索法来了，虽然回溯法也是暴力，但至少能写出来，不像 for 循环嵌套 k 层让人绝望。
+
+==那么回溯法怎么暴力搜呢？==
+
+上面我们说了**要解决 n 为 100，k 为 50 的情况，暴力写法需要嵌套 50 层 for 循环，那么回溯法就用递归来解决嵌套层数的问题**。
+
+递归来做层叠嵌套（可以理解是开 k 层 for 循环），每一次的递归中嵌套一个 for 循环，那么递归就可以用于解决==多层嵌套循环==的问题了。
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv5SBsnFmqibXvBHKstibeks0Yn5pKSm1aE6f6ckJ2bjxn32w41eWibiaZficLOwRhAibxnxvTiaIWlTyFQicg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+**每次从集合中选取元素，可选择的范围随着选择的进行而收缩，调整可选择的范围**。
+
+**图中可以发现 n 相当于树的宽度，k 相当于树的深度**。
+
+那么如何在这个树上遍历，然后收集到我们要的结果集呢？
+
+图中每次搜索到了叶子节点，我们就找到一个结果。
+
+相当于只需要把到达叶子节点的结果搜集起来，就可以求得 n 个数中 k 个数的组合集合。
+
+==回溯法三部曲==：
+
+1. **递归函数的返回值以及参数**
+
+这里主要定义两个局部变量，一个用来存放符合条件的单一结果 result，一个用来存放符合条件结果的集合 path。
+
+函数里一定有两个参数，既然是集合 n 里面取 k 的数，那么 n 和 k 是两个 int 型的参数。
+
+然后还需要一个参数，为 int 型变量 `startIndex`，这个参数用来记录本层递归中，集合从哪里开始遍历（集合就是 [1,...,n] ），也就是下一层递归搜索的起始位置（如果可以重复的，应该就不需要这个参数）。
+
+**为什么要有这个 startIndex 呢？**
+
+每次从集合中选取元素，可选择的范围随着选择的进行而收缩，调整可选择的范围，就要靠  `startIndex`
+
+2. **回溯函数终止条件**
+
+什么时候到达所谓的叶子节点了呢？path 这个数组的大小如果达到了 k，说明我们找到了一个子集大小为 k 的组合了，这个数组存的就是根节点到叶子节点的路径。
+
+此时用 result 二维数组，把 path 保存起来，并终止本层递归。
+
+3. **单层搜索的过程**
+
+回溯法的搜索过程就是一个树型结构的遍历过程，如下图，可以看出 for 循环用来横向遍历，递归的过程是纵向遍历。for 循环每次从 `startIndex` 开始遍历，然后用 path 保存取到得节点 $i$。递归函数通过不断调用自己一直往深处遍历，总会遇到叶子节点，遇到叶子节点就要返回。
+
+==剪枝优化：==
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv5SBsnFmqibXvBHKstibeks0YjDGIsuDiaIcQgaexwCnu7rG7EB9NyPQtgNB7thYmzVhNByVICNTydMQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"  />
+
+**如果 for 循环选择得起始位置之后得元素个数已经不足我们需要的元素个数了，那么就没有必要搜索了**
+
+```python
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        res = []
+        path = []
+        ## 1. 确定回溯函数的参数
+        def backtrack(n, k, StartIndex):
+            ## 2. 确定回溯函数的终止条件
+            if len(path) == k:
+                res.append(path[:])
+                return
+            ## 3. 进入单层循环逻辑
+            # for：横向遍历
+            for i in range(StartIndex, n + 1):
+                path.append(i)
+                # 回溯函数：纵向遍历
+                backtrack(n, k, i+1)
+                # 回溯完成后要把之前的元素 pop 出去
+                path.pop()
+        backtrack(n, k, 1)
+        return res
+    
+    
+class Solution:
+    """
+    剪枝
+    """
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        res=[]  #存放符合条件结果的集合
+        path=[]  #用来存放符合条件结果
+        def backtrack(n,k,startIndex):
+            if len(path) == k:
+                res.append(path[:])
+                return
+            # k - len(path) 是我们还需要选取的元素的个数
+            for i in range(startIndex,n - (k - len(path)) + 2):  #优化的地方
+                path.append(i)  #处理节点 
+                backtrack(n,k,i+1)  #递归
+                path.pop()  #回溯，撤销处理的节点
+        backtrack(n,k,1)
+        return res
+```
+
+### 3. 组合总和
+
+> 找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数，并且每种组合中不存在重复的数字。
+>
+> ```
+> 输入: k = 3, n = 7
+> 输出: [[1,2,4]]
+> ```
+
+本题就是在 [1,2,3,4,5,6,7,8,9] 这个集合中找到和为 n 的 k 个数的组合。
+
+和上一题相比，无非就是多了一个限制，本题是要找到和为 n 的 k 个数的组合，而整个集合已经是固定的 [1,...,9]。
+
+本题 k 相当于了树的深度，9（因为整个集合就是 9 个数）就是树的宽度。
+
+例如 k = 2，n = 4 的话，就是在集合 [1,2,3,4,5,6,7,8,9] 中求 k（个数） = 2, n（和） = 4 的组合。
+
+选取过程如图：
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv6vKujia98Cyl8icF4GEOLJxQ1htrhHXMRicN3S2U3ClLGAia2X7g5nFdZNAFGec8gJ5kP0K7S6bCmung/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"  />
+
+```python
+from typing import List
+ 
+class Solution:
+    def __init__(self):
+        self.res = []
+        # 已经收集的元素总和，也就是 path 里元素的总和
+        self.sum_now = 0
+        self.path = []
+
+    def combinationSum3(self, k: int, n: int):
+        self.backtracking(k, n, 1)
+        return self.res
+
+    def backtracking(self, k: int, n: int, start_num: int):
+        # 剪枝：和 > target，无意义了
+        if self.sum_now > n:  
+            return
+        # len(path)==k 时不管 sum 是否等于n都会返回
+        if len(self.path) == k:  
+            if self.sum_now == n:
+                self.res.append(self.path[:])
+            # 如果 len(path)==k 但是 和不等于 target，直接返回
+            return
+        # 集合固定为 9 个数
+        for i in range(start_num, 10 - (k - len(self.path)) + 1):
+            self.path.append(i)
+            self.sum_now += i
+            
+            self.backtracking(k, n, i + 1)
+            self.path.pop()
+            
+            self.sum_now -= i
+
+```
+
+### 4. 电话号码的字母组合
+
+> 给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
+>
+> 给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+>
+> ![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2021/11/09/200px-telephone-keypad2svg.png)
+>
+> ```
+> 输入：digits = "23"
+> 输出：["ad","ae","af","bd","be","bf","cd","ce","cf"]
+> ```
+
+本题需要解决三个问题：
+
+1. 数字和字母如何映射？
+2. 两个字母就两个 for 循环，三个字母就三个 for 循环，这样代码根本写不出来
+3. 输入 1 * # 案件的异常情况
+
+==数字和字母如何映射==：可以使用 map 或者定义一个二维数组来做映射
+
+==回溯法来解决 n 个 for 循环的问题==：
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4g9ialwsB98zmuWnyLlpiaohoHHDTWSd9h1PQ9ibjVtIlibWldpCleITDILBVEGeuEruaa3KYU1K96tg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+图中可以看出遍历的深度，就是输入 "23" 的长度，而叶子节点就是我们要收集的结果，输出 ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]。
+
+```python
+class Solution:
+    def __init__(self):
+        self.answers: List[str] = []
+        self.answer: str = ''
+        self.letter_map = {
+            '2': 'abc',
+            '3': 'def',
+            '4': 'ghi',
+            '5': 'jkl',
+            '6': 'mno',
+            '7': 'pqrs',
+            '8': 'tuv',
+            '9': 'wxyz'
+        }
+
+    def letterCombinations(self, digits: str) -> List[str]:
+        self.answers.clear()
+        if not digits: return []
+        self.backtracking(digits, 0)
+        return self.answers
+    
+    def backtracking(self, digits: str, index: int) -> None:
+        # 回溯函数没有返回值
+        # Base Case
+        if index == len(digits):    # 当遍历穷尽后的下一层时
+            self.answers.append(self.answer)
+            return 
+        # 单层递归逻辑  
+        letters = self.letter_map[digits[index]]
+        for letter in letters:
+            self.answer += letter   # 处理
+            self.backtracking(digits, index + 1)    # 递归至下一层
+            self.answer = self.answer[:-1]  # 回溯
+```
 
 
 
+## 贪心算法
+
+### 1. 贪心算法的基础知识
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv5NV9jjxYN7qSW0cae98Ogorh6MlYWDpoxqlSmBbwAjzdpqqxCicz92qbK1lnQJW98YyEN9wib3aibpw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+==贪心的本质==：选择每一阶段的局部最优，从而达到全局最优。
+
+这么说有点抽象，来举一个例子：
+
+例如，有一堆钞票，你可以拿走十张，如果想达到最大的金额，你要怎么拿？
+
+指定每次拿最大的，最终结果就是拿走最大数额的钱。
+
+每次拿最大的就是局部最优，最后拿走最大数额的钱就是推出全局最优。
+
+再举一个例子如果是 有一堆盒子，你有一个背包体积为 n，如何把背包尽可能装满，如果还每次选最大的盒子，就不行了。这时候就需要动态规划。动态规划的问题在下一个系列会详细讲解。
+
+==贪心的套路==：什么时候用贪心？
+
+如何通过局部最优，推出整体最优。如何验证可否用贪心算法呢？
+
+**最好用的策略就是举反例，如果想不到反例，那么就试一试贪心吧**。
+
+==贪心算法的一般解题步骤：==
+
+1. 将问题分解为若干个子问题
+2. 找出适合的贪心策略
+3. 求解每一个子问题的最优解
+4. 将局部最优解堆叠成全局最优解
+
+### 2. 分发饼干
+
+> 假设你是一位很棒的家长，想要给你的孩子们一些小饼干。但是，每个孩子最多只能给一块饼干。
+> 对每个孩子 $i$，都有一个胃口值 $g[i]$，这是能让孩子们满足胃口的饼干的最小尺寸；并且每块饼干 $j$，都有一个尺寸 $s[j]$ 。如果 $s[j] >= g[i]$，我们可以将这个饼干 $j$ 分配给孩子 $i$ ，这个孩子会得到满足。你的目标是尽可能满足越多数量的孩子，并输出这个最大数值。
+>
+> ```
+> 输入: g = [1,2,3], s = [1,1]
+> 输出: 1
+> ```
+
+为了了满足更多的小孩，就不要造成饼干尺寸的浪费。
+
+大尺寸的饼干既可以满足胃口大的孩子也可以满足胃口小的孩子（小尺寸的饼干只能满足小的），那么就应该优先满足胃口大的。
+
+**这里的局部最优就是大饼干喂给胃口大的，充分利用饼干尺寸喂饱一个，全局最优就是喂饱尽可能多的小孩**。
+
+可以尝试使用贪心策略，先将饼干数组和小孩数组排序。
+
+然后从后向前遍历小孩数组，用大饼干优先满足胃口大的，并统计满足小孩数量。如图：
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4jZrEXMwopFkYlhVRTajjg47daCuGygmrJU4a0gJ5NMB6sqdrGehpzgagzMNx3vT7EVxGUHUSfSg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+文中详细介绍了思考的过程，**想清楚局部最优，想清楚全局最优，感觉局部最优是可以推出全局最优，并想不出反例，那么就试一试贪心**。
+
+```python
+class Solution:
+    # 思路 1：优先考虑饼干
+    def findContentChildren(self, g: List[int], s: List[int]) -> int:
+        g.sort()
+        s.sort()
+        res = 0
+        for i in range(len(s)):
+            if res <len(g) and s[i] >= g[res]:  #小饼干先喂饱小胃口
+                res += 1
+        return res
+```
+
+## 动态规划
+
+### 1. 动态规划的基础知识
+
+动态规划，英文：Dynamic Programming，简称 DP，如果某一问题有很多==重叠子问题==，使用动态规划是最有效的。
+
+所以动态规划中**每一个状态一定是由上一个状态推导出来的**，这一点就区分与贪心，贪心没有状态推导，而是从局部直接选最优的。
+
+例如：有 $N$ 件物品和一个最多能背重量为 $W$ 的背包。第 i 件物品的重量是 `weight [i]`，得到的价值是 `value [i]` 。**每件物品只能用一次**，求解将哪些物品装入背包里物品价值总和最大。
+
+动态规划中 dp [j] 是由 dp [j-weight [i]] 推导出来的，然后取 max (dp [j], dp [j - weight [i]] + value [i])。
+
+但如果是贪心呢，每次拿物品选一个最大的或者最小的就完事了，和上一个状态没有关系。
+
+所以贪心解决不了动态规划的问题。
+
+==动态规划的解题步骤：==
+
+- 确定 dp 数组以及下表的含义
+- 确定递推公式
+- dp 数组如何初始化
+- 确定遍历顺序
+- 举例推导 dp 数组
+
+==动态规划应该如何 debug？==
+
+**找问题的最好方式就是把 dp 数组打印出来，看看究竟是不是按照自己思路推导的！**
+
+做动规的题目，写代码之前一定要把状态转移在 dp 数组上的具体情况模拟一遍，心中有数，确定最后推出的是想要的结果。然后再写代码，如果没通过就打印 dp 数组，看看是不是和子集预先推导的不一样，如果 dp 数组一样，那就是自己的递推公式、初始化或者遍历顺序有问题，如果和自己预先推导的不一样，那么就是代码实现细节有问题。
+
+> 在大厂，问问题是一个专业活，要体现自己的专业性。
 
 
-
-
-
-###                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 
 ## 参考资料
 
