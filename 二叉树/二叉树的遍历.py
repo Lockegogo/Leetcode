@@ -10,28 +10,29 @@ class Node:
         self.data = data
 
     def insert(self, data):
-    # 将新值与父节点进行比较
+        # 将新值与父节点进行比较
         if self.data:  # 非空
-            if data < self.data:            #新值较小，放左边
-                if self.left is None:       #若空，则新建插入节点
+            if data < self.data:  # 新值较小，放左边
+                if self.left is None:  # 若空，则新建插入节点
                     self.left = Node(data)
-                else:                       #否则，递归往下查找
+                else:  # 否则，递归往下查找
                     self.left.insert(data)
-            elif data > self.data:          #新值较大，放右边
-                if self.right is None:      #若空，则新建插入节点
+            elif data > self.data:  # 新值较大，放右边
+                if self.right is None:  # 若空，则新建插入节点
                     self.right = Node(data)
-                else:                       #否则，递归往下查找
+                else:  # 否则，递归往下查找
                     self.right.insert(data)
         else:
-            self.data = data                
+            self.data = data
 
     # 打印这棵树，中序遍历
     def PrintTree(self):
         if self.left:
             self.left.PrintTree()
-        print( self.data),
+        print(self.data),
         if self.right:
             self.right.PrintTree()
+
 
 # 使用insert方法添加节点
 root = Node(12)
@@ -47,7 +48,7 @@ class Solution:
     def preorderTraversal(self, root):
         # 确定递归函数的参数和返回值
         result = []
-        
+
         def traversal(root):
             # 确定终止条件：什么时候递归结束？
             # 当前遍历的节点为空，那么本层递归结束
@@ -62,6 +63,8 @@ class Solution:
         return result
 
 # 中序遍历-递归-LC94_二叉树的中序遍历
+
+
 class Solution:
     def inorderTraversal(self, root):
         result = []
@@ -77,6 +80,8 @@ class Solution:
         return result
 
 # 后序遍历-递归-LC145_二叉树的后序遍历
+
+
 class Solution:
     def postorderTraversal(self, root):
         result = []
@@ -90,6 +95,7 @@ class Solution:
 
         traversal(root)
         return result
+
 
 sol = Solution()
 print(sol.inorderTraversal(root))
