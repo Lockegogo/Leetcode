@@ -3039,7 +3039,7 @@ class Solution:
         return res
 ```
 
-### 3. 组合总和
+### 3. 组合总和 III
 
 > 找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数，并且每种组合中不存在重复的数字。
 >
@@ -3160,6 +3160,124 @@ class Solution:
             self.backtracking(digits, index + 1)    # 递归至下一层
             self.answer = self.answer[:-1]  # 回溯
 ```
+
+### 5. 组合总和
+
+> 给你一个无重复元素的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的所有不同组合 ，并以列表形式返回。你可以按任意顺序返回这些组合。
+>
+> candidates 中的 同一个数字可以无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。 
+>
+> 对于给定的输入，保证和为 target 的不同组合数少于 150 个。
+>
+> 输入：`candidates = [2,3,6,7], target = 7`
+> 输出：`[[2,2,3],[7]]`
+
+自己写出来了一个版本，但是结果有重复。
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv5HTwmlN4eYQibVjpl0McN9OLwetk9yD2yCsdpcHYAuMfibQJ7ROHibZbKdZ0SFQQwdZPJS9pTO8m4Ew/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+注意叶子节点的返回条件，因为本题没有组合数量要求，仅仅是总和的限制，所以递归没有层数的限制，只要选取的元素总和超过 target，就 return ！（这一点我也想到了）
+
+==本题还需要 startindex 来控制 for 循环的起始位置，对于组合问题，什么时候需要 startindex 呢？==
+
+- 如果是==一个集合==求组合，就需要 startindex
+- 如果是==多个集合==取组合，各个集合之间相互不影响，就不用 startindex（例如电话号码的字母组合）
+
+本题单层 for 循环依然是从 startIndex 开始，搜索 candidates 集合。
+
+```python
+class Solution:
+    def __init__(self) -> None:
+        self.res = []
+        self.result = []
+        self.sum = 0
+
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        startindex = 0
+        self.res = self.trackbacking(startindex, candidates, target)
+        return self.res
+
+    def trackbacking(self, startindex, candidates, target):
+        # 确定终止条件
+        if self.sum == target:
+            self.res.append(self.result[:])
+            return
+        if self.sum > target:
+            return
+
+        # 进入单层循环逻辑：从 startindex 开始选取是为了保证在后面做选择时不会选到前面的数字避免重复
+        for i in range(startindex, len(candidates)):
+            self.result.append(candidates[i])
+            self.sum += candidates[i]
+            # 因为可以无限制选取同一个数字，所以是 i
+            self.trackbacking(i, candidates, target)
+            # 回溯
+            self.result.pop()
+            self.sum -= candidates[i]
+        return self.res
+```
+
+==剪枝优化：==这个优化一般不容易想到，但是在求和问题中，排序后加剪枝是常见的套路！
+
+以及上面的版本一的代码大家可以看到，对于 sum 已经大于 target 的情况，其实是依然进入了下一层递归，只是下一层递归结束判断的时候，会判断 sum > target 的话就返回。其实如果已经知道下一层的 sum 会大于 target，就没有必要进入下一层递归了。那么可以在 for 循环的搜索范围上做做文章了。
+
+**对总集合排序之后，如果下一层的 sum（就是本层的 sum + candidates [i]）已经大于 target，就可以结束本轮 for 循环的遍历**。
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv5HTwmlN4eYQibVjpl0McN9O2ZPUF3xSn9tJeH4iciacibIjFNichTVmOgVdkkJhcXDVgApgl4BNayYHpg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+```python
+class Solution:
+    """剪枝策略"""
+    def __init__(self) -> None:
+        self.res = []
+        self.result = []
+        self.sum = 0
+
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        startindex = 0
+        # 为了剪枝提前进行排序
+        candidates.sort()
+        self.res = self.trackbacking(startindex, candidates, target)
+        return self.res
+
+    def trackbacking(self, startindex, candidates, target):
+        # 确定终止条件
+        if self.sum == target:
+            # 因为是 shallow copy，所以不能直接传入self.result
+            self.res.append(self.result[:])
+            return
+
+        # 进入单层循环逻辑：从 startindex 开始选取是为了保证在后面做选择时不会选到前面的数字避免重复
+        # 如果本层 sum + condidates[i] > target，就提前结束遍历，剪枝
+        for i in range(startindex, len(candidates)):
+            if self.sum + candidates[i] > target:
+                return
+            self.result.append(candidates[i])
+            self.sum += candidates[i]
+            # 因为可以无限制选取同一个数字，所以是 i
+            self.trackbacking(i, candidates, target)
+            # 回溯
+            self.result.pop()
+            self.sum -= candidates[i]
+        return self.res
+```
+
+### 6. 组合总和 II
+
+> 给定一个候选人编号的集合 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+>
+> candidates 中的每个数字在每个组合中只能使用 一次 。
+>
+> 注意：解集不能包含重复的组合。
+>
+> ```
+> 输入: candidates = [2,5,2,1,2], target = 5,
+> 输出:
+> [
+> [1,2,2],
+> [5]
+> ]
+> ```
 
 
 

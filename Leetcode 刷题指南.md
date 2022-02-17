@@ -133,7 +133,7 @@ https://leetcode-cn.com/circle/article/wGp7Y9/
 - [x] [回溯算法：求组合总和！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494448&idx=2&sn=08f97a245ce1110a704d0d6051338922&scene=21#wechat_redirect)
 - [x] [回溯算法：电话号码的字母组合](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494475&idx=2&sn=e067517cd7d801783d8ce6ba6aad6c49&scene=21#wechat_redirect)
 - [x] [本周小结！（回溯算法系列一）](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247485330&idx=1&sn=86d963c0cf3db8568217aed1760181dc&scene=21#wechat_redirect)
-- [ ] [回溯算法：求组合总和（二）](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494682&idx=2&sn=45c7642a4b42f589be18cd087d0c3388&scene=21#wechat_redirect)
+- [x] [回溯算法：求组合总和（二）](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494682&idx=2&sn=45c7642a4b42f589be18cd087d0c3388&scene=21#wechat_redirect)
 - [ ] [回溯算法：求组合总和（三）](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494732&idx=2&sn=170bb0436e891920ddb5e71710de84ca&scene=21#wechat_redirect)
 - [ ] [回溯算法：分割回文串](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494794&idx=2&sn=c0862525bd69bbd6fe4a2611ab0f7358&scene=21#wechat_redirect)
 - [ ] [回溯算法：复原IP地址](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494814&idx=2&sn=627b5d19261a5f0e1a85003d2c0cb9d1&scene=21#wechat_redirect)
