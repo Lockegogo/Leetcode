@@ -3449,7 +3449,7 @@ class Solution:
         return True
 ```
 
-### 8. 复制 ip 地址
+### 8. 复制 ip 地址：难
 
 > 有效 IP 地址正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。
 >
@@ -3476,9 +3476,96 @@ class Solution:
 - 递归调用时，下一层递归的 startindex 要从 i + 2 开始，因为需要在字符串中加入分隔符，同时记录分隔符的数量 pointNum 要加 1。
 - 回溯的时候，就将刚刚加入的分隔符删掉，同时 pointNum 减 1
 
+```python
+class Solution:
+    def __init__(self):
+        self.result = []
 
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        '''
+        本质切割问题使用回溯搜索法，本题只能切割三次，所以纵向递归总共四层
+        因为不能重复分割，所以需要start_index来记录下一层递归分割的起始位置
+        添加变量 point_num 来记录逗号的数量[0,3]
+        '''
+        self.result.clear()
+        if len(s) > 12: return []
+        self.backtracking(s, 0, 0)
+        return self.result
 
+    def backtracking(self, s: str, start_index: int, point_num: int) -> None:
+        # Base Case
+        if point_num == 3:
+            if self.is_valid(s, start_index, len(s)-1):
+                self.result.append(s[:])
+            # 注意 return 是纵向结束，但是 break 是横向
+            return
+        # 单层递归逻辑
+        for i in range(start_index, len(s)):
+            # [start_index, i]就是被截取的子串
+            if self.is_valid(s, start_index, i):
+                s = s[:i+1] + '.' + s[i+1:]
+                self.backtracking(s, i+2, point_num+1)  # 在填入.后，下一子串起始后移2位
+                s = s[:i+1] + s[i+2:]    # 回溯
+            else:
+                # 若当前被截取的子串大于255或者大于三位数，直接结束本层循环，横向
+                break
 
+    def is_valid(self, s: str, start: int, end: int) -> bool:
+        if start > end: return False
+        # 若数字是0开头，不合法
+        if s[start] == '0' and start != end:
+            return False
+        if not 0 <= int(s[start:end+1]) <= 255:
+            return False
+        return True
+```
+
+### 9. 子集
+
+> 给你一个整数数组 `nums` ，数组中的元素 **互不相同** 。返回该数组所有可能的子集（幂集）。
+>
+> 解集 **不能** 包含重复的子集。你可以按 **任意顺序** 返回解集。
+>
+> ```
+> 输入：nums = [1,2,3]
+> 输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+> ```
+
+自己写出来的 ！！
+```python
+class Solution:
+    def __init__(self) -> None:
+        self.res = [[]]
+        self.path = []
+
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        startindex = 0
+        self.backtracking(nums, startindex)
+        return self.res
+
+    def backtracking(self, nums, startindex):
+        # 回溯结束条件
+        if startindex == len(nums):
+            # self.res.append(self.path[:])
+            return
+
+        # 单层递归逻辑
+        for i in range(startindex, len(nums)):
+            self.path.append(nums[i])
+            self.res.append(self.path[:])
+            self.backtracking(nums, i+1)
+            self.path.pop()
+```
+
+如果把子集问题、组合问题、分割问题都抽象为一棵树的话，那么==组合问题和分割问题==都是收集树的==叶子节点==，而==子集问题==是找==树的所有节点==！
+
+其实子集也是一种组合问题，因为它的集合是无序的，子集 {1,2} 和 子集 {2,1} 是一样的。既然无序，取过的元素不会重复取，写回溯算法的时候，for 就要从 startindex 开始，而不是从 0 开始！
+
+> 什么时候可以从 0 开始呢？要么是求在不同的集合中取元素，要么是在解决排列问题。
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv7icZnSOhUqwR4ibqNP3nHyktNROmSHwzzNwsWCBrtBH5tHuhg5YKSPl77r8OiapekZ77Dn8NchSoMBw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+从图中红线部分，可以看出**遍历这个树的时候，把所有节点都记录下来，就是要求的子集集合**。
 
 ## 贪心算法
 
@@ -3682,6 +3769,92 @@ class Solution:
             if count <= 0:
                 count = 0
         return result
+```
+
+### 5. 买卖股票的最佳时机 II
+
+> 给定一个数组 `prices` ，其中 `prices[i]` 表示股票第 i 天的价格。
+>
+> 在每一天，你可能会决定购买和 / 或出售股票。你在任何时候最多只能持有一股股票。你也可以购买它，然后在同一天出售。
+> 返回你能获得的最大利润和。
+>
+> 输入: `prices = [7,1,5,3,6,4]`
+> 输出: `7`
+> 解释: 在第 2 天（股票价格 = 1）的时候买入，在第 3 天（股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5-1 = 4 。随后，在第 4 天（股票价格 = 3）的时候买入，在第 5 天（股票价格 = 6）的时候卖出, 这笔交易所能获得利润 = 6-3 = 3 。
+
+本题要清楚两点：
+
+1. 只有一只股票
+2. 当前只有买股票或者卖股票的操作
+3. 想要获得利润至少要两天为一个交易单元
+
+==贪心算法==：
+
+如果想到最终利润是可以==分解==的，那么本题就很容易了！
+
+如何分解呢？
+
+假如第 0 天买入，第 3 天卖出，那么利润为：prices [3] - prices [0]。
+
+相当于 (prices [3] - prices [2]) + (prices [2] - prices [1]) + (prices [1] - prices [0])。如果三天的利润和里面某一天的利润是负数，例如第 1 天，那么显然（第 0 天买入，第 3 天卖出）的利润就低于（第一天买入，第 3 天卖出）的利润。
+
+此时就是把利润分解为每天为单位的维度，而不是从 0 天到第 3 天整体去考虑，那么根据 prices 可以得到每天的利润序列：`(prices [i] - prices [i - 1]).....(prices [1] - prices [0])`
+
+> 其实就相当于一位有预知能力的股民，她可以知道今天和第二天股票的价格（贪心算法的一个核心是短视，题目说每一天的价格都知道，但我们把主人公限定为一个”目光短浅“的人），显然，如果第二天的价格比今天高，那就今天买明天卖肯定可以赚钱。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4ibkWqQ584eOMJ75r8rPctCW19I8Bu6jkGyuJOolYazIM28NR2oQr4ykmgfVxv1TnLiaLH23hQ9Jxg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+第一天是没有利润的，至少第二天才会有利润，所以利润的序列比股票序列少一天！
+
+==从图中可以发现，其实我们需要收集每天的正利润就可以，收集正利润的区间，就是股票买卖的区间，而我们只需要关注最终利润，不需要记录区间。==
+
+那么只收集正利润就是贪心算法贪心的地方！
+
+==局部最优==：收集每天的正利润；==全局最优==：求得最大利润
+
+```python
+class Solution:
+    """贪心算法"""
+    def maxProfit(self, prices: List[int]) -> int:
+        profit = 0
+        for i in range(len(prices)-1):
+            temp =prices[i+1] - prices[i]
+            if temp > 0:
+                profit += temp
+        return profit
+```
+
+### 6. 跳跃游戏
+
+> 给定一个非负整数数组 nums ，你最初位于数组的第一个下标 。数组中的每个元素代表你在该位置可以跳跃的最大长度。判断你是否能够到达最后一个下标。
+>
+> ```
+> 输入：nums = [3,2,1,0,4]
+> 输出：false
+> 解释：无论怎样，总会到达下标为 3 的位置。但该下标的最大跳跃长度是 0 ， 所以永远不可能到达最后一个下标。
+> ```
+
+这个问题其实跳几步无所谓，关键在于可跳的覆盖范围！不一定非要明确一次究竟跳几步，每次取最大的跳跃步数，这个就是可以跳跃的覆盖范围。这个范围内，别管怎么跳的，反正一定可以跳过来。
+
+==那么问题就转化为跳跃覆盖范围究竟可不可以覆盖到终点！==
+
+每次移动取最大跳跃步数（得到最大的覆盖范围），每移动一个单位，就更新最大覆盖范围。
+
+==贪心算法局部最优解==：每次取最大跳跃步数（取最大覆盖范围），整体最优解：最后得到整体最大覆盖范围，看是否能到终点。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv6pDDdhseTveobLyAvuu6uQwibzic4VXfNYibgqI3mcoE8AbK2ObecsZibWjNmG6kBaqhzQ9NK0XBRJFQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+```python
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        maxscale = 0
+        # 要在最大范围内取值
+        for i in range(len(nums) - 1):
+            maxscale = max(maxscale, i + nums[i])
+            # 如果此时最大范围还没有超过 i，以后也不可能超过了
+            if maxscale <= i:
+                return False
+        return maxscale >= len(nums)-1
 ```
 
 
