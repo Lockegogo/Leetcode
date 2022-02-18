@@ -16,7 +16,8 @@ from typing import List
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
         maxscale = 0
-        # 要在最大范围内取值
+        # python 不支持动态修改 for 循环中变量，可以使用 while 循环代替
+        # while i <= maxscale
         for i in range(len(nums) - 1):
             maxscale = max(maxscale, i + nums[i])
             # 如果此时最大范围还没有超过 i，以后也不可能超过了

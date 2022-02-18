@@ -3840,7 +3840,9 @@ class Solution:
 
 每次移动取最大跳跃步数（得到最大的覆盖范围），每移动一个单位，就更新最大覆盖范围。
 
-==贪心算法局部最优解==：每次取最大跳跃步数（取最大覆盖范围），整体最优解：最后得到整体最大覆盖范围，看是否能到终点。
+- ==贪心算法局部最优解==：每次取最大跳跃步数（取最大覆盖范围），
+
+- ==整体最优解==：最后得到整体最大覆盖范围，看是否能到终点。
 
 <img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv6pDDdhseTveobLyAvuu6uQwibzic4VXfNYibgqI3mcoE8AbK2ObecsZibWjNmG6kBaqhzQ9NK0XBRJFQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
 
@@ -3848,7 +3850,8 @@ class Solution:
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
         maxscale = 0
-        # 要在最大范围内取值
+        # python 不支持动态修改 for 循环中变量，可以使用 while 循环代替
+        # while i <= maxscale
         for i in range(len(nums) - 1):
             maxscale = max(maxscale, i + nums[i])
             # 如果此时最大范围还没有超过 i，以后也不可能超过了
@@ -3856,6 +3859,140 @@ class Solution:
                 return False
         return maxscale >= len(nums)-1
 ```
+
+### 7. 跳跃游戏 II
+
+> 给你一个非负整数数组 nums ，你最初位于数组的第一个位置。数组中的每个元素代表你在该位置可以跳跃的最大长度。
+>
+> 你的目标是使用==最少==的跳跃次数到达数组的最后一个位置。假设你总是可以到达数组的最后一个位置。
+>
+> 输入: nums = [2,3,1,1,4]
+> 输出: 2
+> 解释: 跳到最后一个位置的最小跳跃数是 2。从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。
+
+本题需要计算最小步数，那么要想清楚什么时候步数才一定要加一呢？
+
+==贪心的思路==：
+
+- ==局部最优==：当前可移动距离尽可能多走，如果还没到终点，步数再加一
+- ==整体最优==：一步尽可能多走，从而能达到最小步数
+
+思路虽然是这样的，但是在写代码的时候不能真的能跳多远就跳多远，那样就不知道下一步最远能跳到哪里了。
+
+**所以真正解题的时候，要从覆盖范围出发，不管怎么跳，覆盖范围内一定是可以跳到的，==以最小的步数增加覆盖范围==，覆盖范围一旦覆盖了终点，得到的就是最小步数。**
+
+这里需要统计两个覆盖范围，==当前这一步的最大覆盖==和==下一步最大覆盖==。
+
+如果移动下标达到了当前这一步的最大覆盖最远距离了，还没有到终点的话，那么就必须再走一步来增加覆盖范围，直到覆盖范围覆盖了终点。
+
+> 不管你从哪里起跳，步数加一之后指针移到最大的范围处
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv40YfANYrjM5rTqA3zx25n8EpcMf0hHuYEx5qrHXAy6buLJgicibda2zwqicVoYbH6icUymN0fHYA1zxg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+图中覆盖范围的意义在于，只要红色的区域，最多两步一定可以到！不管具体怎么跳，反正一定可以跳到。
+
+> 尝试自己写，错了三次，认真学习。
+
+#### 7.1 方法一
+
+移动下标达到了当前覆盖的==最远==距离下标时，步数就要加一，来增加覆盖距离。最后的步数就是最少步数。
+
+这里还有个特殊情况需要考虑，当移动下标达到了当前覆盖的最远距离下标时：
+
+- 如果当前覆盖最远距离下标不是集合终点，步数就加一，还需要继续走
+- 如果当前覆盖最远距离下标就是集合终点，步数不用加一，因为不能再往后走了。
+
+#### 7.2 方法二
+
+针对方法一的特殊情况，可以统一处理，即：移动下标只要遇到当前覆盖最远距离的下标，直接步数加一，不考虑是不是终点的情况。
+
+想要达到这样的效果，只要让移动下标，最大只能移动到 `len(nums) - 2` 的地方就可以了。
+
+因为当移动下标指向 `len(nums) - 2`时（倒数第一位）：
+
+- 如果移动下标等于当前覆盖最大距离下标，需要再走一步，因为最后一步一定是可以到的终点
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv40YfANYrjM5rTqA3zx25n8ZHicEPQJwd8zHuj91oAkxbzFhicq0uIDnqrB5dlOauU09drhGhoicKk6Q/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+- 如果移动下标不等于当前覆盖最大距离下标，说明当前覆盖最远距离就可以直接达到终点了，不需要再走一步：
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv40YfANYrjM5rTqA3zx25n8TqrZFIcJSzqNicnibtCLvdz4NgA2v5kdJ3Mmy0ReWP7wXUNkhwUPKDMw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+关键在于控制移动下标只移动到倒数第二个位置，所以移动下标只要遇到当前覆盖最远距离的下标，直接步数加 1，不用考虑别的。
+
+==理解本题的关键在于==：以==最小的步数增加最大的覆盖范围==，直到覆盖范围覆盖了终点，这个范围内最小步数一定可以跳到，不用管具体是怎么跳的，不纠结于一步究竟跳一个单位还是两个单位。
+
+```python
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        """以最小的步数增加最大的覆盖范围"""
+        # 当前覆盖的最远距离下标
+        curDistance = 0
+        # 下一步覆盖的最远距离下标
+        nextDistance = 0
+        # 记录走的最大步数
+        step = 0
+        if len(nums) == 1: return 0
+        for i in range(len(nums)):
+            nextDistance = max(i + nums[i], nextDistance)
+            # 指针遍历当前范围内的所有元素，看从哪个位置出发可以最大程度地扩展自己的覆盖范围
+            # 如果指针走到当前势力范围的最后一个元素，但是当前范围没到最后一个位置，step + 1，往后走
+            if i == curDistance:
+                if curDistance != len(nums) - 1:
+                    step += 1
+                    curDistance = nextDistance
+                    if nextDistance >= len(nums) - 1: break
+        return step
+```
+
+### 8. [K 次取反后最大化的数组和](https://leetcode-cn.com/problems/maximize-sum-of-array-after-k-negations/)
+
+> 给你一个整数数组 nums 和一个整数 k ，按以下方法修改该数组：
+>
+> - 选择某个下标 i 并将 `nums[i]` 替换为 `-nums[i]` 。
+> - 重复这个过程恰好 k 次。可以多次选择同一个下标 i 。
+>
+> 以这种方式修改数组后，返回数组可能的最大和 。
+
+```
+输入：nums = [4,2,3], k = 1
+输出：5
+解释：选择下标 1 ，nums 变为 [4,-2,3] 。
+```
+
+==贪心算法：==
+
+- ==局部最优==：让绝对值大的负数变为正数，当前数值达到最大
+- ==整体最优==：整个数组和达到最大
+
+那么如果将负数都转变为正数后，K 依然大于 0，此时的问题就是一个有序正整数序列，如何转变 K 次正负，让数组和达到最大？
+
+==继续贪心==：
+
+- ==局部最优==：只找到数值最小的正整数进行翻转，当前数值可以达到最大
+- ==全局最优==：整个数组和达到最大
+
+本题的解题步骤是：
+
+1. 将数组按照==绝对值==大小从大到小进行排序
+2. 从前向后遍历，遇到负数将其变为正数，同时 `K = K-1`
+3. 如果 K 还大于 0，那么反复转变数值最小的元素，将 K 用完
+4. 求和
+
+```python
+class Solution:
+    def largestSumAfterKNegations(self, A: List[int], K: int) -> int:
+        A = sorted(A, key=abs, reverse=True) # 将A按绝对值从大到小排列
+        for i in range(len(A)):
+            if K > 0 and A[i] < 0:
+                A[i] *= -1
+                K -= 1
+        if K > 0:
+            A[-1] *= (-1)**K #取A最后一个数只需要写-1
+        return sum(A)
+```
+
+
 
 
 
@@ -4036,9 +4173,215 @@ class Solution:
         return dp[-1]
 ```
 
+### 6. 不同路径
 
+> 一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
+>
+> 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
+>
+> 问总共有多少条不同的路径？
+>
+> ![img](https://assets.leetcode.com/uploads/2018/10/22/robot_maze.png)
+>
+> ```
+> 输入：m = 3, n = 7
+> 输出：28
+> ```
 
+#### 6.1 动态规划
 
+是自己推导出来的，超棒！
+
+dp 数组里存储节点到终点的总路径：初始化 + 递推公式就搞定了！
+
+```python
+import numpy as np
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        # 初始化二维数组
+        dp = np.zeros([m, n])
+        dp[m-2, n-1] = 1
+        for j in range(n):
+            dp[m-1, j] = 1
+        for i in range(m):
+            dp[i, n-1] = 1
+        for i in range(m-2, -1, -1):
+            for j in range(n-2, -1, -1):
+                dp[i, j] = dp[i+1, j] + dp[i, j+1]
+        return int(dp[0, 0])
+
+```
+
+#### 6.2 数论
+
+在这个图中，可以看出一共 m，n 的话，无论怎么走，走到终点都需要 m + n - 2 （m - 1 + n - 1）步。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv6swmiaLRIjBO9gUN4RfMTfFeGjAcICTXoABd6LRk0MnNPvgMVTzKwQrrR8SDTPWxBIPCvwCTzPlZQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+在这 m + n - 2 步中，一定有 m - 1 步是要向下走的，不用管什么时候向下走。那么有几种走法呢？可以转化为，给你 m + n - 2 个不同的数，随便取 m - 1 个数，有几种取法。这其实是一个组合问题了：$C_{m+n-2}^{m-1}$，求组合的时候，要防止==两个 int 相乘溢出==，所以不能把算式的分子都算出来，分母都算出来再做除法，而是应该在计算分子的时候，不断除以分母。
+
+#### 6.3 深搜
+
+这一题也可以使用图论里的深搜，来枚举有多少种路径。
+
+注意题目中说机器人每次只能向下或者向右移动一步，那么其实**机器人走过的路径可以抽象为一颗二叉树，而叶子节点就是终点！**
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv6swmiaLRIjBO9gUN4RfMTfFeGjAcICTXoABd6LRk0MnNPvgMVTzKwQrrR8SDTPWxBIPCvwCTzPlZQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+此时问题就可以转化为求二叉树叶子节点的个数。但是写出来会发现代码超时，我们分析一下时间复杂度，这个深搜的算法，其实是要遍历整个二叉树，这棵树的深度就是 $m+n-1$（深度按从 1 开始算），那二叉树的节点个数就是 $2^{m+n-1} -1$，可以理解深搜的算法就是遍历了整个二叉树，其实没有遍历整个二叉树，只是近似而已，所以上面深搜代码的时间复杂度为 $O(2^{m+n-1} -1)$，可以看出这指数级别的复杂度是非常大的。
+
+### 7. 不同路径 II：障碍
+
+> 一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
+>
+> 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish”）。
+>
+> 现在考虑网格中有障碍物。那么从左上角到右下角将会有多少条不同的路径？
+>
+> 网格中的障碍物和空位置分别用 1 和 0 来表示。
+>
+> ![img](https://gitee.com/lockegogo/markdown_photo/raw/master/202202182348368.jpeg)
+>
+> 输入：obstacleGrid = [[0,0,0],[0,1,0],[0,0,0]]
+> 输出：2
+> 解释：3x3 网格的正中间有一个障碍物。从左上角到右下角一共有 2 条不同的路径：
+>
+> 1. 向右 -> 向右 -> 向下 -> 向下
+> 2. 向下 -> 向下 -> 向右 -> 向右
+>
+
+==主要思路就是==：
+
+1. 如果障碍物出现在终点，直接返回 0，永远也走不到
+2. 如果障碍物在最右边或者最下边，该位置以上（包括该位置）或该位置以左（包括该位置）全部设置为 0
+3. 如果障碍物出现在中间，将该位置的 dp 值设置为 0
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4ACEvjQUThueyLtEmtKZh1Oiak3icibK9TgKzrkoMpQVKQn5GbVLNYpVbwYfoIsoiaSniaKBibibJHYBkkQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+自己独立思考完成！很棒！虽然提交了 4 次才成功，只要是一些边界条件和初始化没有好好审查。
+
+```python
+import numpy as np
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid):
+        # 初始化二维数组
+        obstacleGrid = np.array(obstacleGrid)
+        m,n = obstacleGrid.shape
+        dp = np.zeros([m, n])
+        # 如果障碍出现在终点
+        if obstacleGrid[m-1, n-1] == 1:
+            return 0
+        for j in range(n):
+            dp[m-1, j] = 1
+            # 如果障碍出现在边沿，边沿上和边沿左的全部为 0
+            if obstacleGrid[m-1, j] == 1:
+                for k in range(j+1):
+                    dp[m-1,k] = 0
+
+        for i in range(m):
+            dp[i, n-1] = 1
+            if obstacleGrid[i, n-1] == 1:
+                for k in range(i+1):
+                    dp[k, n-1] = 0
+
+        for i in range(m-2, -1, -1):
+            for j in range(n-2, -1, -1):
+                # 如果障碍出现在中间
+                if obstacleGrid[i,j] == 1:
+                    dp[i, j] = 0
+                else:
+                    dp[i, j] = dp[i+1, j] + dp[i, j+1]
+        return int(dp[0, 0])
+```
+
+### 8. 整数拆分
+
+> 给定一个正整数 n，将其拆分为至少两个正整数的和，并使这些整数的乘积最大化。返回你可以获得的最大乘积。
+>
+> 示例 1: 输入: 2
+> 输出: 1
+> 解释: 2 = 1 + 1, 1 × 1 = 1。
+
+==动规五部曲==：卡在递推公式那里没有想出来
+
+1. 确定 dp 数组以及下标的含义：
+   - dp[i]：分拆数字 i，可以得到最大乘积 dp[i]  
+2. ==确定递推公式==：想一想 dp[i] 最大乘积是怎么得到的？其实可以从 1 遍历 j，然后有两种渠道得到 dp[i]
+   - 一种是 $j\times(i-j)$  直接相乘
+   - 一种是 $j\times dp[(i-j)]$，相当于是拆分 $(i-j)$
+   - 从 1 开始遍历 $j$，比较 $j\times(i-j)$ 和 $j\times dp[(i-j)]$ 取最大的：$d p[i]=\max \left(d p[i], \max \left((i-j) \times j, d p[i-j] \times j\right)\right)$ ，==这一步真的不太好想==
+3. dp 数组的初始化：dp[2] = 1
+3. 确定遍历顺序：从递推公式来看，先有 dp[i - j]，后有 dp[i]，所以遍历 i 一定是从前往后的顺序，i 从 3 开始
+
+```python
+class Solution:
+    def integerBreak(self, n: int) -> int:
+        dp = [0]*(n+1)
+        dp[2] = 1
+        for i in range(3, n+1):
+            for j in range(i):
+                dp[i] = max(dp[i],max((i-j)*j,(dp[i-j]*j)))
+        return dp[n]
+```
+
+### 9. 不同的二叉搜索树
+
+> 给你一个整数 `n` ，求恰由 `n` 个节点组成且节点值从 `1` 到 `n` 互不相同的 **二叉搜索树** 有多少种？返回满足题意的二叉搜索树的种数。
+>
+> ![img](https://assets.leetcode.com/uploads/2021/01/18/uniquebstn3.jpg)
+>
+> ```
+> 输入：n = 3
+> 输出：5
+> ```
+
+给我 n 个节点，我能知道可以组成多少个不同的二叉搜索树！
+
+可以从 1 开始尝试找规律：
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv5Eev9at7TiapAd6lv3wXnuJw1pZsUWUwo1SffO3hCZ3mFY6ibzg5oQZ7Fc9wOEzmQMMkzaFMUAbqPQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv5Eev9at7TiapAd6lv3wXnuJhKGR6avWRCuLISuYicV1tYDHGycg5h1q588EuoO08rdrDp9Z7cica8Ig/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+来看 n 为 3 时有哪几种情况：
+
+1. 当 1 为头节点时，其右子树有两个节点，看这两个节点的布局，是不是和 n 为 2 时两棵树的布局是一样的！
+2. 当 3 为头节点时，其左子树有两个节点，看这两个节点的布局，是不是和 n 为 2 的时候两棵树的布局也是一样的啊！
+3. 当 2 为头节点时，其左右子树都只有一个节点，布局是不是和 n 为 1 的时候只有一棵树的布局也是一样的啊！、
+
+发现到这里，其实我们就找到重叠子问题了，其实也就是发现可以通过 dp[1] 和 dp[2] 来推导出 dp[3] 的某种方式。
+
+- dp [3]，就是 元素 1 为头结点搜索树的数量 + 元素 2 为头结点搜索树的数量 + 元素 3 为头结点搜索树的数量
+- 元素 1 为头结点搜索树的数量 = 右子树有 2 个元素的搜索树数量 * 左子树有 0 个元素的搜索树数量
+- 元素 2 为头结点搜索树的数量 = 右子树有 1 个元素的搜索树数量 * 左子树有 1 个元素的搜索树数量
+- 元素 3 为头结点搜索树的数量 = 右子树有 0 个元素的搜索树数量 * 左子树有 2 个元素的搜索树数量
+- 有 2 个元素的搜索树数量就是 dp [2]
+- 有 1 个元素的搜索树数量就是 dp [1]
+- 有 0 个元素的搜索树数量就是 dp [0]
+- dp [3] = dp [2] * dp [0] + dp [1] * dp [1] + dp [0] * dp [2]
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv5Eev9at7TiapAd6lv3wXnuJE5mJLfLu9gx2kItp8PBpt7vB0rNYwBnRicmw8f6gHImmFv4RwBSHuMg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+==动规五部曲==：
+
+1. 确定 dp 数组：**dp [i] 表示 1 到 i 为节点组成的二叉搜索树的个数为 dp [i]**。
+2. 确定递推公式：p [i] += dp [以 j 为头结点左子树节点数量] * dp [以 j 为头结点右子树节点数量] ，j 相当于是头结点的元素，从 1 遍历到 i 为止。所以递推公式：dp [i] += dp [j - 1] * dp [i - j]
+3. dp 数组如何初始化：dp[0] = 1，从定义上讲，空节点也是一棵二叉树
+4. 确定遍历顺序：从递归公式可以看出，节点数为 i 的状态是依靠 i 之前节点数的状态。那么遍历 i 里面每一个数作为头结点的状态，用 j 来遍历。
+5. 举例推导 dp 数组：
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv5Eev9at7TiapAd6lv3wXnuJvgCSmmkVuU7xbK82cHl1X26iaD6ULLWI3eJTiaIo0yTj58YnIsnXuPxA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+```python
+class Solution:
+    def numTrees(self, n: int) -> int:
+        dp = [0] * (n + 1)
+        dp[0], dp[1] = 1, 1
+        for i in range(2, n + 1):
+            for j in range(1, i + 1):
+                dp[i] += dp[j - 1] * dp[i - j]
+        return dp[-1]
+```
 
 
 
