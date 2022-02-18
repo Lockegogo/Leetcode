@@ -3279,6 +3279,205 @@ class Solution:
 > ]
 > ```
 
+这个题目的关键在==去重==！题目给的集合里有重复的元素，但是不能有重复的组合！！！
+
+如果把所有的组合全部求出来，再用 set 或者 map 去重，这么做很容易**超时**！所以我们需要在搜索的过程中就去掉重复组合。
+
+所谓去重，==其实就是使用过的元素不能重复选取==。
+
+都知道组合问题可以抽象成树型结构，那么使用过在这个树形结构上是有两个维度的，一个维度是==同一树枝==上使用过，一个维度是==同一树层==上使用过，没有理解这两个层面的“使用过”是造成大家没有彻底理解去重的根本原因。
+
+题目要求：元素在同一组合是就可以重复使用的，只要给的集合有重复的数字，但是这两个组合不能相同，所以我们==要去重的是同一树层上的“使用过”，因为同一树枝上的都是一个组合里的元素，不用去重==。以 `candidates = [1, 1, 2], target = 3`为例：
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv48aCU4UTGAaibHh1UFayia1yBvRvuXqu2Z4jnaY2fEhUoL3Ggr0zxN7vgzKBRHO7QmeBy5BO1BqeFg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+==回溯三部曲：==
+
+1. **递归函数参数**：与上一题相同，此时还需要加一个 ==bool 型数组 used==，用来记录同一树枝上的元素是否使用过，这个集合去重的重任就是 used 完成的。
+
+2. **递归终止条件**：终止条件为 `sum > target` 和 `sum == target`。
+3. **单层搜索的逻辑**：如何判断同一树层上元素是否使用过了呢？
+
+**如果 `candidates[i] == candidates[i - 1]` 并且 `used[i - 1] == false`，就说明：前一个树枝，使用了 candidates [i - 1]，也就是说同一树层使用过 candidates [i - 1]**。此时 for 循环里应该做 continue 的操作。
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv48aCU4UTGAaibHh1UFayia1yFn6HgwBDohL8uc9icx9afAMLSQKaibWwItd8bZHaL9WYvmTTX7IwAg9A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+我在图中将 used 的变化用橘黄色标注上，可以看出在 `candidates [i] == candidates [i - 1]` 相同的情况下：
+
+- `used [i - 1] == true`，说明同一树支 `candidates [i - 1]` 使用过
+- `used [i - 1] == false`，说明同一树层 `candidates [i - 1]` 使用过
+
+和上一题相比，同样是求组合总和，但就是因为其数组 candidates 有重复元素，而要求不能有重复的组合，难度提升了不少。
+
+```python
+class Solution:
+    """剪枝策略"""
+    def __init__(self) -> None:
+        self.res = []
+        self.result = []
+        self.sum = 0
+        # 存储用过的元素值
+        self.used = []
+
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        startindex = 0
+        # 为了剪枝提前进行排序
+        candidates.sort()
+        self.used = [0]*len(candidates)
+        self.trackbacking(startindex, candidates, target)
+        return self.res
+
+    def trackbacking(self, startindex, candidates, target):
+        # 确定终止条件
+        if self.sum == target:
+            # 因为是 shallow copy，所以不能直接传入self.result
+            self.res.append(self.result[:])
+            return
+
+        # 进入单层循环逻辑：从 startindex 开始选取是为了保证在后面做选择时不会选到前面的数字避免重复
+        # 如果本层 sum + condidates[i] > target，就提前结束遍历，剪枝
+        for i in range(startindex, len(candidates)):
+            # 剪枝
+            if self.sum + candidates[i] > target:
+                    return
+            # 检查同一树层是否出现曾经使用过的相同元素
+            # 若数组中前后元素值相同，但前者却未被使用(used == False)，说明是for loop中的同一树层的相同元素情况
+            # 注意这里，list[-1] 代表的不是 list[0] 的前一位而是列表的最后一位，这是不符合比较逻辑的，所以要从 i=1 开始取值
+            if i >= 1 and candidates[i] == candidates[i-1] and self.used[i-1] == 0:
+                continue
+
+            self.result.append(candidates[i])
+            self.sum += candidates[i]
+            self.used[i] = 1
+            # 这是在同一树层上去重
+            self.trackbacking(i+1, candidates, target)
+            # 回溯
+            self.result.pop()
+            self.sum -= candidates[i]
+            self.used[i] = 0
+        return self.res
+```
+
+### 7. 分割回文字符串
+
+> 给你一个字符串 `s`，请你将 `s` 分割成一些子串，使每个子串都是 **回文串** 。返回 `s` 所有可能的分割方案。
+>
+> **回文串** 是正着读和反着读都一样的字符串。
+>
+> ```
+> 输入：s = "aab"
+> 输出：[["a","a","b"],["aa","b"]]
+> ```
+
+本题涉及两个关键问题：
+
+1. 切割问题，有不同的切割方式
+2. 判断回文
+
+切割问题类似于组合问题，例如对于字符串 abcdef：
+
+- 组合问题：选取一个 a 之后，在 bcdef 中再去选取第二个，选取 b 之后在 cdef 中在选组第三个.....。
+- 切割问题：切割一个 a 之后，在 bcdef 中再去切割第二段，切割 b 之后在 cdef 中在切割第三段.....。
+
+所以切割问题，也可以抽象为一棵树形结构：
+
+![图片](https://mmbiz.qpic.cn/mmbiz_jpg/ciaqDnJprwv752l07A1icibBf67wY0GN5cOWDabGLaaOOJKXX23gIU966mkvzD94MOl6TAUAvuCl509osqRRbpfYw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+递归用来纵向遍历，for 循环用来横向遍历，切割线（就是图中的红线）切割到字符串的结尾位置，说明找到了一个切割方法。
+
+此时可以发现，切割问题的回溯搜索的过程和组合问题的回溯搜索的过程是差不多的。
+
+==回溯三部曲==：
+
+1. 递归函数参数：全局变量数组 path 存放切割后回文的子串，二维数组 result 存放结果集。还需要 startindex，因为切割过的地方，不能重复切割，和组合问题保持一致。
+
+2. 递归函数终止条件：从树形结构图中可以看出，切割线找到了字符串的后面，说明找到了一种切割方法，此时就是本层递归的终止条件，==在代码中==，递归参数需要传入 startindex 表示下一轮递归遍历的起始位置，这个 startindex 就是切割线。
+3. 单层搜索的逻辑：在递归循环中，如何截取子串？我们 定义了起始位置 startIndex，那么 [startIndex, i] 就是要截取的子串。首先判断这个子串是不是回文，如果是回文，就加入 path，path 用来记录切割过的回文子串。**注意切割过的位置，不能重复切割，所以，backtracking (s, i + 1); 传入下一层的起始位置为 i + 1**。
+
+==判断回文子串==：
+
+我们可以使用双指针法，一个指针从前向后，一个指针从后向前，如果前后指针所指向的元素是相等的，就是回文字符串了
+
+==难点剖析==：
+
+- 切割问题可以抽象为组合问题
+- 如何模拟切割线
+- 切割问题中递归如何终止
+- 在递归循环中如何截取子串
+- 如何判断回文
+
+> 我们在做难题的时候，总结出来难究竟难在哪里也是一种需要锻炼的能力。
+
+又是学习思路后独自完成的一题，真棒！
+
+```python
+class Solution:
+    def __init__(self) -> None:
+        self.path = []
+        self.res = []
+
+    def partition(self, s: str) -> List[List[str]]:
+        startindex = 0
+        self.backtracking(s, startindex)
+        return self.path
+
+    def backtracking(self, s, startindex):
+        # 递归结束条件
+        # 当指针走到最后，回溯结束
+        if startindex == len(s):
+            self.path.append(self.res[:])
+            return
+
+        # 进入单层循环
+        for i in range(startindex, len(s)):
+            # 这里就应该判断这个子字符串是不是回文串了，如果不是就 continue
+            if not self.isPalindrome(s[startindex:i+1]):
+                continue
+            self.res.append(s[startindex:i+1])
+            self.backtracking(s, i+1)
+            self.res.pop()
+
+    def isPalindrome(self, s):
+        """判断某个字符串是否为回文字符串"""
+        i, j = 0, len(s)-1
+        while i < j:
+            if s[i] == s[j]:
+                i += 1
+                j -= 1
+            else:
+                return False
+        return True
+```
+
+### 8. 复制 ip 地址
+
+> 有效 IP 地址正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。
+>
+> 例如："0.1.2.201" 和 "192.168.1.1" 是 有效 IP 地址，但是 "0.011.255.245"、"192.168.1.312" 和 "192.168@1.1" 是 无效 IP 地址。
+> 给定一个只包含数字的字符串 s ，用以表示一个 IP 地址，返回所有可能的有效 IP 地址，这些地址可以通过在 s 中插入 '.' 来形成。你 不能 重新排序或删除 s 中的任何数字。你可以按任何顺序返回答案。
+>
+> ```
+> 输入：s = "25525511135"
+> 输出：["255.255.11.135","255.255.111.35"]
+> ```
+
+本题和上一题比较类似，其实都是切割问题，切割问题就可以使用回溯法把所有可能性搜出来：
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv6mT5fLDGWGROx8nmCACI1veyyNRst5JoiclawgZesPZWNO9H195g9kRFICHpvw9gMVyXqoNMltnXQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+==回溯三部曲==：
+
+1. 递归参数：startindex 一定是需要的，因为不能重复分割，记录下一层递归分割的起始位置；本题我们还需要一个变量，记录添加逗号的数量
+2. 递归终止条件：本题明确要求只会分成 4 段，所以不能用切割线切到最后作为终止条件，而是分割的段数作为终止条件。pointNum 表示逗点数量，pointNum 为 3 说明字符串分成了 4 段了。然后验证一下第四段是否合法，如果合法就加入到结果集里
+3. 单层搜索的逻辑：在 for 循环中 `[startIndex, i]` 这个区间就是截取的子串，需要判断这个子串是否合法，如果合法就在字符串后面加上符号`.` 表示已经分割，如果不合法就结束本层循环。
+
+然后就是递归和回溯的过程：
+
+- 递归调用时，下一层递归的 startindex 要从 i + 2 开始，因为需要在字符串中加入分隔符，同时记录分隔符的数量 pointNum 要加 1。
+- 回溯的时候，就将刚刚加入的分隔符删掉，同时 pointNum 减 1
+
+
+
 
 
 ## 贪心算法
