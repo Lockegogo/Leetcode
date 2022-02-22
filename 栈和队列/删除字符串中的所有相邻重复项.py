@@ -20,6 +20,7 @@ class Solution:
         if s == []:
             return None
         for i in range(len(s)):
+            # 消除后可能会有新的相同元素又碰到一起
             if stack == [] or s[i] != stack[-1]:
                 stack.append(s[i])
             else:
