@@ -2849,6 +2849,8 @@ class Solution:
 
 ![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv6wEswj6eibFksDvAa4qKiaqSSzmaHHgdWyepdicDtnMxqXOlOz5jtmN1haIYvh82g6dOZT2JlYKcT5Q/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
 
+
+
 ### 7. 二叉树的最大深度
 
 > 给定二叉树，找出其最大深度。
@@ -2886,7 +2888,7 @@ class Solution:
 ==回溯法解决的问题==：
 
 - 组合问题：N 个数里面按照一定规则找出 k 个数的集合
-- 切割问题：一个字符串按照 一定规则有几种切割方式
+- 切割问题：一个字符串按照一定规则有几种切割方式
 - 子集问题：一个 N 个数的集合里有多少符合条件的子集
 - 排列问题：N 个数按一定规则全排列，有几种排列方式
 - 棋盘问题：N 皇后，解数独等等
@@ -2895,7 +2897,7 @@ class Solution:
 
 ==如何理解回溯法：==
 
-回溯法解决的问题都可以抽象为树形结构，因为回溯法解决的都是在集合中递归查找子集
+回溯法解决的问题都可以抽象为树形结构，因为回溯法解决的都是在集合中递归查找子集：
 
 - **集合的大小就构成了数的宽度**，for 循环横向遍历
 - **递归的深度就构成了树的深度**，递归纵向遍历
@@ -3108,10 +3110,9 @@ class Solution:
         for i in range(start_num, 10 - (k - len(self.path)) + 1):
             self.path.append(i)
             self.sum_now += i
-            
+
             self.backtracking(k, n, i + 1)
             self.path.pop()
-            
             self.sum_now -= i
 
 ```
