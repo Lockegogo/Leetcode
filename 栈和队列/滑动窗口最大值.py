@@ -48,7 +48,7 @@ class MyQueue():
 
     def front(self):
         """
-        查询当前队列里的最大值，直接返回 front
+        查询当前队列里的最大值，直接返回 front，因为这是一个单调队列类，由大到小排列
         """
         return self.queue[0]
 
@@ -59,7 +59,9 @@ class Solution:
         # 先将前 k 的元素放进队列
         for i in range(k):
             que.push(nums[i])
+
         result.append(que.front())
+
         for i in range(k, len(nums)):
             # 滑动窗口移除最前面元素
             que.pop(nums[i - k])

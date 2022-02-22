@@ -22,14 +22,16 @@ class Solution:
         # 对频率排序
         # 定义一个小顶堆，大小为 k
         pri_que = []  # 小顶堆
-        # 用固定大小为 k 的小顶堆，扫面所有频率的数值
+        # 用固定大小为 k 的小顶堆，扫描所有频率的数值
         for key, freq in map_.items():
             # heapq: 只能构建小根堆，也是一种优先队列，它能以任意顺序增加对象，并且能在任意时间找到或移除最小的元素
+            # 注意：排序目标（频率）要放在最前面
             heapq.heappush(pri_que, (freq, key))
-            if len(pri_que) > k:  # 如果堆的大小大于了 K，则队列弹出，保证堆的大小一直为 k
+            if len(pri_que) > k:
+                # 如果堆的大小大于了 K，则队列弹出，保证堆的大小一直为 k
                 heapq.heappop(pri_que)
 
-        # 找出前 K 个高频元素，因为小顶堆先弹出的是最小的，所以倒叙来输出到数组
+        # 找出前 K 个高频元素，因为小顶堆先弹出的是最小的，所以倒序来输出到数组
         result = [0] * k
         for i in range(k-1, -1, -1):
             result[i] = heapq.heappop(pri_que)[1]

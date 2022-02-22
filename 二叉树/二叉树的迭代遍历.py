@@ -1,9 +1,3 @@
-from re import L
-from unittest import result
-
-from sympy import rootof
-
-
 class Node:
     def __init__(self, data):
         # data 是传入的值
@@ -28,7 +22,7 @@ class Node:
                 else:                       #否则，递归往下查找
                     self.right.insert(data)
         else:
-            self.data = data                
+            self.data = data
 
     # 打印这棵树，中序遍历
     def PrintTree(self):
@@ -94,7 +88,7 @@ class Solution:
                 # 取栈顶元素右节点
                 cur = cur.right
         return result
-        
+
 
 # 后序遍历-迭代-LC145_二叉树的后序遍历
 class Solution:

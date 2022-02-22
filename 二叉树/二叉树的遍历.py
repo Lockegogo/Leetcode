@@ -1,4 +1,7 @@
 # 二叉树的构建
+from unittest import result
+
+
 class Node:
     def __init__(self, data):
         # data 是传入的值
