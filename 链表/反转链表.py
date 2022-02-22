@@ -22,6 +22,7 @@ class Solution:
         pre = None
         while(cur != None):
             # 保存一下 cur 的下一个节点，因为接下来要改变 cur->next
+            # 如果不保存就找不到一开始 cur.next 了
             temp = cur.next
             # 反转
             cur.next = pre

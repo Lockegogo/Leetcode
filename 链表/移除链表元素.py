@@ -32,6 +32,7 @@ class Solution:
         # 新建虚拟头节点 dummy
         dummy = ListNode(None)
         dummy.next = head
+        # 新建指针
         cur = dummy
         while cur.next:
             if cur.next.val != val:

@@ -192,7 +192,7 @@ print(search2(12, arr))
 
 ### 2. 原地移除元素
 
-> 原地移除元素，并返回移除后数组的新长度。要求不适用额外的数组空间，必须使用 $O(1)$ 额外空间并原地修改输入数组。你不需要考虑数组中超出新长度后面的元素。
+> 原地移除元素，并返回移除后数组的新长度。要求不使用额外的数组空间，必须使用 $O(1)$ 额外空间并原地修改输入数组。你不需要考虑数组中超出新长度后面的元素。
 
 **要知道数组的元素在内存地址中是连续的，不能单独删除数组中的某个元素，只能覆盖。**
 
@@ -232,7 +232,7 @@ print(len, 'nums =', arr)
 
 双指针法（快慢指针法）：通过一个快指针和慢指针在一个 for 循环下完成两个 for 循环的工作。
 
-<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201291723017.png" alt="image-20220129172318972" style="zoom: 80%;" />
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv43W2OFzic9tNsB9dGwCaYbQ1Td0CliauEJ9O31cb7bLxS9AsXN6Of0icic2rBuNBrwP9ibPsqHQEI2BTA/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
 
 双指针法（快慢指针法）在数组和链表的操作中是非常常见的，很多考察数组、链表、字符串等操作的面试题，都使用双指针法。
 
@@ -260,7 +260,7 @@ class Solution2:
 
 ### 3. 有序数组的平方
 
-> 给你一个按==非递减顺序==排序的整数数组 nums，返回 每个数字的平方 组成的新数组，要求也按非递减顺序排序。
+> 给你一个按==非递减顺序==排序的整数数组 nums，返回 每个数字的平方组成的新数组，要求也按非递减顺序排序。
 >
 > 输入：nums = [-4,-1,0,3,10]
 > 输出：[0,1,9,16,100]
@@ -293,7 +293,7 @@ print(a.sortedSquares(nums))
 
 定义一个新数组 result，和 $A$ 数组一样的大小，让 $k$ 指向 result 数组的终止位置。
 
-<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201291931420.png" alt="image-20220129193153380" style="zoom:80%;" />
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv49PTAcQFBFFQtyH6RIEERSMIU4yk8AYZ3XI8cF1wJszznjJ1etuFxu4ibvvndawdu3nxfwUpibp9kA/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
 
 ```python
 class Solution2:
@@ -334,7 +334,7 @@ print(a.sortedSquares(nums))
 
 从长度为 1 开始试，长度加 1，计算连续长度的子数组和，判断是否满足条件，如果满足返回该长度，不满足继续加 1。
 
-该解法超出时间限制了
+该解法超出时间限制了：
 
 ```python
 class Solution:
@@ -361,9 +361,9 @@ print(sol.minSubArrayLen(s, nums))
 
 #### 4.2 滑动窗口
 
-所谓滑动窗口，就是不断调节子序列的起始位置和终止位置，从而得出我们想要的结果。
+所谓滑动窗口，就是==不断调节子序列的起始位置和终止位置==，从而得出我们想要的结果。
 
-<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201292032148.png" alt="image-20220129203228105" style="zoom:67%;" />
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv6Dh6cLPrfmXOctLPWibfcWd4gzEh6DCeqpTNtAzEBtzpxf4JZfBOMnt7xEWYj5QJp22uzfUMYkxaQ/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
 
 在本题中实现滑动窗口，主要确定如下三点：
 
@@ -402,7 +402,7 @@ class Solution2:
         return 0 if result == float("inf") else result
 ```
 
-==为什么时间复杂度是 $O(n^2)$==？
+==为什么时间复杂度是 $O(n)$==？
 
 不要以为 for 里面放一个 while 就以为是 $O(n^2)$， 主要是看每一个元素被操作的次数，每个元素在滑动窗后进来操作一次，出去操作一次，每个元素都是被操作两次，所以时间复杂度是 2*n 也就是 $O(n)$
 
@@ -417,8 +417,6 @@ class Solution2:
 > 输出：[[1,2,3],[8,9,4],[7,6,5]]
 > ```
 
-> 对难度中等的题目，完全没思路，我天。
-
 这道题目可以说在面试中出现频率较高的题目，不涉及什么算法，就是模拟过程，但十分考察对代码的掌控能力。
 
 ==循环不变量原则==，模拟顺时针画矩阵的过程：
@@ -430,7 +428,7 @@ class Solution2:
 
 由外向内一圈一圈这么画下去。
 
-可以发现这里的边界条件非常多，在一个循环中，如此多的边界条件，吐过不按照固定规则来遍历，那就是一进循环深似海，从此 offer 是路人。
+可以发现这里的边界条件非常多，在一个循环中，如此多的边界条件，如果不按照固定规则来遍历，那就是一进循环深似海，从此 offer 是路人。
 
 这里一圈画下来，我们要画每四条边，这四条边怎么画，每画一条边都要坚持一致的左闭右开，或者左开右闭的原则，这样这一圈才能按照统一的规则画下来。
 
@@ -809,7 +807,7 @@ obj.deleteAtIndex(index)
 
 #### 3.1 双指针法
 
-<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201302119374.png" alt="image-20220130211934331" style="zoom: 80%;" />
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv7ftmCo9j6fqIwpACbibyzDaeAjalAsyVzzxgSYicicuV3TH3vzia4rANEUghDYQPdiajHNJaWvsDTBSLQ/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
 
 首先定义一个 cur 指针，指向头节点，再定义一个 pre 指针，初始化为 null。
 
@@ -878,7 +876,9 @@ class Solution:
 
 <img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201302210663.webp" alt="图片" style="zoom:67%;" />
 
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv6XEYZuxIMibUKGOia3uXPT1QIpXDrVCkiaS4JOmMEquK7Ob6qiby32FefRvyY8fBWA225jRAxBLVT1uQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
 
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv6XEYZuxIMibUKGOia3uXPT1Q68l06Y58F0g9wl53pwhJJDicmCnbntdUxvbhHARom8RnTvFY9ibZ0Kyg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
 
 ```python
 class ListNode:
