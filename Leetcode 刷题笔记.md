@@ -923,7 +923,7 @@ class Solution:
 
 简单来说，就是求两个链表交点节点的指针，交点不是数值相等，而是指针相等。
 
-==算法==：我们求出两个链表的长度，并求出两个链表长度的差值，然后让 `curA` 移动到和 `curB` 末尾对齐的位置：
+==算法==：我们求出两个链表的长度，并求出两个链表长度的差值，然后让 `curA` 移动到和 `curB` ==末尾对齐==的位置：
 
 <img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201302225779.webp" alt="图片" style="zoom:67%;" />
 
@@ -1030,6 +1030,8 @@ class Solution:
 
 fast 和 slow 各自再走一步， fast 和 slow 就相遇了。这是因为 fast 是走两步，slow 是走一步，**其实相对于 slow 来说，fast 是一个节点一个节点的靠近 slow 的**，所以 fast 一定可以和 slow 重合。
 
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv6XEYZuxIMibUKGOia3uXPT1Q4EzD6ODP5hPLhuY6fOPrCffzK1YFLh6XHg7elvCgiaicibrZvy3tlqjGQ/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
+
 #### 6.2 如何找到环的入口
 
 假设从头结点到环形入口节点 的节点数为 $x$。环形入口节点到 fast 指针与 slow 指针相遇节点节点数为 $y$。从相遇节点再到环形入口节点节点数为 $z$。如图所示：
@@ -1044,7 +1046,7 @@ fast 和 slow 各自再走一步， fast 和 slow 就相遇了。这是因为 fa
 >
 > <img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201310007789.webp" alt="图片" style="zoom:80%;" />
 >
-> 那么 fast 指针走到环入口 3 的时候，已经走了 $k+n$ 个节点，slow 相应走了 $(k+n)/2$ 个节点，因为 $k$ 小于 $n$，所以 $(k+n)/2$ 一定小于 $n$，这说明 slow  一定没有走到环入口 3，而 fast 已经到环入口 3 了，也就是**在 slow 开始走的那一环已经和 fast 相遇了**。
+> 那么 fast 指针走到环入口 3 的时候，已经走了 $k+n$ 个节点，slow 相应走了 $(k+n)/2$ 个节点，因为 $k$ 小于 $n$，所以 $(k+n)/2$ 一定小于 $n$，这说明 slow  一定没有走到环入口 3，而 fast 已经到环入口 3 了，也就是**在 slow 开始走的那一环已经和 fast 相遇了**。精彩的分析！！
 
 因为 fast 指针是一步走两个节点，slow 指针一步走一个节点， 所以 fast 指针走过的节点数 = slow 指针走过的节点数 * 2：
 $$
@@ -1053,11 +1055,11 @@ $$
 x+y&=n(y+z)
 \end{aligned}
 $$
-因为要找环形的入口，那么要求的是 x，因为 x 表示 头结点到 环形入口节点的的距离。整理如下：
+因为要找环形的入口，那么要求的是 x，因为 x 表示头结点到环形入口节点的的距离。整理如下：
 $$
 x=(n-1)(y+z)+z
 $$
-这就意味着，**从头结点出发一个指针，从相遇节点也出发一个指针，这两个指针每次只走一个节点， 那么当这两个指针相遇的时候就是 环形入口的节点**。
+这就意味着，**==从头结点出发一个指针==，==从相遇节点也出发一个指针==，这两个指针每次只走一个节点， 那么当这两个指针相遇的时候就是 环形入口的节点**。
 
 操作步骤如下：
 
@@ -1089,6 +1091,8 @@ class Solution:
 
         return None
 ```
+
+> 思路很复杂，但是算法却很简单。两个循环就解决了。
 
 ## 哈希表
 
@@ -1440,7 +1444,7 @@ class Solution:
 
 为什么不用 map 呢？其实在本题，使用 map 的空间消耗要比数组大一些，因为 map 需要维护红黑树或者哈希表，而且还要做哈希函数，是费时的，数据量大的话就能体现出差别来了。
 
-下面给出用字典做赎金信的代码：
+下面给出用==字典==做赎金信的代码：
 
 ```python
 class Solution:

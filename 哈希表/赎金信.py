@@ -11,11 +11,6 @@
 链接：https://leetcode-cn.com/problems/ransom-note
 """
 
-
-
-from re import T
-from turtle import st
-
 class Solution:
     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
         def str2dict(x):
@@ -37,7 +32,7 @@ class Solution:
         for key in ransomNote:
             if ransomNote[key] > 0:
                 return False
-        
+
         return True
 
 ransomNote = "bgt"
@@ -45,4 +40,4 @@ magazine = "efnsdkvkdbbgdsa"
 sol = Solution()
 print(sol.canConstruct(ransomNote,magazine))
 
-        
+

@@ -27,6 +27,9 @@ class Solution:
         for i in range(26):
             # 注意这里是 while，多个重复字符
             while hash[i] != 0:
+                # 注意 extend 和 append 的区别
+                # extend 可以向列表中追加列表
+                # append 可以追加任何数据结构，但是保持原数据结构
                 result.extend(chr(i+ord('a')))
                 hash[i] -= 1
         return result

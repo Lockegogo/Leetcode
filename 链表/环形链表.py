@@ -25,7 +25,7 @@ class Solution:
                 while p!=q:
                     p = p.next
                     q = q.next
-                #你也可以return q
+                #你也可以 return q
                 return p
 
         return None

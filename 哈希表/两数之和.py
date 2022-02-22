@@ -39,7 +39,8 @@ class Solution:
             if target - val not in records:
                 records[val] = idx
             else:
-                return [records[target - val], idx] # 如果存在就返回字典记录索引和当前索引
+                # 如果存在就返回字典记录索引和当前索引
+                return [records[target - val], idx]
 
 nums = [2,7,11,15]
 target = 18
