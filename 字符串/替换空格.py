@@ -16,7 +16,7 @@ class Solution:
         left, right = len(s) - 1, len(res) - 1
 
         while left >= 0:
-            # 如果不是空格
+            # 如果不是空格，直接把左边赋值给右边
             if res[left] != ' ':
                 res[right] = res[left]
                 right -= 1
@@ -32,4 +32,3 @@ class Solution:
 s = "We are happy."
 sol = Solution()
 sol.replaceSpace(s)
-

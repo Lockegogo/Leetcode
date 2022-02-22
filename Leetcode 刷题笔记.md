@@ -1489,8 +1489,9 @@ class Solution:
 
 1. 将数组排序，一层 for 循环，$i$ 从下标 0 的地方开始，同时定一个下标 left 定义在 $i+1$ 的位置上，定义下标 right 在数组结尾的位置上
 2. 依然还是在数组中找到 `abc` 使得 $a + b +c =0$，我们这里相当于  `a = nums [i], b = nums [left], c = nums [right]`
-3. 如果 `nums [i] + nums [left] + nums [right] > 0`  就说明此时三数之和大了，因为数组是排序后的，所以 right 就应该向左移动，这样才能让三数之和小一些
+3. 如果 `nums [i] + nums [left] + nums [right] > 0`  就说明此时三数之和大了，因为数组是==排序后==的，所以 right 就应该向左移动，这样才能让三数之和小一些
 4. 如果 `nums [i] + nums [left] + nums [right] < 0` 说明此时三数之和小了，left 就向右移动，才能让三数之和大一些，直到 left 与 right 相遇为止
+4. 注意，由于结果不能包含重复的三元组，所有遇到相同的元素指针不要停留，继续移动。
 
 三数之和的==双指针解法==是一层 for 循环 `num[i]` 为确定值，然后循环内有 left 和 right 作为双指针，找到  `nums [i] + nums [left] + nums [right] == 0`。
 
@@ -1534,7 +1535,7 @@ print(sol.threeSum(nums))
 
 ### 10. 四数之和
 
-> 给你一个由 n 个整数组成的数组 `nums` ，和一个目标值 `target` 。请你找出并返回满足下述全部条件且不重复的四元组 `[nums[a], nums[b], nums[c], nums[d]]` （若两个四元组元素一一对应，则认为两个四元组重复）：
+> 给你一个由 n 个整数组成的数组 `nums` ，和一个目标值 `target` 。请你找出并返回满足下述全部条件且==不重复==的四元组 `[nums[a], nums[b], nums[c], nums[d]]` （若两个四元组元素一一对应，则认为两个四元组重复）：
 >
 > 1. `0 <= a, b, c, d < n`
 > 2. a、b、c 和 d 互不相同
@@ -1599,6 +1600,8 @@ print(sol.fourSum(nums, target))
 > - for - continue
 > - while - i++
 
+> 三数之和和四数之和都是使用的双指针法；而两数之和使用的是字典法。
+
 ## 字符串
 
 ### 1. 反转字符串
@@ -1648,7 +1651,6 @@ class Solution:
 
 ```python
 class Solution:
-    from functools import reduce
     def reverseStr(self, s: str, k: int) -> str:
         # 将字符串变为列表
         s = list(s)
@@ -1686,13 +1688,13 @@ print(result)
 
 首先扩充数组到每个空格替换成 "%20" 之后的大小。然后从后向前替换空格，也就是双指针法，过程如下：$i$ 指向新长度的末尾，$j$ 指向旧长度的末尾。
 
-<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202202021219402.png" alt="image-20220202121911348" style="zoom: 80%;" />
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv4rrwjMJIUoIpiaHQ4Iiae3S5yuecBvUEic1pKiagE7VLAHnSC4iawGXibgicT4Igb9ib4QTLWAofWYibJhxCw/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1)
 
 > **从前向后填充可以吗？**
 >
 > 从前向后填充就是 $O(n^2)$ 的算法，因为每次添加元素都要将添加元素之后的左右元素向后移动。
 
-其实很多数组填充类的问题，都可以先预先给数组扩容带填充后的大小，然后在从后向前进行操作。
+其实很多==数组填充类==的问题，都可以先预先给数组==扩容==带填充后的大小，然后在==从后向前==进行操作。
 
 这么做有两个好处：
 
@@ -1763,6 +1765,12 @@ print(sol.reverseWords(s))
 3. 将每个单词反转
 
 要对一句话里的单词顺序进行反转，==先整体反转再局部反转==是一个很妙的思路。
+
+举个例子，源字符串为："the sky is blue"
+
+- 移除多余空格 : "the sky is blue"
+- 字符串反转："eulb si yks eht"
+- 单词反转："blue is sky the"
 
 ### 5. 左旋转字符串
 

@@ -19,6 +19,7 @@ class Solution:
             right = len(nums) - 1
             if nums[i] > 0:
                 break
+            # 保证第一个数是不一样的
             if i >= 1 and nums[i] == nums[i-1]:
                 continue
             while left < right:
@@ -26,7 +27,7 @@ class Solution:
                 if total == 0:
                     # 将满足条件的数组存起来
                     result.append((nums[i], nums[left], nums[right]))
-                    # 因为结果不能有重复的三元组，所以遇到相同的元素指针继续移动
+                    # 因为结果不能有重复的三元组，所以遇到相同的元素指针继续移动，移动到相等的最后一位
                     while left != right and nums[left] == nums[left + 1]:
                         left += 1
                     while left != right and nums[right] == nums[right - 1]:

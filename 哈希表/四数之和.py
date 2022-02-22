@@ -15,7 +15,7 @@
 from typing import List
 class Solution:
     """
-    双指针法
+    双指针法：j, i, left, right
     """
     def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
         result = []
@@ -23,11 +23,11 @@ class Solution:
         for j in range(len(nums)):
             # 去重
             if j > 0 and nums[j] == nums[j-1]:
-                # continue: 跳出本次循环，继续进行下一轮循环
+                # continue: 跳出本次循环，继续进行下一轮循环 类似于 j++
                 # break: 结束所有循环
                 continue
             for i in range(j+1,len(nums)):
-                # 去重
+                # 去重：遇到相同的就往后走
                 if i > j + 1 and nums[i] == nums[i-1]:
                     continue
                 left = i + 1
@@ -71,9 +71,9 @@ class Solution(object):
         for n in nums:
             if n in hashmap:
                 hashmap[n] += 1
-            else: 
+            else:
                 hashmap[n] = 1
-        
+
         # good thing about using python is you can use set to drop duplicates.
         ans = set()
         for i in range(len(nums)):
