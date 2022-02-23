@@ -8,13 +8,14 @@ class Solution:
         # 如果障碍出现在终点
         if obstacleGrid[m-1, n-1] == 1:
             return 0
+        # 在最右边
         for j in range(n):
             dp[m-1, j] = 1
             # 如果障碍出现在边沿，边沿上和边沿左的全部为 0
             if obstacleGrid[m-1, j] == 1:
                 for k in range(j+1):
                     dp[m-1,k] = 0
-
+        # 在最下面
         for i in range(m):
             dp[i, n-1] = 1
             if obstacleGrid[i, n-1] == 1:
