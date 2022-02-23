@@ -3110,7 +3110,6 @@ class Solution:
         for i in range(start_num, 10 - (k - len(self.path)) + 1):
             self.path.append(i)
             self.sum_now += i
-
             self.backtracking(k, n, i + 1)
             self.path.pop()
             self.sum_now -= i
@@ -3184,9 +3183,9 @@ class Solution:
 
 ### 5. 组合总和
 
-> 给你一个无重复元素的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的所有不同组合 ，并以列表形式返回。你可以按任意顺序返回这些组合。
+> 给你一个==无重复元素==的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的所有不同组合 ，并以列表形式返回。你可以按任意顺序返回这些组合。
 >
-> candidates 中的 同一个数字可以无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。 
+> candidates 中的同一个数字可以无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。 
 >
 > 对于给定的输入，保证和为 target 的不同组合数少于 150 个。
 >
@@ -3227,6 +3226,7 @@ class Solution:
             return
 
         # 进入单层循环逻辑：从 startindex 开始选取是为了保证在后面做选择时不会选到前面的数字避免重复
+        # 如果在同一个集合中求组合，一定要加上 startindex ！！
         for i in range(startindex, len(candidates)):
             self.result.append(candidates[i])
             self.sum += candidates[i]
@@ -3238,7 +3238,7 @@ class Solution:
         return self.res
 ```
 
-==剪枝优化：==这个优化一般不容易想到，但是在求和问题中，排序后加剪枝是常见的套路！
+==剪枝优化：==这个优化一般不容易想到，但是在求和问题中，==排序后加剪枝==是常见的套路！
 
 以及上面的版本一的代码大家可以看到，对于 sum 已经大于 target 的情况，其实是依然进入了下一层递归，只是下一层递归结束判断的时候，会判断 sum > target 的话就返回。其实如果已经知道下一层的 sum 会大于 target，就没有必要进入下一层递归了。那么可以在 for 循环的搜索范围上做做文章了。
 
@@ -3300,7 +3300,12 @@ class Solution:
 > ]
 > ```
 
-这个题目的关键在==去重==！题目给的集合里有重复的元素，但是不能有重复的组合！！！
+这道题目和上一题组合总和的区别：
+
+1. 本题 candidates 中的每个数字在每个组合中只能使用一次。
+2. 本题数组 candidates 的元素是有重复的，而 [39. 组合总和 ](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494682&idx=2&sn=45c7642a4b42f589be18cd087d0c3388&scene=21#wechat_redirect)是无重复元素的数组 candidates
+
+这个题目的关键在==去重==！题目给的集合里**有重复的元素**，但是不能有重复的组合！！！
 
 如果把所有的组合全部求出来，再用 set 或者 map 去重，这么做很容易**超时**！所以我们需要在搜索的过程中就去掉重复组合。
 
@@ -3319,7 +3324,7 @@ class Solution:
 2. **递归终止条件**：终止条件为 `sum > target` 和 `sum == target`。
 3. **单层搜索的逻辑**：如何判断同一树层上元素是否使用过了呢？
 
-**如果 `candidates[i] == candidates[i - 1]` 并且 `used[i - 1] == false`，就说明：前一个树枝，使用了 candidates [i - 1]，也就是说同一树层使用过 candidates [i - 1]**。此时 for 循环里应该做 continue 的操作。
+**如果 `candidates[i] == candidates[i - 1]` 并且 `used[i - 1] == false`，就说明：前一个树枝，使用了 `candidates [i - 1]`，也就是说同一树层使用过 candidates [i - 1]**。此时 for 循环里应该做 continue 的操作。
 
 ![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv48aCU4UTGAaibHh1UFayia1yFn6HgwBDohL8uc9icx9afAMLSQKaibWwItd8bZHaL9WYvmTTX7IwAg9A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
@@ -3328,7 +3333,7 @@ class Solution:
 - `used [i - 1] == true`，说明同一树支 `candidates [i - 1]` 使用过
 - `used [i - 1] == false`，说明同一树层 `candidates [i - 1]` 使用过
 
-和上一题相比，同样是求组合总和，但就是因为其数组 candidates 有重复元素，而要求不能有重复的组合，难度提升了不少。
+和上一题相比，同样是求组合总和，但就是因为**其数组 candidates 有重复元素，而要求不能有重复的组合**，难度提升了不少。
 
 ```python
 class Solution:
@@ -3364,13 +3369,13 @@ class Solution:
             # 检查同一树层是否出现曾经使用过的相同元素
             # 若数组中前后元素值相同，但前者却未被使用(used == False)，说明是for loop中的同一树层的相同元素情况
             # 注意这里，list[-1] 代表的不是 list[0] 的前一位而是列表的最后一位，这是不符合比较逻辑的，所以要从 i=1 开始取值
+            # 为什么只用比较前一个呢？因为已经对数组进行排序了
             if i >= 1 and candidates[i] == candidates[i-1] and self.used[i-1] == 0:
                 continue
 
             self.result.append(candidates[i])
             self.sum += candidates[i]
             self.used[i] = 1
-            # 这是在同一树层上去重
             self.trackbacking(i+1, candidates, target)
             # 回溯
             self.result.pop()
@@ -3494,7 +3499,7 @@ class Solution:
 
 然后就是递归和回溯的过程：
 
-- 递归调用时，下一层递归的 startindex 要从 i + 2 开始，因为需要在字符串中加入分隔符，同时记录分隔符的数量 pointNum 要加 1。
+- 递归调用时，下一层递归的 startindex 要从 ==i + 2== 开始，因为需要在字符串中加入分隔符，同时记录分隔符的数量 pointNum 要加 1。
 - 回溯的时候，就将刚刚加入的分隔符删掉，同时 pointNum 减 1
 
 ```python
@@ -3588,6 +3593,8 @@ class Solution:
 
 从图中红线部分，可以看出**遍历这个树的时候，把所有节点都记录下来，就是要求的子集集合**。
 
+
+
 ## 贪心算法
 
 ### 1. 贪心算法的基础知识
@@ -3627,6 +3634,8 @@ class Solution:
 
 > 思考找硬币过程，案例学习
 
+
+
 ### 2. 分发饼干
 
 > 假设你是一位很棒的家长，想要给你的孩子们一些小饼干。但是，每个孩子最多只能给一块饼干。
@@ -3661,10 +3670,14 @@ class Solution:
         s.sort()
         res = 0
         for i in range(len(s)):
-            if res <len(g) and s[i] >= g[res]:  #小饼干先喂饱小胃口
+            # 小饼干先喂饱小胃口
+            if res <len(g) and s[i] >= g[res]:  
+                # 只有得到饼干了小孩指针才往前走
                 res += 1
         return res
 ```
+
+
 
 ### 3. 摆动序列
 
@@ -3708,15 +3721,15 @@ class Solution:
 ```python
 class Solution:
     def wiggleMaxLength(self, nums: List[int]) -> int:
-        # 题目里nums长度大于等于1，当长度为1时，其实到不了for循环里去，所以不用考虑nums长度
-        preC, curC, res = 0,0,1  
+        # 题目里 nums 长度大于等于 1，当长度为 1 时，其实到不了 for 循环里去，所以不用考虑 nums长度
+        preC, curC, res = 0, 0, 1
         for i in range(len(nums) - 1):
             curC = nums[i + 1] - nums[i]
-            # 差值为0时，不算摆动
-            if curC * preC <= 0 and curC !=0:  
+            # 差值为 0 时，不算摆动
+            if curC * preC <= 0 and curC != 0:
                 res += 1
                 # 如果当前差值和上一个差值为一正一负时，才需要用当前差值替代上一个差值
-                preC = curC  
+                preC = curC
         return res
 ```
 
@@ -3739,6 +3752,8 @@ class Solution:
 - 每次更新 `dp[i][0]`，则在 `tree1` 的 `nums[i]` 位置值更新为 `dp[i][0]`
 - 每次更新 `dp[i][1]`，则在 `tree2` 的 `nums[i]` 位置值更新为 `dp[i][1]`
 - 则 dp 转移方程中就没有必要 j 从 0 遍历到 i-1，可以直接在线段树中查询指定区间的值即可
+
+
 
 ### 4. 最大子数组和
 
@@ -3768,7 +3783,7 @@ class Solution:
 
 **局部最优的情况下，并记录最大的连续和，可以推出全局最优。**
 
-从代码角度上来讲：遍历 `nums`，从头开始用 `count` 累积，如果 `count` 一旦加上 `nums [i]` 变为负数，那么就应该从 `nums [i+1]` 开始从 0 累积 count 了，因为已经变为负数的 `count`，只会==拖累总和==。（很有道理）
+从代码角度上来讲：遍历 `nums`，从头开始用 `count` 累积，如果 `count` 一旦加上 `nums [i]` 变为负数，那么就应该从 `nums [i+1]` 开始==从 0 累积 count== 了，因为已经变为负数的 `count`，只会==拖累总和==。（很有道理）
 
 > 这相当于是暴力解法中的不断调整最大子序和和区间的起始位置。
 
@@ -3791,6 +3806,8 @@ class Solution:
                 count = 0
         return result
 ```
+
+
 
 ### 5. 买卖股票的最佳时机 II
 
@@ -3906,7 +3923,7 @@ class Solution:
 
 如果移动下标达到了当前这一步的最大覆盖最远距离了，还没有到终点的话，那么就必须再走一步来增加覆盖范围，直到覆盖范围覆盖了终点。
 
-> 不管你从哪里起跳，步数加一之后指针移到最大的范围处
+> 不管你从哪里起跳，步数加一之后指针移到最大的范围处。
 
 <img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv40YfANYrjM5rTqA3zx25n8EpcMf0hHuYEx5qrHXAy6buLJgicibda2zwqicVoYbH6icUymN0fHYA1zxg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
 
@@ -4081,7 +4098,7 @@ class Solution:
 
 ==不同点==：在动态规划算法中，每步所做出的选择往往依赖于相关子问题的解，因而只有在解出相关子问题时才能做出选择；而贪心算法，仅在当前状态下做出最好选择，即局部最优选择，然后再去解做出这个选择后产生的相应子问题
 
-另外，动态规划算法通常以自顶向上的方式解各子问题，而贪心算法通常自顶向下的方式进行。
+另外，动态规划算法通常以==自顶向上==的方式解各子问题，而贪心算法通常==自顶向下==的方式进行。
 
 ### 3. 斐波那契数
 

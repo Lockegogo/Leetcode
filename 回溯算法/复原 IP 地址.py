@@ -34,12 +34,14 @@ class Solution:
                 self.result.append(s[:])
             # 注意 return 是纵向结束，但是 break 是横向
             return
+
         # 单层递归逻辑
         for i in range(start_index, len(s)):
             # [start_index, i]就是被截取的子串
             if self.is_valid(s, start_index, i):
                 s = s[:i+1] + '.' + s[i+1:]
-                self.backtracking(s, i+2, point_num+1)  # 在填入.后，下一子串起始后移2位
+                # 在填入.后，下一子串起始后移 2 位
+                self.backtracking(s, i+2, point_num+1)
                 s = s[:i+1] + s[i+2:]    # 回溯
             else:
                 # 若当前被截取的子串大于255或者大于三位数，直接结束本层循环，横向

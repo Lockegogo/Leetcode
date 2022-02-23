@@ -19,8 +19,10 @@ class Solution:
         # python 不支持动态修改 for 循环中变量，可以使用 while 循环代替
         # while i <= maxscale
         for i in range(len(nums) - 1):
+            # i 最大循环到倒数第二个，因为倒数第一的值没有意义
             maxscale = max(maxscale, i + nums[i])
-            # 如果此时最大范围还没有超过 i，以后也不可能超过了
+            # 已经走到 i 了，但如果此时最大范围还没有超过 i，以后也不可能超过了
+            # 下面这一步非常重要，如果没有的话答案是错的
             if maxscale <= i:
                 return False
         return maxscale >= len(nums)-1

@@ -34,7 +34,7 @@ class Solution:
     def trackbacking(self, startindex, candidates, target):
         # 确定终止条件
         if self.sum == target:
-            # 因为是 shallow copy，所以不能直接传入self.result
+            # 因为是 shallow copy，所以不能直接传入 self.result
             self.res.append(self.result[:])
             return
 
@@ -44,13 +44,13 @@ class Solution:
             if self.sum + candidates[i] > target:
                     return
             # 注意这里，list[-1] 代表的不是 list[0] 的前一位而是列表的最后一位，这是不符合比较逻辑的，所以要从 i=1 开始取值
+            # 为什么只用比较前一个呢？因为已经对数组进行排序了
             if i >= 1 and candidates[i] == candidates[i-1] and self.used[i-1] == 0:
                 continue
 
             self.result.append(candidates[i])
             self.sum += candidates[i]
             self.used[i] = 1
-            # 这是在同一树层上去重
             self.trackbacking(i+1, candidates, target)
             # 回溯
             self.result.pop()
@@ -59,7 +59,7 @@ class Solution:
         return self.res
 
 
-candidates = [1]
-target = 1
+candidates = [1,2,1,2,4]
+target = 3
 sol = Solution()
 print(sol.combinationSum2(candidates, target))
