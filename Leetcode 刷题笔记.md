@@ -2391,6 +2391,8 @@ print(sol.topKFrequent(nums, k))
 
 ## ==二叉树==
 
+这一部分整体学的不是太好，需要反复巩固！！！
+
 ### 1. 二叉树的基本知识
 
 #### 1.1 二叉树的类型
@@ -2981,7 +2983,7 @@ class solution:
         return depth
 ```
 
-### 8. 二叉树的最小深度
+### ==8. 二叉树的最小深度==
 
 > 给定一个二叉树，找出其最小深度。
 >
@@ -3152,7 +3154,7 @@ class Solution:
         return self.countNodes(root.left) + self.countNodes(root.right) + 1
 ```
 
-### 10. 平衡二叉树
+### ==10. 平衡二叉树==
 
 > 给定一个二叉树，判断它是否是高度平衡的二叉树。
 >
@@ -3182,11 +3184,9 @@ class Solution:
 
 ==递归三部曲==：
 
-1. ==明确递归函数的参数和返回值==：参数为传入的节点指针，返回值要返回传入节点为根节点树的深度。
+1. ==明确递归函数的参数和返回值==：参数为传入的节点指针，返回值要返回传入节点为根节点树的高度。
 
-那么如何标记左右子树是否差值大于 1 呢？如果当前传入节点为根节点的二叉树已经不是二叉平衡树了，还返回高度的话就没有意义了。
-
-所以如果已经不是二叉平衡树了，可以返回 - 1 来标记已经不符合平衡树的规则了。
+那么如何标记左右子树是否差值大于 1 呢？如果当前传入节点为根节点的二叉树已经不是二叉平衡树了，还返回高度的话就没有意义了。所以如果已经不是二叉平衡树了，可以返回 - 1 来标记已经不符合平衡树的规则了。
 
 2. ==明确终止条件==：递归的过程中依然是遇到空节点了为终止，返回 0，表示当前节点为根节点的树高度为 0
 3. ==明确单层递归的逻辑==：如何判断当前传入节点为根节点的二叉树是否是平衡二叉树呢，当然是左子树高度和右子树高度相差 1。分别求出左右子树的高度，然后如果差值小于等于 1，则返回当前二叉树的高度，否则则返回 - 1，表示已经不是二叉树了。
@@ -3221,9 +3221,13 @@ class Solution:
 
 ```
 
-### 11. 二叉树的所有路径
+注意：对于二叉树题目的迭代法，有的同学会疑惑，迭代法中究竟什么时候用队列，什么时候用栈？
 
-> 给你一个二叉树的根节点 `root` ，按 **任意顺序** ，返回所有从根节点到叶子节点的路径。
+答案：如果是模拟前中后序遍历就用栈，如果是适合层序遍历就用队列，如果是其他情况，那么就先试试队列，不行就用栈。
+
+### ==11. 二叉树的所有路径==
+
+> 给你一个二叉树的根节点 `root` ，按 **任意顺序** ，返回所有从==根节点==到==叶子节点==的路径。
 >
 > **叶子节点** 是指没有子节点的节点。
 >
@@ -3236,13 +3240,13 @@ class Solution:
 
 这道题目要求从根节点到叶子的路径，所以需要前序遍历，这样才方便让父节点指向孩子节点，找到对应的路径。
 
-在这道题目中将第一次涉及到回溯，因为我们要把路径记录下来，需要回溯来回退一一个路径在进入另一个路径。
+在这道题目中将==第一次涉及到回溯==，因为我们要把路径记录下来，需要回溯来回退一一个路径在进入另一个路径。
 
 <img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4G44A2PAPYlRHvZgTJ2ic6mYr5s71k3kavk4bFkZia9J2xLMLia9gBKXd25Lsuf0B0uAnBb98npPePw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
 
 1. ==递归函数函数参数以及返回值==：要传入根节点，记录每一条路径的 path，和存放结果集的 result，这里递归不需要返回值
 2. ==确定递归终止条件==：**那么什么时候算是找到了叶子节点？** 是当 cur 不为空，其左右孩子都为空的时候，就找到叶子节点。为什么没有判断 cur 是否为空呢，因为下面的逻辑可以控制空节点不入循环。再来看一下终止处理的逻辑。这里使用 vector 结构 path 来记录路径，所以要把 vector 结构的 path 转为 string 格式，在把这个 string 放进 result 里。**那么为什么使用了 vector 结构来记录路径呢？** 因为在下面处理单层递归逻辑的时候，要做回溯，使用 vector 方便来做回溯。
-3. ==确定单层递归逻辑==：因为是前序遍历，需要先处理中间节点，中间节点就是我们要记录路径上的节点，先放进 path 中。然后是递归和回溯的过程，上面说过没有判断 cur 是否为空，那么在这里递归的时候，如果为空就不进行下一层递归了。所以递归前要加上判断语句，下面要递归的节点是否为空。此时还没完，递归完，要做回溯啊，因为 path 不能一直加入节点，它还要删节点，然后才能加入新的节点。
+3. ==确定单层递归逻辑==：因为是==前序遍历==，需要先处理中间节点，中间节点就是我们要记录路径上的节点，先放进 path 中。然后是递归和回溯的过程，上面说过没有判断 cur 是否为空，那么在这里递归的时候，如果为空就不进行下一层递归了。所以递归前要加上判断语句，下面要递归的节点是否为空。此时还没完，递归完，要做回溯啊，因为 path 不能一直加入节点，它还要删节点，然后才能加入新的节点。
 
 ```python
 class Solution:
@@ -3250,18 +3254,1340 @@ class Solution:
         path=[]
         res=[]
         def backtrace(root, path):
-            if not root:return 
+            
+            if not root:
+                return 
+            # 先序遍历
+            # 中
             path.append(root.val)
+            
             if (not root.left)and (not root.right):
                res.append(path[:])
+            
             ways=[]
-            if root.left:ways.append(root.left)
-            if root.right:ways.append(root.right)
+            # 左
+            if root.left:
+                ways.append(root.left)
+            # 右
+            if root.right:
+                ways.append(root.right)
+                
             for way in ways:
                 backtrace(way,path)
                 path.pop()
+                
         backtrace(root,path)
         return ["->".join(list(map(str,i))) for i in res]
+```
+
+### ==12. 左叶子之和==
+
+> 给定二叉树的根节点 `root` ，返回所有左叶子之和。
+>
+> ![img](https://assets.leetcode.com/uploads/2021/04/08/leftsum-tree.jpg)
+>
+> 输入: root = [3,9,20,null,null,15,7] 
+> 输出: 24 
+> 解释: 在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24
+
+左叶子的明确定义：**如果左节点不为空，且左节点没有左右孩子，那么这个节点就是左叶子**
+
+**判断当前节点是不是左叶子是无法判断的，必须要通过节点的父节点来判断其左孩子是不是左叶子。**
+
+如果该节点的左节点不为空，该节点的左节点的左节点为空，该节点的左节点的右节点为空，则找到了一个左叶子。
+
+递归遍历的顺序为后序遍历，是因为要通过递归函数的返回值来累加求取左叶子数值之和。
+
+递归三部曲：
+
+1. ==确定递归函数的参数和返回值==：判断一个树的左叶子节点之和，那么一定要传入树的根节点，递归函数的返回值为数值之和，所以为 int。使用题目中给出的函数就可以了。
+2. ==确定终止条件==：如果节点为空，返回 0。
+3. ==确定单层递归的逻辑==：当遇到左叶子节点的时候，记录数值，然后通过递归求取左子树左叶子之和，相加便是整个树的左叶子之和
+
+```python
+class Solution:
+    def sumOfLeftLeaves(self, root: TreeNode) -> int:
+        if not root: 
+            return 0
+        
+        left_left_leaves_sum = self.sumOfLeftLeaves(root.left)  # 左
+        right_left_leaves_sum = self.sumOfLeftLeaves(root.right) # 右
+        
+        # 中
+        cur_left_leaf_val = 0
+        # 通过 root 节点来判断 root.left 节点是不是左叶子节点
+        if root.left and not root.left.left and not root.left.right: 
+            cur_left_leaf_val = root.left.val 
+            
+        return cur_left_leaf_val + left_left_leaves_sum + right_left_leaves_sum # 中
+```
+
+这道题目要求左叶子之和，其实是比较绕的，因为不能判断本节点是不是左叶子节点。
+
+此时就要通过节点的父节点来判断其左孩子是不是左叶子了。
+
+**平时我们解二叉树的题目时，已经习惯了通过节点的左右孩子判断本节点的属性，而本题我们要通过节点的父节点判断本节点的属性。**
+
+希望通过这道题目，可以扩展大家对二叉树的解题思路。
+
+### ==13. 找树左下角的值==
+
+> 给定一个二叉树，在树的最后一行找到最左边的值。
+>
+> ![img](https://assets.leetcode.com/uploads/2020/12/14/tree1.jpg)
+>
+> ```
+> 输入: root = [2,1,3]
+> 输出: 1
+> ```
+
+#### 13.1 递归法
+
+咋眼一看，这道题目用递归的话就就一直向左遍历，最后一个就是答案呗？没有这么简单，一直向左遍历到最后一个，它未必是最后一行啊。
+
+首先要是最后一行，然后是最左边的值。
+
+如果使用递归法，如何判断是最后一行呢，其实就是深度最大的叶子节点一定是最后一行。
+
+所以要找深度最大的叶子节点。
+
+那么如果找最左边的呢？可以使用前序遍历，这样才先优先左边搜索，然后记录深度最大的叶子节点，此时就是树的最后一行最左边的值。
+
+递归三部曲：
+
+1. ==确定递归函数的参数和返回值==：参数必须要遍历树的根节点，还有就是一个 int 型的变量用来记录最长深度，这里就不需要返回值了。本题还需要类里的两个全局变量，maxLen 用来记录最大深度，maxleftValue 记录最大深度最左节点的数值。
+
+为什么不能递归函数的返回值返回最长深度呢？递归函数什么时候要有返回值，什么时候不能有返回值？
+
+如果要遍历整棵树，递归函数就不能有返回值，如果我们需要遍历某一条固定路线，递归函数就一定要有返回值！
+
+本题我们是要遍历整个树找到最深的叶子节点，需要遍历整棵树，所以递归函数没有返回值。
+
+2. ==确定终止条件==：当遇到叶子节点的时候，就需要统计一下最大的深度了，所以需要遇到叶子节点来更新最大深度。
+3. ==确定单层递归的逻辑==：在找最大深度的时候，递归的过程中依然要使用==回溯==
+
+```python
+class Solution:
+    def findBottomLeftValue(self, root: TreeNode) -> int:
+        # 在外函数中定义两个变量
+        max_depth = -float("INF")
+        leftmost_val = 0
+
+        def __traverse(root, cur_depth): 
+            # 在内函数中进行 nonlocal 声明，这样在内函数中的这两个变量和外函数中的是同一个变量
+            nonlocal max_depth, leftmost_val
+            if not root.left and not root.right: 
+                if cur_depth > max_depth: 
+                    max_depth = cur_depth
+                    leftmost_val = root.val  
+            if root.left: 
+                cur_depth += 1
+                __traverse(root.left, cur_depth)
+                cur_depth -= 1
+            if root.right: 
+                cur_depth += 1
+                __traverse(root.right, cur_depth)
+                cur_depth -= 1
+
+        __traverse(root, 0)
+        return leftmost_val
+```
+
+不懂0.0
+
+#### 13.2 迭代：层序遍历
+
+本题使用层序遍历再合适不过了，比递归要好理解的多！只需要记录最后一行第一个节点的数值就可以了。
+
+```python
+class Solution:
+    def findBottomLeftValue(self, root: TreeNode) -> int:
+        queue = deque()
+        if root: 
+            queue.append(root)
+        result = 0
+        while queue: 
+            q_len = len(queue)
+            for i in range(q_len): 
+                if i == 0: 
+                    result = queue[i].val 
+                cur = queue.popleft()
+                if cur.left: 
+                    queue.append(cur.left)
+                if cur.right: 
+                    queue.append(cur.right)
+        return result
+```
+
+### ==14. 路径总和==
+
+> 给你二叉树的根节点 root 和一个表示目标和的整数 targetSum 。判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和 targetSum 。如果存在，返回 true ；否则，返回 false 。
+>
+> 叶子节点 是指没有子节点的节点。
+>
+> ![img](https://assets.leetcode.com/uploads/2021/01/18/pathsum1.jpg)
+>
+> 输入：root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+> 输出：true
+> 解释：等于目标和的根节点到叶节点路径如上图所示。
+
+这道题我们要遍历从根节点到叶子节点的的路径看看总和是不是目标和。
+
+可以使用深度优先遍历的方式，本题前中后序都可以，无所谓，因为中节点也没有处理逻辑。
+
+1. ==确定递归函数的参数和返回类型==：
+   - ==参数==：需要二叉树的根节点，还需要一个计数器，这个计数器用来计算二叉树的一条边之和是否正好是目标和
+   - ==返回值==：递归函数什么时候需要返回值？什么时候不需要返回值？==这里总结如下三点：==
+     - 如果需要搜索整棵二叉树且不用处理递归返回值，递归函数就不要返回值（路径总和 II）
+     - 如果需要搜索整棵二叉树且需要处理递归返回值，递归函数就需要返回值（二叉树的最近公共祖先）
+     - 如果要搜索其中一条符合条件的路径，那么递归一定需要返回值，因为遇到符合条件的路径了就要及时返回（本题）
+
+本题我们要找一条符合条件的路径，那么递归函数一定需要返回值，及时返回，那么返回类型是什么？
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4rE4sQZkYeNicFutiajiaqSJNZuC1ibsVYpKaYa9UD0kEr3IW1RcPl6fvmZzjibhuG7Ph7Dia6UOUMM1iaw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+图中可以看出，遍历的路线，并不要遍历整棵树，所以递归函数需要返回值，可以用 bool 类型表示。
+
+2. ==确定终止条件==：首先计数器如何统计这一条路径的和呢？
+
+不用去累加然后判断是否等于目标和，代码比较麻烦，可以用递减，让计数器 count 初始为目标和，然后每次减去遍历路径节点上的数值。如果最后 count == 0，同时到了叶子节点的话，说明找到了目标和。如果遍历到了叶子节点，count 不为 0，就是没找到。
+
+3. ==确定单层递归的逻辑==：因为终止条件是判断叶子节点，所以递归的过程中就不要让空节点进入递归了，递归函数是有返回值的，如果递归函数返回 true，说明找到了合适的路径，应该立刻返回。这部分代码是包含着回溯的，没有回溯，如何后撤重新找另一条路径呢。
+
+```python
+class solution:
+    def haspathsum(self, root: treenode, targetsum: int) -> bool:
+        def isornot(root, targetsum) -> bool:
+            if (not root.left) and (not root.right) and targetsum == 0:
+                return true  # 遇到叶子节点，并且计数为 0
+            if (not root.left) and (not root.right):
+                return false  # 遇到叶子节点，计数不为 0
+            
+            if root.left:
+                targetsum -= root.left.val  # 左节点
+                if isornot(root.left, targetsum): 
+                    return true  # 递归，处理左节点
+                targetsum += root.left.val  # 回溯
+                
+            if root.right:
+                targetsum -= root.right.val  # 右节点
+                if isornot(root.right, targetsum): 
+                    return true  # 递归，处理右节点
+                targetsum += root.right.val  # 回溯
+            return false
+
+        if root == none:
+            return false  # 别忘记处理空 treenode
+        else:
+            return isornot(root, targetsum - root.val)
+```
+
+
+
+### ==15. 路径总和 II==
+
+> 给你二叉树的根节点 root 和一个整数目标和 targetSum ，找出所有从根节点到叶子节点 路径总和等于给定目标和的路径。
+>
+> 叶子节点 是指没有子节点的节点。
+>
+> ![img](https://assets.leetcode.com/uploads/2021/01/18/pathsumii1.jpg)
+>
+> 输入：root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
+> 输出：[[5,4,11,2],[5,8,4,5]]
+
+路径总和 ii 要遍历整个树，找到所有路径，**所以递归函数不要返回值！**
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4rE4sQZkYeNicFutiajiaqSJNfxDH4hoiaFxFqibHBrH5T7109S45Fvbltwzly6wSKvVEWt9ibaTzFHt0Q/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+
+
+```python
+class solution:
+    def pathsum(self, root: treenode, targetsum: int) -> list[list[int]]:
+
+        def traversal(cur_node, remain): 
+            if not cur_node.left and not cur_node.right and remain == 0: 
+                result.append(path[:])
+                return
+
+            if not cur_node.left and not cur_node.right: 
+                return 
+
+            if cur_node.left: 
+                path.append(cur_node.left.val)
+                remain -= cur_node.left.val
+                traversal(cur_node.left, remain)
+                path.pop()
+                remain += cur_node.left.val
+
+            if cur_node.right: 
+                path.append(cur_node.right.val)
+                remain -= cur_node.right.val
+                traversal(cur_node.right, remain)
+                path.pop()
+                remain += cur_node.right.val
+
+        result, path = [], []
+        if not root: 
+            return []
+        path.append(root.val)
+        traversal(root, targetsum - root.val)
+        return result
+```
+
+### ==16. 从中序与后序遍历序列构造二叉树==
+
+> 给定两个整数数组 inorder 和 postorder ，其中 inorder 是二叉树的中序遍历， postorder 是同一棵树的后序遍历，请你构造并返回这颗 二叉树 。
+>
+> ![img](https://assets.leetcode.com/uploads/2021/02/19/tree.jpg)
+>
+> 输入：inorder = [9,3,15,20,7], postorder = [9,15,7,20,3]
+> 输出：[3,9,20,null,null,15,7]
+
+首先回忆一下如何根据两个顺序构造一个唯一的二叉树，就是以后序数组的最后一个元素为切割点，先切中序数组，根据中序数组，反过来切后序数组，一层一层切下去，每次后序数组最后一个元素就是节点元素。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv6XU6voat53HtTZQZuk8CVTHqUbkLbJ0cIfNjhork48FK9vnMVUTZl8nsvgjRoS9JCpoAex7bZS7g/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+说到一层一层切割，就应该想到递归：
+
+- 第一步：如果数组大小为零的话，说明是空节点了。
+- 第二步：如果不为空，那么取后序数组最后一个元素作为节点元素。
+- 第三步：找到后序数组最后一个元素在中序数组的位置，作为切割点
+- 第四步：切割中序数组，切成中序左数组和中序右数组 （顺序别搞反了，一定是先切中序数组）
+- 第五步：切割后序数组，切成后序左数组和后序右数组
+- 第六步：递归处理左区间和右区间
+
+难点就是如何切割，以及边界值找不好很容易乱套。
+
+此时应该注意切割的标准，是左闭右开，还有左开又闭，还是左闭又闭，这个就是不变量，要在递归中保持这个不变量。
+
+首先要切割中序数组，为什么先切割中序数组呢？
+
+切割点在后序数组的最后一个元素，就是用这个元素来切割中序数组的，所以必要先切割中序数组。
+
+中序数组相对比较好切，找到切割点（后序数组的最后一个元素）在中序数组的位置，然后切割，如下代码中我坚持左闭右开的原则：
+
+接下来就要切割后序数组了。
+
+首先后序数组的最后一个元素指定不能要了，这是切割点也是当前二叉树中间节点的元素，已经用了。
+
+后序数组的切割点怎么找？
+
+后序数组没有明确的切割元素来进行左右切割，不像中序数组有明确的切割点，切割点左右分开就可以了。
+
+此时有一个很重要的点，就是中序数组大小一定是和后序数组的大小相同。
+
+==中序数组我们都切成了左中序数组和右中序数组了，那么后序数组就可以按照左中序数组的大小来切割，切成左后序数组和右后序数组。==
+
+此时，中序数组切成了左中序数组和右中序数组，后序数组切割成左后序数组和右后序数组。
+
+```python
+class Solution:
+    """
+    从中序与后序遍历序列构造二叉树
+    """
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
+        # 第一步: 特殊情况讨论: 树为空. (递归终止条件)
+        if not postorder: 
+            return None
+
+        # 第二步: 后序遍历的最后一个就是当前的中间节点. 
+        root_val = postorder[-1]
+        root = TreeNode(root_val)
+
+        # 第三步: 找切割点. 
+        separator_idx = inorder.index(root_val)
+
+        # 第四步: 切割inorder数组. 得到 inorder 数组的左,右半边. 
+        inorder_left = inorder[:separator_idx]
+        inorder_right = inorder[separator_idx + 1:]
+
+        # 第五步: 切割postorder数组. 得到postorder数组的左,右半边.
+        # ⭐️ 重点1: 中序数组大小一定跟后序数组大小是相同的. 
+        postorder_left = postorder[:len(inorder_left)]
+        postorder_right = postorder[len(inorder_left): len(postorder) - 1]
+
+        # 第六步: 递归
+        root.left = self.buildTree(inorder_left, postorder_left)
+        root.right = self.buildTree(inorder_right, postorder_right)
+
+        return root 
+```
+```python
+class Solution:
+    """
+    从前序与中序遍历序列构造二叉树
+    """
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        # 第一步: 特殊情况讨论: 树为空. 或者说是递归终止条件
+        if not preorder: 
+            return None
+
+        # 第二步: 前序遍历的第一个就是当前的中间节点. 
+        root_val = preorder[0]
+        root = TreeNode(root_val)
+
+        # 第三步: 找切割点. 
+        separator_idx = inorder.index(root_val)
+
+        # 第四步: 切割inorder数组. 得到inorder数组的左,右半边. 
+        inorder_left = inorder[:separator_idx]
+        inorder_right = inorder[separator_idx + 1:]
+
+        # 第五步: 切割preorder数组. 得到preorder数组的左,右半边.
+        # ⭐️ 重点1: 中序数组大小一定跟前序数组大小是相同的. 
+        preorder_left = preorder[1:1 + len(inorder_left)]
+        preorder_right = preorder[1 + len(inorder_left):]
+
+        # 第六步: 递归
+        root.left = self.buildTree(preorder_left, inorder_left)
+        root.right = self.buildTree(preorder_right, inorder_right)
+
+        return root
+```
+
+
+之前的题目都是再各种遍历二叉树，这次开始构造二叉树了，思路其实比较简单，但是真正的代码实现出来其实并不容易。
+
+大家遇到这种题目的时候，也要学会打日志来调试（如何打日志有时候也是个技术活），不要脑动模拟，脑动模拟很容易越想越乱。
+
+### 17. 最大二叉树
+
+**一般情况来说：如果让空节点（空指针）进入递归，就不加 if，如果不让空节点进入递归，就加 if 限制一下， 终止条件也会相应的调整。**
+
+> 给定一个不重复的整数数组 nums 。 最大二叉树 可以用下面的算法从 nums 递归地构建:
+>
+> 创建一个根节点，其值为 nums 中的最大值。
+> 递归地在最大值 左边 的 子数组前缀上 构建左子树。
+> 递归地在最大值 右边 的 子数组后缀上 构建右子树。
+> 返回 nums 构建的 最大二叉树 。
+>
+> ![img](https://assets.leetcode.com/uploads/2020/12/24/tree1.jpg)
+>
+> 输入：nums = [3,2,1,6,0,5]
+> 输出：[6,3,5,null,2,0,null,null,1]
+> 解释：递归调用如下所示：
+> - [3,2,1,6,0,5] 中的最大值是 6 ，左边部分是 [3,2,1] ，右边部分是 [0,5] 。
+>     - [3,2,1] 中的最大值是 3 ，左边部分是 [] ，右边部分是 [2,1] 。
+>         - 空数组，无子节点。
+>         - [2,1] 中的最大值是 2 ，左边部分是 [] ，右边部分是 [1] 。
+>             - 空数组，无子节点。
+>             - 只有一个元素，所以子节点是一个值为 1 的节点。
+>     - [0,5] 中的最大值是 5 ，左边部分是 [0] ，右边部分是 [] 。
+>         - 只有一个元素，所以子节点是一个值为 0 的节点。
+>         - 空数组，无子节点。
+>
+
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv5uCD7cjdVeTkFKzengqY7pr0QicOweUy5l1k7IMMlYYFicsTnvPGahmhFkqI0fX5PRxkdPmibQiaJVlA/640?wx_fmt=gif&wxfrom=5&wx_lazy=1)
+
+构造树一般采用的是前序遍历，因为先构造中间节点，然后递归构造左子树和右子树。
+
+1. 确定递归函数的参数和返回值
+
+参数就是传入的是存放元素的数组，返回该数组构造的二叉树的头节点，返回类型是指向节点的指针。
+
+2. 确定终止条件
+
+题目中说了输入的数组大小一定是大于等于 1 的，所以我们不用考虑小于 1 的情况，那么当递归遍历的时候，如果传入的数组大小为 1，说明遍历到了叶子节点了。
+
+那么应该定义一个新的节点，并把这个数组的数值赋给新的节点，然后返回这个节点。这表示一个数组大小是 1 的时候，构造了一个新的节点，并返回。
+
+3. 确定单层递归的逻辑
+   - 先找到数组中最大的值和对应的下标，最大的值构造根节点，下标用来下一步分割数组
+   - 最大值所在的下标左区间构造左子树
+   - 最大值所在的下标右区间构造右子树
+
+> **注意类似用数组构造二叉树的题目，每次分隔尽量不要定义新的数组，而是通过下表索引直接在原数组上操作，这样可以节约时间和空间上的开销。**
+
+```python
+class Solution:
+    """递归法 更快"""
+    def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
+        # 递归出口
+        if not nums:
+            return None
+        
+        # 找到数组中的最大值和对应的下标
+        maxvalue = max(nums)
+        index = nums.index(maxvalue)
+        
+        # 构造根节点
+        root = TreeNode(maxvalue)
+        
+		# 最大值所在的下标左区间构造左子树；最大值所在的下标右区间构造右子树
+        left = nums[:index]
+        right = nums[index + 1:]
+
+        root.left = self.constructMaximumBinaryTree(left)
+        root.right = self.constructMaximumBinaryTree(right)
+        
+        # 递归返回值
+        return root
+```
+
+### 18. 合并二叉树
+
+> 给你两棵二叉树： root1 和 root2 。
+>
+> 想象一下，当你将其中一棵覆盖到另一棵之上时，两棵树上的一些节点将会重叠（而另一些不会）。你需要将这两棵树合并成一棵新二叉树。合并的规则是：如果两个节点重叠，那么将这两个节点的值相加作为合并后节点的新值；否则，不为 null 的节点将直接作为新二叉树的节点。
+>
+> 返回合并后的二叉树。
+>
+> 注意: 合并过程必须从两个树的根节点开始。
+>
+> ![img](https://assets.leetcode.com/uploads/2021/02/05/merge.jpg)
+>
+> ```
+> 输入：root1 = [1,3,2,5], root2 = [2,1,3,null,4,null,7]
+> 输出：[3,4,5,5,4,null,7]
+> ```
+
+1. **确定递归函数的参数和返回值：**
+
+首先那么要合入两个二叉树，那么参数至少是要传入两个二叉树的根节点，返回值就是合并之后二叉树的根节点。
+
+2. **确定终止条件：**自己写的时候没有弄好
+
+因为是传入了两个树，那么就有两个树遍历的节点 t1 和 t2，如果 t1 == NULL 了，两个树合并就应该是 t2 了啊（如果 t2 也为 NULL 也无所谓，合并之后就是 NULL）。
+
+反过来如果 t2 == NULL，那么两个数合并就是 t1（如果 t1 也为 NULL 也无所谓，合并之后就是 NULL）。
+
+3. **确定单层递归的逻辑：**
+
+单层递归的逻辑就比较好些了，这里我们用重复利用一下 t1 这个树，t1 就是合并之后树的根节点（就是修改了原来树的结构）。那么单层递归中，就要把两棵树的元素加到一起。
+
+接下来 t1 的左子树是：合并 t1 左子树 t2 左子树之后的左子树。
+
+t1 的右子树：是 合并 t1 右子树 t2 右子树之后的右子树。
+
+最终 t1 就是合并之后的根节点。
+
+```python
+class Solution:
+    def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
+        # 递归终止条件: 
+        # 但凡有一个节点为空, 就立刻返回另外一个. 如果另外一个也为None就直接返回None. 
+        if not root1: 
+            return root2
+        if not root2: 
+            return root1
+        # 上面的递归终止条件保证了代码执行到这里root1, root2都非空. 
+        root1.val += root2.val # 中
+        root1.left = self.mergeTrees(root1.left, root2.left) #左
+        root1.right = self.mergeTrees(root1.right, root2.right) # 右
+
+        # 注意: 本题我们重复使用了题目给出的节点而不是创建新节点：节省时间，空间
+        return root1  
+```
+
+
+
+### 19. 二叉搜索树中的搜索
+
+> 给定二叉搜索树（BST）的根节点 root 和一个整数值 val。
+>
+> 你需要在 BST 中找到节点值等于 val 的节点。 返回以该节点为根的子树。 如果节点不存在，则返回 null 。
+>
+> ![img](https://assets.leetcode.com/uploads/2021/01/12/tree1.jpg)
+>
+> ```
+> 输入：root = [4,2,7,1,3], val = 2
+> 输出：[2,1,3]
+> ```
+
+之前我们讲的都是普通二叉树，那么接下来我们看看二叉搜索树。
+
+二叉搜索树是一个==有序树==：
+
+- 若它的左子树不空，则左子树上所有结点的值均小于它的根结点的值；
+- 若它的右子树不空，则右子树上所有结点的值均大于它的根结点的值；
+- 它的左、右子树也分别为二叉搜索树
+
+这就决定了，二叉搜索树，递归遍历和迭代遍历和普通二叉树都不一样。
+
+本题，其实就是在二叉搜索树中搜索一个节点。那么我们来看看应该如何遍历。
+
+递归三件套：
+
+1. ==确定递归函数的参数和返回值==：递归函数的参数传入的就是根节点和要搜索的数值，返回的就是以这个搜索数值所在的节点。
+2. ==确定终止条件==：如果 root 为空，或者找到这个数值了，就返回 root 节点。
+
+3. ==确定单层递归的逻辑==：因为二叉搜索树的节点是有序的，所以可以有方向的去搜索。如果 root->val > val，搜索左子树，如果 root->val < val，就搜索右子树，最后如果都没有搜索到，就返回 NULL。
+
+这里可能会疑惑，在递归遍历的时候，什么时候直接 return 递归函数的返回值，什么时候不用加这个 return 呢。
+
+在“路径搜索”中已经讲过了，如果要搜索一条边，递归函数就要加返回值，这里也是一样的道理，因为已经搜索到目标节点了，就要立即 return，这样才是找到节点就返回（搜索某一条边），如果不加 return，就是遍历整棵树了。
+
+```python
+class Solution:
+    def searchBST(self, root: TreeNode, val: int) -> TreeNode:
+        if not root:
+            return None
+        
+        if root.val == val:
+            return root
+        elif root.val > val:
+            # 注意这里的 return，自己写的时候就没有加
+            # 想想为什么要加
+            return self.searchBST(root.left, val)
+        elif root.val < val:
+            return self.searchBST(root.right, val)
+```
+
+### ==20. [验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree/)==
+
+> 给你一个二叉树的根节点 root ，判断其是否是一个有效的二叉搜索树。
+>
+> 有效 二叉搜索树定义如下：
+>
+> 节点的左子树只包含 小于 当前节点的数。
+> 节点的右子树只包含 大于 当前节点的数。
+> 所有左子树和右子树自身必须也是二叉搜索树。
+>
+> ![img](https://assets.leetcode.com/uploads/2020/12/01/tree1.jpg)
+>
+> ```
+> 输入：root = [2,1,3]
+> 输出：true
+> ```
+
+> 在二叉树中通过两个==前后指针==作比较，会经常用到！！
+
+要知道中序遍历下，输出的二叉搜索树节点的数值是有序序列。有了这个特性，**验证二叉搜索树，就相当于变成了判断一个序列是不是递增的了。**
+
+但其实不用转变成数组，可以在递归遍历的过程中直接判断是否有序。
+
+这道题目比较容易陷入两个陷阱：
+
+- **不能单纯的比较左节点小于中间节点，右节点大于中间节点就完事了**。
+
+因为我们要比较的是左子树所有节点小于中间节点，右子树所有节点大于中间节点，所以以上代码的判断逻辑是错误的。
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4tTUC6mMFHsaA3FlglH0B9FQD2zQL7TPOZFxyA1rhwTvtepASKDhgSvlKJK2Qzp9LWXkad3CSYIQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+
+- 样例中最小节点 可能是 int 的最小值，如果这样使用最小的 int 来比较也是不行的。
+
+此时可以初始化比较元素为 longlong 的最小值。问题可以进一步演进：如果样例中根节点的 val 可能是 longlong 的最小值 又要怎么办呢？
+
+==递归三部曲==：
+
+1. ==确定递归函数，返回值以及参数==：要定义一个 longlong 的全局变量，用来比较遍历的节点是否有序
+
+注意递归函数要有 bool 类型的返回值，只有寻找某一条边或者一个节点的 时候，递归函数会有 bool 类型的返回值。
+
+其实本题是同样的道理，我们在寻找一个不符合条件的节点，如果没有找到这个节点就遍历了整个树，如果找到不符合的节点了，立刻返回。
+
+2. ==确定终止条件==：`if not root: return true`，这是因为二叉搜索树也可以为空！
+3. ==确定单层递归的逻辑==：中序遍历，一直更新 maxVal，一旦发现 maxVal >= root->val，就返回 false，注意元素相同时候也要返回 false。
+
+```python
+class Solution:
+    # 中序遍历
+    def __init__(self):
+        self.pre = - float('inf')
+
+    def isValidBST(self, root):
+        if root == None:
+            return True
+        # 左
+        if not self.isValidBST(root.left):
+            return False
+		# 中
+        if root.val <= self.pre:
+            return False
+        self.pre = root.val
+		
+        # 右
+        return self.isValidBST(root.right)
+```
+
+==二叉搜索树和中序遍历是好朋友！！==
+
+下面的代码也很简洁：
+
+```python
+class Solution:
+    def isValidBST(self, root):
+        
+        def BFS(root, left, right):
+            if root is None:
+                return True
+            
+            if left < root.val < right:
+                return BFS(root.left, left, root.val) and BFS(root.right, root.val, right)
+            else:
+                return False
+
+        return BFS(root, -float('inf'), float('inf'))
+```
+
+
+
+### 21. 二叉搜索树的最小绝对差
+
+> 给你一个二叉搜索树的根节点 `root` ，返回 **树中任意两不同节点值之间的最小差值** 。
+>
+> 差值是一个正数，其数值等于两值之差的绝对值。
+>
+> ![img](https://assets.leetcode.com/uploads/2021/02/05/bst1.jpg)
+>
+> ```
+> 输入：root = [4,2,6,1,3]
+> 输出：1
+> ```
+
+**注意是二叉搜索树**，二叉搜索树可是有序的。
+
+遇到在二叉搜索树上求什么最值啊，差值之类的，就把它想成在一个有序数组上求最值，求差值，这样就简单多了。
+
+那么二叉搜索树采用中序遍历，其实就是一个有序数组。
+
+**在一个有序数组上求两个数最小差值，这是不是就是一道送分题了。**
+
+```python
+class Solution:
+    def getMinimumDifference(self, root: TreeNode) -> int:
+        res = []   
+        r = float("inf")
+        def buildaList(root):  //把二叉搜索树转换成有序数组
+            if not root: 
+                return None
+            if root.left: 
+                buildaList(root.left)  //左
+            res.append(root.val)  //中
+            if root.right: 
+                buildaList(root.right)  //右
+            return res
+            
+        buildaList(root)
+        for i in range(len(res)-1):  // 统计有序数组的最小差值
+            r = min(abs(res[i]-res[i+1]),r)
+        return r
+```
+
+但是其实在二叉搜素树中序遍历的过程中，我们就可以直接计算了。
+
+需要用一个 pre 节点记录一下 cur 节点的前一个节点。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4lnA8acpOhBVBk3ibZ0CMvC2QiclkvLm0G2yMlAHlwA8B1Oa9CwmDjF1Sv0MUruoRmcc3SnANbtxbA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+```python
+class Solution:
+    def getMinimumDifference(self, root: TreeNode) -> int:
+        res = float("inf")
+        # 初始化为 -1 是因为题目保证了节点值非负
+        pre = -1
+        def traversal(root):
+            nonlocal res
+            nonlocal pre  
+            if not root: 
+                return None
+            # 左
+            traversal(root.left)
+            
+            # 初始化
+            if pre == -1:
+                pre = root.val
+            else:
+                res = min(res, root.val - pre)
+                pre = root.val
+            
+            # 右
+            traversal(root.right)
+        
+        traversal(root)
+        return res
+```
+
+### ==22. [二叉搜索树中的众数](https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/)==
+
+> 给你一个含重复值的二叉搜索树（BST）的根节点 root ，找出并返回 BST 中的所有 众数（即，出现频率最高的元素）。
+>
+> 如果树中有不止一个众数，可以按 任意顺序 返回。
+>
+> 假定 BST 满足如下定义：
+>
+> 结点左子树中所含节点的值 小于等于 当前节点的值
+> 结点右子树中所含节点的值 大于等于 当前节点的值
+> 左子树和右子树都是二叉搜索树
+>
+> ![img](https://assets.leetcode.com/uploads/2021/03/11/mode-tree.jpg)
+>
+> ```
+> 输入：root = [1,null,2,2]
+> 输出：[2]
+> ```
+
+#### 22.1 如果不是二叉搜索树
+
+如果不是二叉搜索树，最直观的方法一定是把这个树都遍历了，用 map 统计频率，把频率排个序，最后取前面高频的元素的集合。
+
+然后把 map 转化为堆，取频率最高的元素。
+
+```python
+class Solution:
+    def findMode(self, root: TreeNode) -> List[int]:
+        # 假如不是二叉搜索树
+        map = {}
+
+        def function(root):
+            nonlocal map
+            if not root:
+                return None
+
+            if root.val not in map:
+                map[root.val] = 1
+            else:
+                map[root.val] += 1
+          
+            function(root.left)
+            function(root.right)
+
+        function(root)
+        import heapq
+        stack = []
+        for k, v in map.items():
+            heapq.heappush(stack, (-v,k))
+        res = [heapq.heappop(stack)]
+        while stack:
+            res.append(heapq.heappop(stack))
+            if res[-1][0] > res[-2][0]:
+                res.pop()
+                break
+        res = [item[1] for item in res]
+        return res
+```
+
+
+
+#### 22.2 如果是二叉搜索树
+
+**既然是搜索树，它中序遍历就是有序的**。
+
+遍历有序数组的元素出现频率，从头遍历，那么一定是相邻两个元素作比较，然后就把出现频率最高的元素输出就可以了。
+
+关键是在有序数组上的话，好搞，在树上怎么搞呢？
+
+这就考察对树的操作了。
+
+在[二叉树：搜索树的最小绝对差](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247493102&idx=2&sn=8f85cab9692dd948cc5dfa88b7298925&scene=21#wechat_redirect)中我们就使用了 pre 指针和 cur 指针的技巧，这次又用上了。
+
+弄一个指针指向前一个节点，这样每次 cur（当前节点）才能和 pre（前一个节点）作比较。
+
+而且初始化的时候 pre = NULL，这样当 pre 为 NULL 时候，我们就知道这是比较的第一个元素。
+
+此时又有问题了，因为要求最大频率的元素集合（注意是集合，不是一个元素，可以有多个众数），如果是数组上大家一般怎么办？
+
+应该是先遍历一遍数组，找出最大频率（maxCount），然后再重新遍历一遍数组把出现频率为 maxCount 的元素放进集合。（因为众数有多个）
+
+这种方式遍历了两遍数组。
+
+那么我们遍历两遍二叉搜索树，把众数集合算出来也是可以的。
+
+但这里其实只需要遍历一次就可以找到所有的众数。
+
+那么如何只遍历一遍呢？
+
+如果 频率 count 等于 maxCount（最大频率），当然要把这个元素加入到结果集中，==频率 count 大于 maxCount 的时候，不仅要更新 maxCount，而且要清空结果集（以下代码为 result 数组），因为结果集之前的元素都失效了。==
+
+```python
+class Solution:
+    # 好清晰的代码，注意学习
+    def __init__(self):
+        self.pre = TreeNode()
+        self.count = 0
+        self.max_count = 0
+        self.result = []
+
+    def findMode(self, root: TreeNode) -> List[int]:
+        if not root: return None
+        self.search_BST(root)
+        return self.result
+        
+    def search_BST(self, cur: TreeNode) -> None:
+        if not cur: return None
+
+        # 左
+        self.search_BST(cur.left)
+
+        # 第一个节点
+        if not self.pre:
+            self.count = 1
+        # 与前一个节点数值相同
+        elif self.pre.val == cur.val:
+            self.count += 1 
+        # 与前一个节点数值不相同
+        else:
+            self.count = 1
+        self.pre = cur
+
+        if self.count == self.max_count:
+            self.result.append(cur.val)
+        
+        if self.count > self.max_count:
+            self.max_count = self.count
+            # 清空self.result，确保result之前的的元素都失效
+            self.result = [cur.val]	
+        
+        # 右
+        self.search_BST(cur.right)
+
+```
+
+### ==23. 二叉树的最近公共祖先==
+
+> 给定一个二叉树，找到该树中两个指定节点的最近公共祖先。
+>
+> 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+>
+> ![img](https://assets.leetcode.com/uploads/2018/12/14/binarytree.png)
+>
+> 输入：root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+> 输出：3
+> 解释：节点 5 和节点 1 的最近公共祖先是节点 3 。
+
+ 主要思考如下几点：
+
+- 如何从底向上遍历？
+- 遍历整棵树，还是遍历局部树？
+- 如何把结果传到根节点的？
+
+遇到这个题目首先想的是要是能自底向上查找就好了，这样就可以找到公共祖先了。
+
+那么二叉树如何可以自底向上查找呢？
+
+回溯啊，二叉树回溯的过程就是从底到上。
+
+==后序遍历就是天然的回溯过程，最先处理的一定是叶子节点。==
+
+接下来就看如何判断一个节点是节点 q 和节点 p 的公共祖先。
+
+**如果找到一个节点，发现左子树出现结点 p，右子树出现节点 q，或者 左子树出现结点 q，右子树出现节点 p，那么该节点就是节点 p 和 q 的最近公共祖先。**
+
+使用后序遍历，回溯的过程，就是从底向上遍历节点，一旦发现如何这个条件的节点，就是最近公共节点了。
+
+递归三部曲：
+
+1. ==确定递归函数返回值以及参数==：需要递归函数返回值，来告诉我们是否找到节点 q 或者 p，那么返回值为 bool 类型就可以了。但我们还要返回最近公共节点，可以利用上题目中返回值是 TreeNode * ，那么如果遇到 p 或者 q，就把 q 或者 p 返回，返回值不为空，就说明找到了 q 或者 p。
+2. ==确定终止条件==：如果找到了 节点 p 或者 q，或者遇到空节点，就返回。
+3. ==确定单层递归逻辑==：值得注意的是本题函数有返回值，是因为回溯的过程需要递归函数的返回值做判断，但本题我们依然要遍历树的所有节点。
+
+之前我们提到过递归函数有返回值就是要遍历某一条边，但有返回值也要看如何处理返回值！
+
+如果递归函数有返回值，如何区分要搜索一条边还是搜索整个树呢？
+
+搜索一条边的写法：
+
+```C++
+if (递归函数(root->left)) return ;
+
+if (递归函数(root->right)) return ;
+```
+
+搜索整个树写法：
+
+```C++
+left = 递归函数(root->left);
+right = 递归函数(root->right);
+left 与 right的逻辑处理;
+```
+
+在递归函数有返回值的情况下，如果要搜索一条边，递归函数返回值不为空的时候，立刻返回，如果搜索整个树，直接用一个变量 left 、right 接住这个返回值，这个 left 和 right 后续还有逻辑处理的需要，也就是后序遍历中处理中间节点的逻辑。
+
+那么为什么要遍历整颗树呢？直观上来看，找到最近公共祖先，直接一路返回就可以了。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv56lRiaTouthmMQAlq0uIekCXxxtFib4uSHLosXr9Ps4FsVsE5e5xhEU7Vvc4ic8sx4QdeVavCIDaSicA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+就像图中一样直接返回 7，多美滋滋。
+
+但事实上还要遍历根节点右子树（即使此时已经找到了目标节点了），也就是图中的节点 4、15、20。
+
+因为在如下代码的后序遍历中，如果想利用 left 和 right 做逻辑处理， 不能立刻返回，而是要等 left 与 right 逻辑处理完之后才能返回。
+
+```C++
+left = 递归函数(root->left);
+right = 递归函数(root->right);
+left 与 right的逻辑处理;
+```
+
+所以此时大家知道我们要遍历整棵树。
+
+那么先用 left 和 right 接住左子树和右子树的返回值，如果两者都不为空，说明此时 root 就是最近公共节点；
+
+如果 left 为空，right 不为空，就返回 right，说明目标节点是通过 right 返回的，反之亦然。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv56lRiaTouthmMQAlq0uIekCciacJctRYOrIBVibBB8bp6rGyVXO4z1CIPhRg2QNjbFpQVrF8mZgLDFQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+图中节点 10 的左子树返回 null，右子树返回目标值 7，那么此时节点 10 的处理逻辑就是把右子树的返回值（最近公共祖先 7）返回上去！
+
+那么如果 left 和 right 都为空，则返回 left 或者 right 都是可以的，也就是返回空。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv56lRiaTouthmMQAlq0uIekCNDiacYC4nySO5HiaANjkMTrrIXZaXZFrkjOg8REYUUlhYIAC2ueORAWw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+**那么我给大家归纳如下三点**：
+
+1. 求最小公共祖先，需要从底向上遍历，那么二叉树，只能通过后序遍历（即：回溯）实现从底向上的遍历方式。
+2. 在回溯的过程中，必然要遍历整棵二叉树，即使已经找到结果了，依然要把其他节点遍历完，因为要使用递归函数的返回值（也就是代码中的 left 和 right）做逻辑判断。
+3. 要理解如果返回值 left 为空，right 不为空为什么要返回 right，为什么可以用返回 right 传给上一层结果。
+
+可以说这里每一步，都是有难度的，都需要对二叉树，递归和回溯有一定的理解。
+
+好复杂的逻辑啊，第一遍还不太理解。
+
+```python
+class Solution:
+    """二叉树的最近公共祖先 递归法"""
+
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if not root or root == p or root == q:
+            return root
+        
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+        
+        if left and right:
+            return root
+        if left:
+            return left
+        return right
+```
+
+### 24. 二叉搜索树中的插入操作
+
+> 给定二叉搜索树（BST）的根节点 root 和要插入树中的值 value ，将值插入二叉搜索树。 返回插入后二叉搜索树的根节点。 输入数据保证 ，新值和原始二叉搜索树中的任意节点值都不同。
+>
+> 注意，可能存在多种有效的插入方式，只要树在插入后仍保持为二叉搜索树即可。 你可以返回任意有效的结果 。
+>
+> ![img](https://assets.leetcode.com/uploads/2020/10/05/insertbst.jpg)
+>
+> ```
+> 输入：root = [4,2,7,1,3], val = 5
+> 输出：[4,2,7,1,3,5]
+> ```
+
+```python
+class Solution:
+    # 自己写出来的，真棒！！
+    def insertIntoBST(self, root: TreeNode, val: int) -> TreeNode:
+
+        def insertFunction(root, val):
+            if not root:
+                return None
+            
+            if val > root.val:
+                if not root.right:
+                    root.right = TreeNode(val)
+                self.insertIntoBST(root.right, val)
+            if val < root.val:
+                if not root.left:
+                    root.left = TreeNode(val)
+                self.insertIntoBST(root.left, val)
+
+            return root
+        
+        if not root:
+            return TreeNode(val)
+        else:
+            return insertFunction(root, val)
+```
+
+更简洁的写法：
+
+```python
+class Solution:
+    def insertIntoBST(self, root: TreeNode, val: int) -> TreeNode:
+        # 返回更新后的以当前root为根节点的新树，方便用于更新上一层的父子节点关系链
+
+        # Base Case
+        if not root: return TreeNode(val)
+
+        # 单层递归逻辑:
+        if val < root.val: 
+            # 将val插入至当前root的左子树中合适的位置
+            # 并更新当前root的左子树为包含目标val的新左子树
+            root.left = self.insertIntoBST(root.left, val)
+
+        if root.val < val:
+            # 将val插入至当前root的右子树中合适的位置
+            # 并更新当前root的右子树为包含目标val的新右子树
+            root.right = self.insertIntoBST(root.right, val)
+
+        # 返回更新后的以当前root为根节点的新树
+        return root
+```
+
+
+
+### ==25. 删除二叉搜索树中的节点==
+
+> 给定一个二叉搜索树的根节点 root 和一个值 key，删除二叉搜索树中的 key 对应的节点，并保证二叉搜索树的性质不变。返回二叉搜索树（有可能被更新）的根节点的引用。
+>
+> 一般来说，删除节点可分为两个步骤：
+>
+> 1. 首先找到需要删除的节点；
+> 2. 如果找到了，删除它。
+>
+> ![img](https://assets.leetcode.com/uploads/2020/09/04/del_node_1.jpg)
+>
+> ```
+> 输入：root = [5,3,6,2,4,null,7], key = 3
+> 输出：[5,4,6,2,null,null,7]
+> ```
+
+二叉搜索树删除节点就涉及到结构调整了！
+
+搜索树的节点删除要比节点增加复杂的多，有很多情况需要考虑，做好心里准备。
+
+递归三部曲：
+
+1. ==确定递归函数参数以及返回值==：递归函数的返回值，在[二叉树：搜索树中的插入操作](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247493888&idx=2&sn=a3f170744f042f2d814e175d5304ad88&scene=21#wechat_redirect)中通过递归返回值来加入新节点， 这里也可以通过递归返回值删除节点。
+2. ==确定终止条件==：遇到空返回，其实这也说明没找到删除的节点，遍历到空节点直接返回了
+3. ==确定单层递归的逻辑==：有以下五种情况：
+   1. 第一种情况：没找到删除的节点，遍历到空节点直接返回了
+   2. 找到删除的节点：
+      1. 第二种情况：左右孩子都为空（叶子节点），直接删除节点， 返回 NULL 为根节点
+      2. 第三种情况：删除节点的左孩子为空，右孩子不为空，删除节点，右孩子补位，返回右孩子为根节点
+      3. 第四种情况：删除节点的右孩子为空，左孩子不为空，删除节点，左孩子补位，返回左孩子为根节点
+      4. 第五种情况：左右孩子节点都不为空，则将删除节点的左子树头结点（左孩子）放到删除节点的右子树的最左面节点的左孩子上，返回删除节点右孩子为新的根节点。
+
+![图片](https://mmbiz.qpic.cn/mmbiz_gif/ciaqDnJprwv4VQiboXYq4V3j9WdH12A6ibxgAFxGZsyFZWVngIZnzicYm3lJUre3iczEXBpzCdsGpRUTaGIkmXQx5SQ/640?wx_fmt=gif&wxfrom=5&wx_lazy=1)
+
+```python
+class Solution:
+    def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
+        # 第一种情况：没找到删除的节点，遍历到空节点直接返回了
+        if not root: return root  
+        if root.val == key:  
+            # 第二种情况：左右孩子都为空（叶子节点），直接删除节点， 返回NULL为根节点
+            if not root.left and not root.right:  
+                del root
+                return None
+            # 第三种情况：其左孩子为空，右孩子不为空，删除节点，右孩子补位 ，返回右孩子为根节点
+            if not root.left and root.right:  
+                tmp = root
+                root = root.right
+                del tmp
+                return root
+            # 第四种情况：其右孩子为空，左孩子不为空，删除节点，左孩子补位，返回左孩子为根节点
+            if root.left and not root.right:  
+                tmp = root
+                root = root.left
+                del tmp
+                return root
+            # 第五种情况：左右孩子节点都不为空，则将删除节点的左子树放到删除节点的右子树的最左面节点的左孩子的位置
+            else:  
+                v = root.right
+                while v.left:
+                    v = v.left
+                v.left = root.left
+                tmp = root
+                root = root.right
+                del tmp
+                return root
+        
+        if root.val > key: 
+            root.left = self.deleteNode(root.left,key)  #左递归
+        if root.val < key: 
+            root.right = self.deleteNode(root.right,key)  #右递归
+        return root
+```
+
+### ==26. [修剪二叉搜索树](https://leetcode-cn.com/problems/trim-a-binary-search-tree/)==
+
+> 给你二叉搜索树的根节点 root ，同时给定最小边界 low 和最大边界 high。通过修剪二叉搜索树，使得所有节点的值在 [low, high] 中。修剪树 不应该 改变保留在树中的元素的相对结构 (即，如果没有被移除，原有的父代子代关系都应当保留)。 可以证明，存在唯一的答案 。
+>
+> 所以结果应当返回修剪好的二叉搜索树的新的根节点。注意，根节点可能会根据给定的边界发生改变。
+>
+> ![img](https://assets.leetcode.com/uploads/2020/09/09/trim2.jpg)
+>
+> ```
+> 输入：root = [3,0,4,null,2,null,null,1], low = 1, high = 3
+> 输出：[3,2,null,1]
+> ```
+
+直接想法就是：递归处理，然后遇到 `root->val < low || root->val > high` 的时候直接 return NULL，一波修改，赶紧利落。
+
+**然而 [1, 3] 区间在二叉搜索树的中可不是单纯的节点 3 和左孩子节点 0 就决定的，还要考虑节点 0 的右子树**。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv7dhkk6vgdCDXeibQSb9l0a42N0xQtOoL2y85OTs6NeRd1Uo3zQfvwhoBhyHFM0R3f0GuvT50dewUA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+我们需要重构二叉树！！
+
+在上图中我们发现节点 0 并不符合区间要求，那么将节点 0 的右孩子 节点 2 直接赋给 节点 3 的左孩子就可以了（就是把节点 0 从二叉树中移除），如图：
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv7dhkk6vgdCDXeibQSb9l0a4jZYZwicVaAcHZx60BlmbshPNOgzicXWdggWnEPhqJfcMXKOCNqvEAlEQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+1. 确定递归函数的参数以及返回值：
+
+这里我们为什么需要返回值呢？因为是要遍历整棵树，做修改，其实不需要返回值也可以，我们也可以完成修剪（其实就是从二叉树中移除节点）的操作。但是有返回值，更方便，可以通过递归函数的返回值来移除节点。
+
+2. 确定终止条件：
+
+修剪的操作并不是在终止条件上进行的，所以就是遇到空节点返回就可以了。
+
+3. 确定单层递归的逻辑
+
+如果 root（当前节点）的元素小于 low 的数值，那么应该递归右子树，并返回右子树符合条件的头结点。
+
+如果 root (当前节点) 的元素大于 high 的，那么应该递归左子树，并返回左子树符合条件的头结点。
+
+接下来要将下一层处理完左子树的结果赋给 root->left，处理完右子树的结果赋给 root->right。
+
+最后返回 root 节点。
+
+此时大家是不是还没发现这多余的节点究竟是如何从二叉树中移除的呢？
+
+如下代码相当于把节点 0 的右孩子（节点 2）返回给上一层，
+
+```C++
+if (root->val < low) {
+    TreeNode* right = trimBST(root->right, low, high); // 寻找符合区间[low, high]的节点
+    return right;
+}
+```
+
+然后如下代码相当于用节点 3 的左孩子 把下一层返回的 节点 0 的右孩子（节点 2） 接住。
+
+```C++
+root->left = trimBST(root->left, low, high);
+```
+
+此时节点 3 的右孩子就变成了节点 2，将节点 0 从二叉树中移除了。
+
+最后整体代码：
+
+```python
+class Solution:
+    def trimBST(self, root: TreeNode, low: int, high: int) -> TreeNode:
+        '''
+        确认递归函数参数以及返回值：返回更新后剪枝后的当前root节点
+        '''
+        # Base Case
+        if not root: return None
+
+        # 单层递归逻辑
+        if root.val < low:
+            # 若当前root节点小于左界：只考虑其右子树，用于替代更新后的其本身，抛弃其左子树整体
+            return self.trimBST(root.right, low, high)
+        
+        if high < root.val:
+            # 若当前root节点大于右界：只考虑其左子树，用于替代更新后的其本身，抛弃其右子树整体
+            return self.trimBST(root.left, low, high)
+
+        if low <= root.val <= high:
+            root.left = self.trimBST(root.left, low, high)
+            root.right = self.trimBST(root.right, low, high)
+            # 返回更新后的剪枝过的当前节点root
+            return root
+```
+
+### ==27. [将有序数组转换为二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/)==
+
+> 给你一个整数数组 nums ，其中元素已经按 升序 排列，请你将其转换为一棵 高度平衡 二叉搜索树。
+>
+> 高度平衡 二叉树是一棵满足「每个节点的左右两个子树的高度差的绝对值不超过 1 」的二叉树。
+>
+> ![img](https://assets.leetcode.com/uploads/2021/02/18/btree1.jpg)
+>
+> ```
+> 输入：nums = [-10,-3,0,5,9]
+> 输出：[0,-3,9,-10,null,5]
+> ```
+
+题目中说要转换为一棵高度平衡二叉搜索树。这和转换为一棵普通二叉搜索树有什么差别呢？
+
+其实这里不用强调平衡二叉搜索树，数组构造二叉树，构成平衡树是自然而然的事情，因为大家默认都是从数组中间位置取值作为节点元素，一般不会随机取，**所以想构成不平衡的二叉树是自找麻烦**。
+
+根据数组构造一颗二叉树，**本质就是寻找分割点，分割点作为当前节点，然后递归左区间和右区间**。
+
+```python
+class Solution:
+    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+        '''
+        构造二叉树：重点是选取数组最中间元素为分割点，左侧是递归左区间；右侧是递归右区间
+        必然是平衡树
+        左闭右闭区间
+        '''
+        # 返回根节点
+        root = self.traversal(nums, 0, len(nums)-1)
+        return root
+
+    def traversal(self, nums: List[int], left: int, right: int) -> TreeNode:
+        # Base Case
+        if left > right:
+            return None
+        
+        # 确定左右界的中心，防越界
+        mid = left + (right - left) // 2
+        # 构建根节点
+        mid_root = TreeNode(nums[mid])
+        # 构建以左右界的中心为分割点的左右子树
+        mid_root.left = self.traversal(nums, left, mid-1)
+        mid_root.right = self.traversal(nums, mid+1, right)
+
+        # 返回由被传入的左右界定义的某子树的根节点
+        return mid_root
+```
+
+
+
+### ==28. 把二叉搜索树转换为累加树==
+
+> 给出二叉 搜索 树的根节点，该树的节点值各不相同，请你将其转换为累加树（Greater Sum Tree），使每个节点 node 的新值等于原树中大于或等于 node.val 的值之和。
+>
+> 提醒一下，二叉搜索树满足下列约束条件：
+>
+> 节点的左子树仅包含键 小于 节点键的节点。
+> 节点的右子树仅包含键 大于 节点键的节点。
+> 左右子树也必须是二叉搜索树。
+>
+> ![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2019/05/03/tree.png)
+>
+> 输入：[4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]
+> 输出：[30,36,21,36,35,26,15,null,null,null,33,null,null,null,8]
+
+那么有序的元素如果求累加呢？
+
+**其实这就是一棵树，大家可能看起来有点别扭，换一个角度来看，这就是一个有序数组 [2, 5, 13]，求从后到前的累加数组，也就是 [20, 18, 13]，是不是感觉这就简单了。**
+
+因为数组大家都知道怎么遍历啊，从后向前，挨个累加就完事了，这换成了二叉搜索树，看起来就别扭了一些是不是。
+
+那么知道如何遍历这个二叉树，也就迎刃而解了，**从树中可以看出累加的顺序是右中左，所以我们需要反中序遍历这个二叉树，然后顺序累加就可以了**。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4MT9C2BlSHE7icxicsBhIsIjiaq4zRbwSNAMe9AQ7pQHSMiarmAgDJcrzc2wAPmZ5wTd9QiaRxibH8beeg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+本题依然需要一个 pre 指针记录当前遍历节点 cur 的前一个节点，这样才方便做累加。
+
+1. ==递归函数参数以及返回值==：不需要递归函数的返回值做什么操作了，要遍历整棵树。
+2. ==确定终止条件==：遇空就终止
+3. ==确定单层递归的逻辑==：注意**要右中左来遍历二叉树**， 中节点的处理逻辑就是让 cur 的数值加上前一个节点的数值。
+
+```python
+class Solution:
+    def __init__(self):
+        self.pre = TreeNode()
+
+    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        '''
+        倒序累加替换：  
+        [2, 5, 13] -> [[2]+[1]+[0], [2]+[1], [2]] -> [20, 18, 13]
+        '''
+        self.traversal(root)
+        return root
+
+    def traversal(self, root: TreeNode) -> None:
+        # 因为要遍历整棵树，所以递归函数不需要返回值
+        # Base Case
+        if not root: 
+            return None
+        # 单层递归逻辑：中序遍历的反译 - 右中左
+        self.traversal(root.right)  # 右
+
+        # 中节点：用当前root的值加上pre的值
+        root.val += self.pre.val    # 中
+        self.pre = root             
+
+        self.traversal(root.left)   # 左
 ```
 
 
@@ -3414,6 +4740,7 @@ class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
         res = []
         path = []
+        
         ## 1. 确定回溯函数的参数
         def backtrack(n, k, StartIndex):
             ## 2. 确定回溯函数的终止条件
@@ -3428,6 +4755,7 @@ class Solution:
                 backtrack(n, k, i+1)
                 # 回溯完成后要把之前的元素 pop 出去
                 path.pop()
+                
         backtrack(n, k, 1)
         return res
     
@@ -3675,7 +5003,7 @@ class Solution:
         return self.res
 ```
 
-### 6. 组合总和 II
+### ==6. 组合总和 II==
 
 > 给定一个候选人编号的集合 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
 >
@@ -3867,7 +5195,7 @@ class Solution:
         return True
 ```
 
-### 8. 复制 ip 地址：难
+### ==8. 复制 ip 地址：难==
 
 > 有效 IP 地址正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。
 >
@@ -3984,6 +5312,581 @@ class Solution:
 ![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv7icZnSOhUqwR4ibqNP3nHyktNROmSHwzzNwsWCBrtBH5tHuhg5YKSPl77r8OiapekZ77Dn8NchSoMBw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
 从图中红线部分，可以看出**遍历这个树的时候，把所有节点都记录下来，就是要求的子集集合**。
+
+### ==10. 子集 II==
+
+> 给你一个整数数组 nums ，其中可能包含重复元素，请你返回该数组所有可能的子集（幂集）。
+>
+> 解集 不能 包含重复的子集。返回的解集中，子集可以按 任意顺序 排列。
+>
+> ```
+> 输入：nums = [1,2,2]
+> 输出：[[],[1],[1,2],[1,2,2],[2],[2,2]]
+> ```
+
+这道题目和 [78. 子集](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494825&idx=2&sn=6dfb48c91559b1cfc980a86c4806103e&scene=21#wechat_redirect)区别就是集合里有重复元素了，而且求取的子集要去重。
+
+**理解 “树层去重” 和 “树枝去重” 非常重要**。在去重之前需要先对集合排序。
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv7DVmb1oGvLmtT7kUX5Hpmog1oKibxeeMV24Dy0UoFibor0wXU62S83iaJvoXpK8IHs9wlwWSCHam2WQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+
+从图中可以看出，同一树层上重复取 2 就要过滤掉，同一树枝上就可以重复取 2，因为同一树枝上元素的集合才是唯一子集！
+
+```python
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        nums = sorted(nums)
+        path = []
+        res = [[]]
+        used = [0]*len(nums)
+
+        def backtracking(nums, startIndex):
+            if len(path) >= len(nums):
+                return
+            # 树层去重
+            for i in range(startIndex, len(nums)):
+                if i >= 1 and used[i-1] == 0 and nums[i] == nums[i-1]:
+                    continue
+                    
+                used[i] = 1
+                path.append(nums[i])
+                res.append(path[:])
+                backtracking(nums, i+1)
+                path.pop()
+                used[i] = 0
+        
+        backtracking(nums,0)
+        return res
+```
+
+### ==11. 递增子序列==
+
+> 给你一个整数数组 nums ，找出并返回所有该数组中不同的递增子序列，递增子序列中 至少有两个元素 。你可以按 任意顺序 返回答案。
+>
+> 数组中可能含有重复元素，如出现两个整数相等，也可以视作递增序列的一种特殊情况。
+>
+> 输入：nums = [4,6,7,7]
+> 输出：[[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[6,7],[6,7,7],[7,7]]
+
+这个递增子序列比较像是取有序的子集。而且本题也要求不能有相同的递增子序列。
+
+这又是子集，又是去重，是不是不由自主的想起了刚刚讲过的 [90. 子集 II](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247495100&idx=2&sn=1f87c291dd7453fe99114d595d13fd40&scene=21#wechat_redirect)。
+
+就是因为太像了，更要注意差别所在，要不就掉坑里了！
+
+ [90. 子集 II](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247495100&idx=2&sn=1f87c291dd7453fe99114d595d13fd40&scene=21#wechat_redirect) 我们是通过排序，再加上一个标记数组达到去重目的的，而本题要求自增子序列，是不能对原数组排序的，排完序的数组都是自增子序列了。
+
+所以不能使用之前的去重逻辑！
+
+为了有鲜明的对比，我用 [4, 7, 6, 7] 这个数组来举例，抽象为树形结构如图：
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv6l713AIoE6ma6iaLd08CPvG6r5BqZHEZZ0PjgiaTPjejfXDtOJibnJThZXsicYM7JGian7GoU24qMltibw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+
+回溯三部曲：
+
+1. ==递归函数参数==：本题求子序列，很明显一个元素不能重复使用，所以需要 startIndex，调整下一层递归的起始位置
+2. ==终止条件==：本题类似于求子集问题，也是要遍历树形结构找每一个节点，所以和子集问题一样，可以不加终止条件，startIndex 每次都会加 1，并不会无限递归。但注意本题要求递增子序列至少为 2
+3. ==单层搜索逻辑==：同一父节点下的同层上使用过的元素就不能再使用了。
+
+代码也比较好理解：
+
+```python
+class Solution:
+    def __init__(self):
+        self.paths = []
+        self.path = []
+
+    def findSubsequences(self, nums: List[int]) -> List[List[int]]:
+        '''
+        本题求自增子序列，所以不能改变原数组顺序
+        '''
+        self.backtracking(nums, 0)
+        return self.paths
+
+    def backtracking(self, nums: List[int], start_index: int):
+        # 收集结果，同78.子集，仍要置于终止条件之前
+        if len(self.path) >= 2:
+            # 本题要求所有的节点
+            self.paths.append(self.path[:])
+        
+        # Base Case（可忽略）
+        if start_index == len(nums):
+            return
+
+        # 单层递归逻辑：想一想为什么这个 used 列表放在了单层搜索的逻辑而不是全局变量
+        # 深度遍历中每一层都会有一个全新的 usage_list 用于记录本层元素是否重复使用
+        usage_list = set()
+        # 同层横向遍历
+        for i in range(start_index, len(nums)):
+            # 若当前元素值小于前一个时（非递增）或者曾用过，跳入下一循环
+            if (self.path and nums[i] < self.path[-1]) or nums[i] in usage_list:
+                continue
+            usage_list.add(nums[i])
+            self.path.append(nums[i])
+            self.backtracking(nums, i+1)
+            self.path.pop() 
+```
+
+注意上述代码中的 `usage_list`，这个东西每一层有一个新的 (局部的，只要元素出现在了 used 里，就是树层的重复)，所以回溯的时候不用 `pop`
+
+在[回溯算法：求子集问题（二）](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247485446&idx=1&sn=ef48986a30c3ed0e8e116dfd8fca93db&scene=21#wechat_redirect)中的去重和 [回溯算法：递增子序列](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247485466&idx=1&sn=2b5420bca9b66356d777bc4530a224c5&scene=21#wechat_redirect)中的去重 都是 同一父节点下本层的去重。
+
+[回溯算法：求子集问题（二）](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247485446&idx=1&sn=ef48986a30c3ed0e8e116dfd8fca93db&scene=21#wechat_redirect)（used 数组是全局的，根据 used[i-1] 是 0 还是 1 来判断是树层还是树枝）也可以使用 set 针对同一父节点本层去重，但子集问题一定要排序，为什么呢？
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv7lMMuvp0iakIvJyzQbPMFNiczcoia5MVNVg4yUKU71wDxW39kMLBrljKrWywUIRqz3F86l6meYbckCQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+上述是只有求子集组合会出现的问题，因为求递增子序列我们已经强制所有的子集内元素递增，{2，1} 会在单层逻辑判断时被直接删除！！所以递增子序列不用排序，但是子集需要排序，他们都可以定义局部 used （每层一个新的）来进行去重，此外，子集还可以定义全局 used （同过 used[i-1] 来判断是在树枝还是树层）。
+
+所以这两者 used 列表定义在了不同的地方，注意区别！！！！
+
+另外，我发现回溯法类似于深度优先遍历。
+
+==这一块有点模糊，重新看一看，搞清楚 used 数组到底应该放在哪里以及为什么！==
+
+### 12. 全排列
+
+> 给定一个不含重复数字的数组 `nums` ，返回其 *所有可能的全排列* 。你可以 **按任意顺序** 返回答案。
+>
+> ```
+> 输入：nums = [1,2,3]
+> 输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+> ```
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4wYc1EsDYoOIdqibHIV6ia2ibL6oanW8BiakWbluKMs4iatjYGCZq8j4peucjJesRGYC2W3vcS3GCXU7w/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+
+==回溯三部曲==：
+
+1. ==递归函数参数==：**首先排列是有序的，也就是说 [1,2] 和 [2,1] 是两个集合，这和之前分析的子集以及组合所不同的地方**。可以看出元素 1 在 [1,2] 中已经使用过了，但是在 [2,1] 中还要在使用一次 1，所以处理排列问题就==不用使用 startIndex== 了。但排列问题需要一个 used 数组，标记已经选择的元素，如图橘黄色部分所示，在 for 循环遍历时跳过该元素（因为结果集中同一元素不能重复选取）。其实还可以更简单，就是直接从 path 里判断，如果元素出现在 path 中，不选，==树枝去重==（能够做出这样判断的前提是给定的是不含重复数字的数组，这样可以保证我们的结果子集不含重复数字）。
+2. ==递归终止条件==：可以看出叶子节点，就是收割结果的地方。当收集元素的数组 path 的大小达到和 nums 数组一样大的时候，说明找到了一个全排列，也表示到达了叶子节点。
+3. ==单层搜索的逻辑==：这里和 [77. 组合问题](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494135&idx=2&sn=3a17829d16a597246c20600a3a4bb2ce&scene=21#wechat_redirect)、 [131. 切割问题](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494794&idx=2&sn=c0862525bd69bbd6fe4a2611ab0f7358&scene=21#wechat_redirect)和 [78. 子集问题](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494825&idx=2&sn=6dfb48c91559b1cfc980a86c4806103e&scene=21#wechat_redirect)最大的不同就是 for 循环里不用 startIndex 了。因为排列问题，每次都要从头开始搜索，例如元素 1 在 [1,2] 中已经使用过了，但是在 [2,1] 中还要再使用一次 1。**而 used 数组，其实就是记录此时 path 里都有哪些元素使用了，一个排列里一个元素只能使用一次**。
+
+```python
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.paths = []
+
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        '''
+        因为本题排列是有序的，这意味着同一层的元素可以重复使用，但同一树枝上不能重复使用
+        所以处理排列问题每层都需要从头搜索，故不再使用start_index
+        '''
+        self.backtracking(nums)
+        return self.paths
+
+    def backtracking(self, nums: List[int]) -> None:
+        # Base Case本题求叶子节点
+        if len(self.path) == len(nums):
+            self.paths.append(self.path[:])
+            return
+
+        # 单层递归逻辑
+        for i in range(0, len(nums)):  # 从头开始搜索
+            # 若遇到self.path里已收录的元素，跳过
+            if nums[i] in self.path:
+                continue
+            self.path.append(nums[i])
+            self.backtracking(nums)
+            self.path.pop()
+```
+
+**大家此时可以感受出排列问题的不同：**
+
+- 每层都是从 0 开始搜索而不是 startIndex
+- 需要 used 数组记录 path 里都放了哪些元素了
+
+### ==13. 全排列 II==
+
+> 给定一个可==包含重复数字==的序列 `nums` ，***按任意顺序*** 返回所有不重复的全排列。
+>
+> ```
+> 输入：nums = [1,1,2]
+> 输出：
+> [[1,1,2],
+>  [1,2,1],
+>  [2,1,1]]
+> ```
+
+这道题目和 [46. 全排列](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247495189&idx=2&sn=ff43a4a2841cab0ee92109f2507dc872&scene=21#wechat_redirect)的区别在与**给定一个可包含重复数字的序列**，要返回**所有不重复的全排列**。
+
+**还要强调的是去重一定要对元素经行排序，这样我们才方便通过相邻的节点来判断是否重复使用了**。
+
+我以示例中的 [1,1,2] 为例 （为了方便举例，已经排序）抽象为一棵树，去重过程如图：
+
+这一题就不能像之前一样用 path 去重了，因为给定的数组含有重复数字，导致结果子集可能含有重复数字，因此还是需要 used 数组去重。当然使用 used 判断一定要排序！
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4wYc1EsDYoOIdqibHIV6ia2ibfha44Yz9CuVx6AfTFFqD1dM1McHVaBcZCJRfKicuIfqxrzIWlalmN3Q/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+
+图中我们对同一树层，前一位（也就是 nums [i-1]）如果使用过，那么就进行去重。
+
+==一般来说：组合问题和排列问题是在树形结构的叶子节点上收集结果，而子集问题就是取树上所有节点的结果。==
+
+```python
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.res = []
+        self.used = []
+
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        if len(nums) == 0:
+            return []
+        self.used = [0]*len(nums)
+        self.backtracking(sorted(nums))
+        return self.res
+
+    def backtracking(self, nums):
+        if len(self.path) == len(nums):
+            self.res.append(self.path[:])
+            return 
+
+        for i in range(len(nums)):
+            # 树枝去重：如果当前元素尚未使用
+            # 这一行代码和上一题的 if nums[i] in self.path: continue 同样作用，在同一树枝上已经选过的元素不可重复选取，求组合时没有这一步是因为我们有 startIndex，每次都 + 1，保证选择过的元素不会被重新选取
+            if self.used[i] == 0:
+                # 树层去重：当前元素和前一元素相等，但是我们发现前一元素没有使用
+                # 说明在同一树层上有两个重复元素，不可重复选取
+                if i>0 and nums[i] == nums[i-1] and self.used[i-1] == 0:
+                    continue
+                # 如果当前元素和前一元素相等，但发现前一元素使用了，说明在同一树枝中，可以选
+                self.used[i] = 1
+                self.path.append(nums[i])
+                self.backtracking(nums)
+                self.path.pop()
+                self.used[i] = 0
+```
+
+把 `used` 数组作为全局变量，就会把树枝的情况一并记录下来，不是在单纯的控制某一节点的同一层。
+
+### ==14. 重新安排行程==
+
+> 给你一份航线列表 tickets ，其中 tickets[i] = [fromi, toi] 表示飞机出发和降落的机场地点。请你对该行程进行重新规划排序。
+>
+> 所有这些机票都属于一个从 JFK（肯尼迪国际机场）出发的先生，所以该行程必须从 JFK 开始。如果存在多种有效的行程，请你按字典排序返回最小的行程组合。
+>
+> 例如，行程 ["JFK", "LGA"] 与 ["JFK", "LGB"] 相比就更小，排序更靠前。
+> 假定所有机票至少存在一种合理的行程。且所有的机票 必须都用一次 且 只能用一次。
+>
+> ![img](https://assets.leetcode.com/uploads/2021/03/14/itinerary1-graph.jpg)
+>
+> 输入：tickets = [["MUC","LHR"],["JFK","MUC"],["SFO","SJC"],["LHR","SFO"]]
+> 输出：["JFK","MUC","LHR","SFO","SJC"]
+
+直觉上来看 这道题和回溯法没有什么关系，更像是图论中的深度优先搜索。
+
+实际上确实是深搜，但这是深搜中使用了回溯的例子，在查找路径的时候，如果不回溯，怎么能查到目标路径呢。
+
+所以我倾向于说本题应该使用回溯法，那么我也用回溯法的思路来讲解本题，其实深搜一般都使用了回溯法的思路，在图论系列中我会再详细讲解深搜。
+
+**这道题目有几个难点：**
+
+1. 一个行程中，如果航班处理不好容易变成一个圈，成为死循环
+2. 有多种解法，字母序靠前排在前面，让很多同学望而退步，如何该记录映射关系呢 ？
+3. 使用回溯法（也可以说深搜） 的话，那么终止条件是什么呢？
+4. 搜索的过程中，如何遍历一个机场所对应的所有机场。
+
+#### 14.1 如何理解死循环
+
+对于死循环，我来举一个有重复机场的例子：
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv47GQ3JgnXZzaUZiaAOEyb4XdDwztCvktUpfagZAtxeVtv1PfV5WFeddtoxcvVlY5qlYcZtlXfrLUQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+为什么要举这个例子呢，就是告诉大家，出发机场和到达机场也会重复的，**如果在解题的过程中没有对集合元素处理好，就会死循环。**
+
+#### 14.2 如何记录映射关系
+
+有多种解法，字母序靠前排在前面，让很多同学望而退步，如何该记录映射关系呢 ？
+
+一个机场映射多个机场，机场之间要靠字母序排列，一个机场映射多个机场，可以使用 std::unordered_map，如果让多个机场之间再有顺序的话，就是用 std::map 或者 std::multimap 或者 std::multiset。
+
+- unordered_map<string, multiset> targets：unordered_map <出发机场，到达机场的集合> targets
+
+- unordered_map<string, map<string, int>> targets：unordered_map < 出发机场，map < 到达机场，航班次数 >> targets
+
+这两个结构，我选择了后者，因为如果使用 `unordered_map<string, multiset<string>> targets` 遍历 multiset 的时候，不能删除元素，一旦删除元素，迭代器就失效了。
+
+**再说一下为什么一定要增删元素呢，正如开篇我给出的图中所示，出发机场和到达机场是会重复的，搜索的过程没及时删除目的机场就会死循环。**
+
+所以搜索的过程中就是要不断删除 multiset 里的元素，那么推荐使用 `unordered_map<string, map<string, int>> targets`。
+
+在遍历 `unordered_map<出发机场, map<到达机场, 航班次数>> targets` 的过程中，**可以使用 "航班次数" 这个字段的数字做相应的增减，来标记到达机场是否使用过了。**
+
+如果 “航班次数” 大于零，说明目的地还可以飞，如果如果 “航班次数” 等于零说明目的地不能飞了，而不用对集合做删除元素或者增加元素的操作。
+
+回顾回溯法模板：
+
+```C++
+void backtracking(参数) {
+    if (终止条件) {
+        存放结果;
+        return;
+    }
+
+    for (选择：本层集合中元素（树中节点孩子的数量就是集合的大小）) {
+        处理节点;
+        backtracking(路径，选择列表); // 递归
+        回溯，撤销处理结果
+    }
+}
+```
+
+本题以输入：[["JFK", "KUL"], ["JFK", "NRT"], ["NRT", "JFK"] 为例，抽象为树形结构如下：
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv47GQ3JgnXZzaUZiaAOEyb4XvlMZzAhibglGq4nSsohtiaNzy32mrNZktqGwVU0FobhgjzLmHjb6njqA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+1. ==递归函数参数==：
+
+在讲解映射关系的时候，已经讲过了，使用 `unordered_map<string, map<string, int>> targets;` 来记录航班的映射关系，我定义为全局变量。
+
+当然把参数放进函数里传进去也是可以的，我是尽量控制函数里参数的长度。
+
+参数还需要 ticketNum，表示有多少个航班（终止条件会用上）
+
+注意返回值是 bool，因为我们只需要找到一个行程，就是在树形结构中唯一的一条通向叶子节点的路线：
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv47GQ3JgnXZzaUZiaAOEyb4XvlMZzAhibglGq4nSsohtiaNzy32mrNZktqGwVU0FobhgjzLmHjb6njqA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+所以找到了这个叶子节点了直接返回。
+
+2. ==递归终止条件==：
+
+拿题目中的示例为例，输入: [["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]] ，这是有 4 个航班，那么只要找出一种行程，行程里的机场个数是 5 就可以了。
+
+所以终止条件是：我们回溯遍历的过程中，遇到的机场个数，如果达到了（航班数量 + 1），那么我们就找到了一个行程，把所有航班串在一起了。
+
+已经看习惯回溯法代码的同学，到叶子节点了习惯性的想要收集结果，但发现并不需要，本题的 result 相当于 [回溯算法：求组合总和！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247494448&idx=2&sn=08f97a245ce1110a704d0d6051338922&scene=21#wechat_redirect)中的 path，也就是本题的 result 就是记录路径的（就一条），在如下单层搜索的逻辑中 result 就添加元素了。
+
+3. ==单层搜索的逻辑==：
+
+回溯的过程中，如何遍历一个机场所对应的所有机场呢？
+
+本题既要找到一个对数据进行排序的容器，而且还要容易增删元素，迭代器还不能失效。
+
+所以我选择了 `unordered_map<string, map<string, int>> targets` 来做机场之间的映射。
+
+```python
+class Solution:
+    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+        # defaultdic(list) 是为了方便直接 append
+        tickets_dict = defaultdict(list)
+        
+        for item in tickets:
+            tickets_dict[item[0]].append(item[1])
+        '''
+        tickets_dict里面的内容是这样的
+         {'JFK': ['SFO', 'ATL'], 'SFO': ['ATL'], 'ATL': ['JFK', 'SFO']})
+        '''
+        # 初始点
+        path = ["JFK"]
+        
+        def backtracking(start_point):
+            # 终止条件
+            if len(path) == len(tickets) + 1:
+                return True
+            tickets_dict[start_point].sort()
+            
+            for _ in tickets_dict[start_point]:
+                # 必须及时删除，避免出现死循环
+                end_point = tickets_dict[start_point].pop(0)
+                path.append(end_point)
+                # 只要找到一个就可以返回了
+                if backtracking(end_point):
+                    return True
+                path.pop()
+                tickets_dict[start_point].append(end_point)
+
+        backtracking("JFK")
+        return path
+```
+
+
+
+### ==15. N 皇后==：难
+
+> n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+>
+> 给你一个整数 n ，返回所有不同的 n 皇后问题 的解决方案。
+>
+> 每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
+>
+> ![img](https://assets.leetcode.com/uploads/2020/11/13/queens.jpg)
+>
+> 输入：n = 4
+> 输出：[[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+> 解释：如上图所示，4 皇后问题存在两个不同的解法。
+
+都知道 n 皇后问题是回溯算法解决的经典问题，但是用回溯解决多了组合、切割、子集、排列问题之后，遇到这种二位矩阵还会有点不知所措。
+
+首先来看一下皇后们的约束条件：
+
+1. 不能同行
+2. 不能同列
+3. 不能同斜线
+
+确定完约束条件，来看看究竟要怎么去搜索皇后们的位置，其实搜索皇后的位置，可以抽象为一棵树。
+
+下面我用一个 3*3 的棋牌，酱搜索过程抽象为一棵树，如图：
+
+<img src="https://mmbiz.qpic.cn/mmbiz_jpg/ciaqDnJprwv5ENMbvducP3Z7xDAaCfYBIYfMY62cyGqicd1MSU1zFoDlCVL8Osxz7uuCW7eYOrEDvO3p0zpwu0uw/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+从图中可以看出，二维矩阵中矩阵的高就是这棵树的高度，矩阵的宽就是树形结构中每一个节点的宽度。
+
+那么我们用皇后们的约束条件，来回溯搜索这棵树，只要搜索到了树的叶子节点，说明就找到了皇后们的合理位置。
+
+==回溯三部曲==：
+
+1. ==递归函数参数==：定义全局变量二维数组 result 来记录最终结果，参数 n 是棋牌的大小，然后用 row 来记录当前遍历到棋盘的第几层
+2. ==递归终止条件==：当递归到期盼最底层也就是叶子节点的时候，就可以收集结果并返回了
+3. ==单层搜索的逻辑==：递归深度就是 row 控棋盘的行，每一层里 for 循环的 col 控制棋盘的列，一行一列，确定了放置皇后的位置，每次都是要从新的一行的起始位置开始搜，所以都是从 0 开始。
+
+==按照如下标准去重：==
+
+1. 不能同行
+2. 不能同列
+3. 不能同斜线 （45 度和 135 度角）
+
+在这份代码中，细心的同学可以发现为什么没有在同行进行检查呢？
+
+因为在单层搜索的过程中，每一层递归，只会选 for 循环（也就是同一行）里的一个元素，所以不用去重了。
+
+**这里我明确给出了棋盘的宽度就是 for 循环的长度，递归的深度就是棋盘的高度，这样就可以套进回溯法的模板里了**。
+
+```python
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        if not n: return []
+        board = [['.'] * n for _ in range(n)]
+        res = []
+        
+        def isVaild(board, row, col):
+            #判断同一列是否冲突
+            for i in range(len(board)):
+                if board[i][col] == 'Q':
+                    return False
+            # 判断左上角是否冲突
+            i = row -1
+            j = col -1
+            while i>=0 and j>=0:
+                if board[i][j] == 'Q':
+                    return False
+                i -= 1
+                j -= 1
+            # 判断右上角是否冲突
+            i = row - 1
+            j = col + 1
+            while i>=0 and j < len(board):
+                if board[i][j] == 'Q':
+                    return False
+                i -= 1
+                j += 1
+            return True
+
+        def backtracking(board, row, n):
+            # 如果走到最后一行，说明已经找到一个解
+            if row == n:
+                temp_res = []
+                for temp in board:
+                    temp_str = "".join(temp)
+                    temp_res.append(temp_str)
+                res.append(temp_res)
+                
+            for col in range(n):
+                if not isVaild(board, row, col):
+                    continue
+                board[row][col] = 'Q'
+                backtracking(board, row+1, n)
+                board[row][col] = '.'
+        backtracking(board, 0, n)
+        return res
+```
+
+### ==16. 解数独：难==
+
+> 编写一个程序，通过填充空格来解决数独问题。
+>
+> 数独的解法需 遵循如下规则：
+>
+> 数字 1-9 在每一行只能出现一次。
+> 数字 1-9 在每一列只能出现一次。
+> 数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。（请参考示例图）
+> 数独部分空格内已填入了数字，空白格用 '.' 表示。
+>
+> ![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2021/04/12/250px-sudoku-by-l2g-20050714svg.png)
+>
+> ![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2021/04/12/250px-sudoku-by-l2g-20050714_solutionsvg.png)
+
+棋盘搜索问题可以使用回溯法暴力搜索，只不过我们要做的是==二维递归==。
+
+之前的题目都是一维递归，[N 皇后问题](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247495456&idx=2&sn=1e9e5b7289d544186e2219766d1054e2&scene=21#wechat_redirect)是因为每一行每一列只放一个皇后，只需要一层 for 循环遍历一行，递归来来遍历列，然后一行一列确定皇后的唯一位置。
+
+本题就不一样了，本题中棋盘的每一个位置都要放一个数字，并检查数字是否合法，解数独的树形结构要比 N 皇后更宽更深。
+
+因为这个树形结构太大了，我抽取一部分，如图所示：
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv6uwTkiakcXgCk37Vic7X7Ft5w87Cs5uOO9ibEfQ2GrUdvpfdLzvHPQic9ZvOrCb6Rj98FWFvGsbsvdQA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+
+1. ==递归函数以及参数==：递归函数的返回值需要 bool 类型，为什么呢？因为解数独找到一个符合的条件（树的叶子节点）立刻就返回，相当于找从根节点到叶子节点一条唯一的路径，所以需要 bool 返回值
+2. ==递归终条件==：本题递归不用终止条件，解数独是要遍历整个树形结构寻找可能的叶子节点就立刻返回。
+
+> 不用终止条件会不会死循环？递归的下一层棋盘一定比上一层棋盘多一个数，等数填满了棋盘自然就终止了，所以不需要终止条件。
+
+3. ==递归单层搜索逻辑==：在树形图中可以看出我们需要的是一个二维的递归（也就是两个 for 循环嵌套着递归）
+
+   **一个 for 循环遍历棋盘的行，一个 for 循环遍历棋盘的列，一行一列确定下来之后，递归遍历这个位置放 9 个数字的可能性！**
+
+   注意这里 return false 的地方，这里放 return false 也是有讲究的，因为如果一行一列确定下来了，这里尝试了 9 个数都不行，说明这个棋盘找不到解决数独问题的解！那么会直接返回，这也就是为什么没有终止条件也不会永远填不满棋盘而无限递归下去！
+
+==判断棋盘是否合法：==
+
+1. 同行是否重复
+2. 同列是否重复
+3. 9 宫格里是否重复
+
+```python
+class Solution:
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        self.backtracking(board)
+
+    def backtracking(self, board: List[List[str]]) -> bool:
+        # 若有解，返回True；若无解，返回False
+        for i in range(len(board)): # 遍历行
+            for j in range(len(board[0])):  # 遍历列
+                # 若空格内已有数字，跳过
+                if board[i][j] != '.': continue
+                for k in range(1, 10):  
+                    if self.is_valid(i, j, k, board):
+                        board[i][j] = str(k)
+                        if self.backtracking(board): return True
+                        board[i][j] = '.'
+                # 若数字1-9都不能成功填入空格，返回False无解
+                return False
+        return True # 有解
+
+    def is_valid(self, row: int, col: int, val: int, board: List[List[str]]) -> bool:
+        # 判断同一行是否冲突
+        for i in range(9):
+            if board[row][i] == str(val):
+                return False
+        # 判断同一列是否冲突
+        for j in range(9):
+            if board[j][col] == str(val):
+                return False
+        # 判断同一九宫格是否有冲突
+        start_row = (row // 3) * 3
+        start_col = (col // 3) * 3
+        for i in range(start_row, start_row + 3):
+            for j in range(start_col, start_col + 3):
+                if board[i][j] == str(val):
+                    return False
+        return True
+```
+
+
+
+
 
 
 
@@ -6027,7 +7930,7 @@ test_1_wei_bag_problem()
 
 可以看到一维 dp 的 01 背包，要比二维的简洁很多，初始化和遍历顺序相对简单了，而且空间复杂度还降了一个数量级。所以下面我们都用滚动数组。
 
-### 24. 分割等和子集
+### 24. 分割等和子集：背包能装满吗？
 
 > 给你一个 **只包含正整数** 的 **非空** 数组 `nums` 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
 >
@@ -6050,7 +7953,7 @@ test_1_wei_bag_problem()
 >
 > 要注意题目描述中商品是不是可以重复放入。
 >
-> 如果一个商品可以重复多次放入是完全背包，而智能放入一次是 01 背包，写法是不一样的。
+> 如果一个商品可以重复多次放入是完全背包，而只能放入一次是 01 背包，写法是不一样的。
 
 只有确定了如下四点，才能把 01 背包问题套到本题上来：
 
@@ -6081,13 +7984,13 @@ class Solution:
         for i in range(len(nums)):
             for j in range(len(dp)-1, nums[i]-1, -1):
                 dp[j] = max(dp[j], dp[j-nums[i]] + nums[i])
-        if dp[-1] == sum(nums)/2:
+        if dp[-1] == sum(nums)/2:  # 价值 == 容量
             return True
         else:
             return False
 ```
 
-### 25. 最后一块石头的重量
+### 25. 最后一块石头的重量：背包最多能装多少？
 
 > 有一堆石头，用整数数组 stones 表示。其中 stones[i] 表示第 i 块石头的重量。
 >
@@ -6105,7 +8008,7 @@ class Solution:
 > 组合 2 和 1，得到 1，所以数组转化为 [1,1,1]，
 > 组合 1 和 1，得到 0，所以数组转化为 [1]，这就是最优值。
 
-本题其实就是尽量让石头分成重量相同的两堆，相撞之后剩下的石头最小，这样就化解成 01 背包问题了。
+本题其实就是==尽量让石头分成重量相同的两堆==，相撞之后剩下的石头最小，这样就化解成 01 背包问题了。
 
 本题物品的重量为 store [i]，物品的价值也为 store [i]。
 
@@ -6139,7 +8042,7 @@ class Solution:
         return sum(stones) - 2*dp[-1]
 ```
 
-### 26. 目标和
+### ==26. 目标和==：装满背包有几种方法？
 
 > 给你一个整数数组 nums 和一个整数 target 。
 >
@@ -6159,12 +8062,12 @@ class Solution:
 
 如何转化为 01 背包问题？
 
-假设加法的总和为 x，那么减法对应的总和就是 sum - x，所以我们要求的是 x - (sum - x) = S，x = (S + sum) / 2，此时问题就转化为，装满容量为 x 的背包，有几种方法。
+假设加法的总和为 x，那么减法对应的总和就是 sum - x，所以我们要求的是 x - (sum - x) = S，`x = (S + sum) / 2`，此时问题就转化为，装满容量为 x 的背包，有几种方法。
 
 注意，这次和之前遇到的背包问题不一样了，之前都是要求容量为 j 的背包，最多能装多少。本题则是装满有几种方法，其实这就是一个组合问题了：
 
-1. ==确定 dp 数组以及下标的含义==：dp [j] 表示：填满 j（包括 j）这么大容积的包，有 dp [i] 种方法
-2. ==确定递推公式==：有哪些来源可以推出 dp [j] 呢？不考虑 nums[i] 的情况下，填满容量为 j - nums[i] 的背包，有 dp[j - nums[i]] 种方法，那么只要搞到 nums[i] 的话，凑成 dp[j] 就有 dp[j - nums[i]] 种方法。那么只需要把这些方法累加起来就可以了：`dp [i] += dp [j - nums [j]]`，所有求组合类问题的公式，都是类似这种：
+1. ==确定 dp 数组以及下标的含义==：dp [j] 表示：填满 j（包括 j）这么大容积的包，有 dp [j] 种方法
+2. ==确定递推公式==：有哪些来源可以推出 dp [j] 呢？不考虑 nums[i] 的情况下，填满容量为 j - nums[i] 的背包，有 dp[j - nums[i]] 种方法，那么只要搞到 nums[i] 的话，凑成 dp[j] 就有 dp[j - nums[i]] 种方法。那么只需要把这些方法累加起来就可以了：`dp [j] += dp [j - nums [i]]`，所有求组合类问题的公式，都是类似这种：
 
 3. ==dp数组如何初始化==：从递推公式可以看出，在初始化的时候 dp[0] 一定要初始化为 1，因为它是一个起源，如果它为 0，那么后i面的一切结果都将为 0。dp [j] 其他下标对应的数值应该初始化为 0，从递归公式也可以看出，dp [j] 要保证是 0 的初始值，才能正确的由 dp [j - nums [i]] 推导出来。
 > dp [0] = 1，理论上也很好解释，装满容量为 0 的背包，有 1 种方法，就是装 0 件物品。
@@ -6190,7 +8093,7 @@ class Solution:
         return dp[bagSize]
 ```
 
-### 27. 一和零
+### ==27. 一和零==：两维背包
 
 > 给你一个二进制字符串数组 strs 和两个整数 m 和 n 。
 >
@@ -6239,7 +8142,7 @@ class Solution:
 
 > 有 N 件物品和一个最多能背重量为 W 的背包。第 i 件物品的重量是 weight [i]，得到的价值是 value [i] 。**每件物品都有无限个（也就是可以放入背包多次）**，求解将哪些物品装入背包里物品价值总和最大。
 
-**完全背包和 01 背包问题唯一不同的地方就是，每种物品有无限件**。
+==**完全背包和 01 背包问题唯一不同的地方就是，每种物品有无限件**。==
 
 举例如下：
 
@@ -6278,7 +8181,7 @@ class Solution:
 # 先遍历物品, 再遍历背包容量
     for i in range(len(weight)):
         # 注意，完全背包容量一定要从小到大遍历
-        for j in range(weight[i], bag_weight):
+        for j in range(weight[i], bag_weight+1):
             # 递归公式
             dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
 ```
@@ -6315,6 +8218,7 @@ def test_complete_pack1():
     dp = [0]*(bag_weight + 1)
 
     for i in range(len(weight)):
+        # 注意这里的起始点不是从 0 开始，是从遍历的物品重量开始
         for j in range(weight[i], bag_weight + 1):
             dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
     
@@ -6330,7 +8234,8 @@ def test_complete_pack2():
 
     for j in range(bag_weight + 1):
         for i in range(len(weight)):
-            if j >= weight[i]: dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
+            if j >= weight[i]: 
+                dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
     
     print(dp[bag_weight])
 
@@ -6340,7 +8245,7 @@ if __name__ == '__main__':
     test_complete_pack2()
 ```
 
-### 29. 零钱兑换 II
+### 29. 零钱兑换 II：凑成总金额的数量
 
 > 给你一个整数数组 coins 表示不同面额的硬币，另给一个整数 amount 表示总金额。
 >
@@ -6414,9 +8319,9 @@ if __name__ == '__main__':
 
 在求装满背包有几种方案的时候，认清遍历顺序是非常关键的。
 
-**如果求组合数就是外层 for 循环遍历物品，内层 for 遍历背包**。
+- **如果求组合数就是外层 for 循环遍历物品，内层 for 遍历背包**。
 
-**如果求排列数就是外层 for 遍历背包，内层 for 循环遍历物品**。
+- **如果求排列数就是外层 for 遍历背包，内层 for 循环遍历物品**。
 
 ```python
 class Solution:
@@ -6430,6 +8335,280 @@ class Solution:
                 dp[j] += dp[j - coins[i]]
         return dp[amount]
 ```
+
+### 30. 组合总和 IV
+
+> 给你一个由不同整数组成的数组 nums ，和一个目标整数 target 。请你从 nums 中找出并返回总和为 target 的元素组合的个数。
+>
+> 题目数据保证答案符合 32 位整数范围。
+>
+> ```
+> 输入：nums = [1,2,3], target = 4
+> 输出：7
+> 解释：
+> 所有可能的组合为：
+> (1, 1, 1, 1)
+> (1, 1, 2)
+> (1, 2, 1)
+> (1, 3)
+> (2, 1, 1)
+> (2, 2)
+> (3, 1)
+> 请注意，顺序不同的序列被视作不同的组合。
+> ```
+
+本题描述说是求组合，但又说是可以元素相同顺序不同的组合算两个组合，其实就是求==排列==。
+
+组合不强调顺序，排列强调顺序。
+
+我们在做回溯算法专题的时候，一定做过这两道题目[回溯算法：39. 组合总和](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247485343&idx=1&sn=2c7e259454411002d2c6e0e39cc0b939&scene=21#wechat_redirect)和[回溯算法：40. 组合总和 II](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247485360&idx=1&sn=2256a0f01a304d82a2b59252327f3edb&scene=21#wechat_redirect) 会感觉这两题和本题很像！
+
+但其本质是本题求的是排列总和，而且仅仅是求排列总和的个数，并不是把所有的排列都列出来。
+
+**如果本题要把排列都列出出来的话，只能使用回溯算法暴力搜索。**
+
+动规五部曲分析如下：
+
+1. 确定 dp 数组以及下标的含义：**dp [i]: 凑成目标正整数为 i 的排列个数为 dp [i]**
+2. 确定递推公式：dp [i]（考虑 nums [j]）可以由 dp [i - nums [j]]（不考虑 nums [j]） 推导出来。因为只要得到 nums [j]，排列个数 dp [i - nums [j]]，就是 dp [i] 的一部分。求装满背包的几种方法，递推公式一般都是 `dp [i] += dp [i - nums [j]]`
+3. dp 数组如何初始化：因为递推公式 dp [i] += dp [i - nums [j]] 的缘故，dp [0] 要初始化为 1，这样递归其他 dp [i] 的时候才会有数值基础。但实际上，dp [0] = 1 是没有意义的，仅仅是为了推导递推公式。至于非 0 下标的 dp [i] 应该初始为多少呢？初始化为 0，这样才不会影响 dp [i] 累加所有的 dp [i - nums [j]]。
+4. 确定遍历顺序：个数不限使用，说明这是一个完全背包，得到的集合是排列，说明需要考虑元素之间的顺序。本题要求的是排列，那么这个 for 循环嵌套的顺序可以有说法了。
+
+- **如果求组合数就是外层 for 循环遍历物品，内层 for 遍历背包**。
+- **如果求排列数就是外层 for 遍历背包，内层 for 循环遍历物品**。
+
+如果把遍历 nums（物品）放在外循环，遍历 target 的作为内循环的话，举一个例子：计算 dp [4] 的时候，结果集只有 {1,3} 这样的集合，不会有 {3,1} 这样的集合，因为 nums 遍历放在外层，3 只能出现在 1 后面！有道理！
+
+所以本题遍历顺序最终遍历顺序：**target（背包）放在外循环，将 nums（物品）放在内循环，内循环从前到后遍历**。
+
+5. 举例来推导 dp 数组：
+
+<img src="https://mmbiz.qpic.cn/mmbiz_jpg/ciaqDnJprwv4cjxkV8txs9ATaKTqiaVbnWcv2b1GCjJDmz6LAjGqOjDU2OTwJGs80tIx5ice3icYFviciaCVLKomLePA/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+```python
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        dp = [0]*(target+1)
+        dp[0] = 1
+        # 求排列数：先背包，后物品
+        for j in range(1, target+1):
+            for i in range(len(nums)):
+                if j >= nums[i]:
+                    dp[j] += dp[j-nums[i]]
+        return dp[-1]
+```
+
+> 自己写出来的，真棒！
+
+### 31. 爬楼梯
+
+爬楼梯就是一道简单动规题，但是可以稍加改动：
+
+**改为：每次可以爬 1 、 2 或者 m 个台阶。问有多少种不同的方法可以爬到楼顶呢？**
+
+1 阶，2 阶，m 阶就是物品，楼顶就是背包。
+
+每一阶可以重复使用，例如跳了 1 阶，还可以继续跳 1 阶。
+
+问跳到楼顶有几种方法其实就是问装满背包有几种方法。这就是一个完全背包问题！
+
+动规五部曲分析如下：
+
+1. ==确定 dp 数组以及下标的含义==：**dp [i]：爬到有 i 个台阶的楼顶，有 dp [i] 种方法**。
+2. ==确定递推公式==：`dp [i] += dp [i - j]`
+3. ==dp 数组如何初始化==：既然递归公式是 dp [i] += dp [i - j]，那么 dp [0] 一定为 1，dp [0] 是递归中一切数值的基础所在，如果 dp [0] 是 0 的话，其他数值都是 0 了。下标非 0 的 dp [i] 初始化为 0，因为 dp [i] 是靠 dp [i-j] 累计上来的，dp [i] 本身为 0 这样才不会影响结果。
+4. ==确定遍历顺序==：这里的背包是在求排列问题，即：**1、2 步  和 2、1 步都是上三个台阶，但是这两种方法不同！**所以需将 target 放在外循环，将 nums 放在内循环。每一步可以走多次，这是完全背包，内循环需要从前向后遍历。
+5. 举例来推导 dp 数组
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        dp = [0]*(n+1)
+        dp[0] = 1
+        # 求排列数：先背包，后步数
+        for j in range(1, n+1):
+            # m 是可以选择的步数
+            for i in range(1, m+1):
+                if j >= i:
+                    dp[j] += dp[j-i]
+        return dp[-1]
+```
+
+### 32. 零钱兑换：凑成总金额的最少硬币组合
+
+> 给你一个整数数组 coins ，表示不同面额的硬币；以及一个整数 amount ，表示总金额。
+>
+> 计算并返回可以凑成总金额所需的 最少的硬币个数 。如果没有任何一种硬币组合能组成总金额，返回 -1 。
+>
+> 你可以认为每种硬币的数量是无限的。
+>
+> ```
+> 输入：coins = [1, 2, 5], amount = 11
+> 输出：3 
+> 解释：11 = 5 + 5 + 1
+> ```
+
+题目中说每种硬币的数量是无限的，可以看出是典型的==完全背包==问题。
+
+动规五部曲分析如下：
+
+1. ==确定 dp 数组以及下标的含义==：**dp [j]：凑足总额为 j 所需钱币的最少个数为 dp [j]**
+2. ==确定递推公式==：得到 dp [j]（考虑 coins [i]），只有一个来源，dp [j - coins [i]]（没有考虑 coins [i]）。凑足总额为 j - coins [i] 的最少个数为 dp [j - coins [i]]，那么只需要加上一个钱币 coins [i] 即 dp [j - coins [i]] + 1 就是 dp [j]（考虑 coins [i]），所以 dp [j] 要取所有 dp [j - coins [i]] + 1 中最小的。递推公式：`dp [j] =  min (dp [j - coins [i]] + 1, dp [j])`
+3. ==dp 数组如何初始化==：首先凑足总金额为 0 所需钱币的个数一定是 0，那么 dp [0] = 0；其他下标对应的数值呢？考虑到递推公式的特性，==dp [j] 必须初始化为一个最大的数==，否则就会在 min (dp [j - coins [i]] + 1, dp [j]) 比较的过程中被初始值覆盖。所以下标非 0 的元素都是应该是最大值。
+4. ==确定遍历顺序==：本题求钱币最小个数，**那么钱币有顺序和没有顺序都可以，都不影响钱币的最小个数。**所以本题并不强调集合是组合还是排列。本题钱币数量可以无限使用，那么是完全背包。所以遍历的内循环是正序。**综上所述**，遍历顺序为：coins（物品）放在外循环，target（背包）在内循环。且内循环正序。
+5. ==举例推导 dp 数组==：以输入：coins = [1, 2, 5], amount = 5 为例
+
+<img src="https://mmbiz.qpic.cn/mmbiz_jpg/ciaqDnJprwv7IP8mIaADOTplxg4mBJ1ibceWicPZjn8xmFZeibpcBaUqcXf4IhYb14ib9wStre5PvXEw8yibJ5SybUrg/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+```python
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        dp = [amount + 1] * (amount + 1)
+        # 凑成 0 所需要的钱币数为 0
+        dp[0] = 0
+        for i in range(len(coins)):
+            # 完全背包：正序遍历！！
+             for j in range(coins[i], amount + 1):
+                dp[j] = min(dp[j], dp[j-coins[i]] + 1)
+        print(dp)
+        return dp[-1] if dp[-1] < amount + 1 else -1
+```
+
+### ==33.  完全平方数==
+
+> 给你一个整数 n ，返回 和为 n 的完全平方数的最少数量 。
+>
+> 完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
+>
+> ```
+> 输入：n = 12
+> 输出：3 
+> 解释：12 = 4 + 4 + 4
+> ```
+
+可能刚看这种题感觉没啥思路，又平方和的，又最小数的。
+
+**我来把题目翻译一下：完全平方数就是物品（可以无限件使用），凑个正整数 n 就是背包，问凑满这个背包最少有多少物品？**
+
+动规五部曲分析如下：
+
+1. ==确定 dp 数组（dp table）以及下标的含义==：**dp [i]：和为 i 的完全平方数的最少数量为 dp [i]**
+
+2. ==确定递推公式==：dp [j] 可以由 dp [j - i * i] 推出， dp [j - i * i] + 1 便可以凑成 dp [j]。此时我们要选择最小的 dp [j]，所以递推公式：`dp [j] = min (dp [j - i * i] + 1, dp [j])`
+
+3. ==dp 数组如何初始化==：dp [0] 表示 和为 0 的完全平方数的最小数量，那么 dp [0] 一定是 0。非 0 下标的 dp [j] 应该是多少呢？从递归公式 `dp [j] = min (dp [j - i * i] + 1, dp [j])`; 中可以看出每次 dp [j] 都要选最小的，**所以非 0 下标的 dp [i] 一定要初始为最大值，这样 dp [j] 在递推的时候才不会被初始值覆盖**。
+
+4. ==确定遍历顺序==：完全背包，正序遍历，至于背包和物品谁先谁后，无所谓！
+
+5. ==举例推导 dp 数组==：
+
+   <img src="https://mmbiz.qpic.cn/mmbiz_jpg/ciaqDnJprwv59icsE0DRLswib5mv7y1qjY0ajSOAh8k9rOEAJwMhLyy6JkmcBTfqYVwmDUEtlO5ow32MF7OGvpTHw/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+```python
+   class Solution:
+       def numSquares(self, n: int) -> int:
+           nums = [i**2 for i in range(1, n + 1) if i**2 <= n]
+           dp = [n]*(n+1)
+           dp[0] = 0
+           for i in range(len(nums)):
+               for j in range(nums[i], n+1):
+                   dp[j] = min(dp[j], dp[j-nums[i]] + 1)
+           return dp[-1] 
+```
+
+### ==34. 单词拆分==
+
+> 给你一个字符串 s 和一个字符串列表 wordDict 作为字典。请你判断是否可以利用字典中出现的单词拼接出 s 。
+>
+> 注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+>
+> 输入: s = "leetcode", wordDict = ["leet", "code"]
+> 输出: true
+> 解释: 返回 true 因为 "leetcode" 可以由 "leet" 和 "code" 拼接成。
+
+单词就是物品，字符串 s 就是背包，单词能否组成字符串 s，就是问物品能不能把背包装满。
+
+拆分时可以重复时使用字典中的单词，说明就是一个完全背包！
+
+1. ==确定 dp 数组以及下标的含义==：**dp [i] : 字符串长度为 i 的话，dp [i] 为 true，表示可以拆分为一个或多个在字典中出现的单词**。
+2. ==确定递推公式==：如果确定 dp [j] 是 true，且 [j, i] 这个区间的子串出现在字典里，那么 dp [i] 一定是 true。（j < i ）。==所以递推公式是 if ([j, i] 这个区间的子串出现在字典里 && dp [j] 是 true) 那么 dp [i] = true。==
+3. ==dp 数组如何初始化==：从递归公式中可以看出，dp [i] 的状态依靠 dp [j] 是否为 true，那么 dp [0] 就是递归的根基，dp [0] 一定要为 true，否则递归下去后面都都是 false 了。dp [0] 初始为 true 完全就是为了推导公式。下标非 0 的 dp [i] 初始化为 false，只要没有被覆盖说明都是不可拆分为一个或多个在字典中出现的单词。
+4. ==确定遍历顺序==：题目中说是拆分为一个或多个在字典中出现的单词，所以这是完全背包。本题最终要求的是是否都出现过，所以对出现单词集合里的元素是组合还是排列，并不在意！所以遍历顺序无关紧要。但本题还有特殊性，因为是要求子串，最好是遍历背包放在外循环，将遍历物品放在内循环。如果要是外层 for 循环遍历物品，内层 for 遍历背包，就需要把所有的子串都预先放在一个容器里。（如果不理解的话，可以自己尝试这么写一写就理解了）**所以最终我选择的遍历顺序为：遍历背包放在外循环，将遍历物品放在内循环。内循环从前到后**。
+5. ==举例推导 dp [i]==：以输入: s = "leetcode", wordDict = ["leet", "code"] 为例，dp 状态如图：
+
+<img src="https://mmbiz.qpic.cn/mmbiz_jpg/ciaqDnJprwv4OzUSt6CuQgdJmYTVT0KVLjX4Xspxny6xQNVdHD0ficpgRicBCA6Sjsd4xj4QNibqB31uVudB15icrVQ/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
+
+```python
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        dp = [False]*(len(s) + 1)
+        dp[0] = True
+        # 完全背包，正序遍历
+        # 先背包，后物品
+        for j in range(1, len(s) + 1):
+            # 遍历单词
+            for word in wordDict:
+                if j >= len(word):
+                    # 如果后一部分单词出现在字典中
+                    if dp[j - len(word)] and word == s[j - len(word):j]:
+                        dp[j] = True
+        return dp[-1]
+```
+
+![图片](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv7kRT6WlCanXF9CdibUSCPRK1rP9wdvTmjoOG365AUZjkjO0E08CicUHZAFFO6b2QcibNWzuf1SguhCA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+
+### ==35. 背包总结==
+
+#### 35.1 背包递推公式
+
+其实，所有的递推公式都需要扣着定义，时刻牢记 dp 的定义，递推公式可以自然而然地写出来。
+
+1. 问能否装满背包（或者最多装多少）：`dp[j] = max(dp [j], dp[j - nums [i]] + nums [i])`
+   1. 分割等和子集
+   2. 最后一块石头的重量
+2. 问装满背包有几种方法：`dp[j] += dp[j - nums [i]] `
+   1. 目标和
+   2. 零钱兑换 II
+   3. 组合总和 IV
+   4. 爬楼梯进阶版
+3. 问背包装满最大价值：`dp [j] = max (dp [j], dp [j - weight [i]] + value [i])`
+   1. 一和零
+4. 问装满背包所有物品的最小个数：`dp [j] =  min (dp [j - coins [i]] + 1, dp [j])`
+   1. 零钱兑换
+   2. 完全平方数
+
+#### 35.2 遍历顺序
+
+##### 35.2.1 01 背包
+
+在[动态规划：关于 01 背包问题，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486598&idx=1&sn=dd7d0530dd7a5caef7ce70cc3d6eee3f&scene=21#wechat_redirect)中我们讲解二维 dp 数组 01 背包先遍历物品还是先遍历背包都是可以的，且第二层 for 循环是从小到大遍历。
+
+和[动态规划：关于 01 背包问题，你该了解这些！（滚动数组）](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486624&idx=2&sn=96e8c6344dc25f57462b675b55ccd6e7&scene=21#wechat_redirect)中，我们讲解一维 dp 数组 01 背包只能==先遍历物品再遍历背包容量==，且第二层 for 循环是==从大到小遍历==。
+
+**一维 dp 数组的背包在遍历顺序上和二维 dp 数组实现的 01 背包其实是有很大差异的，大家需要注意！**
+
+##### 35.2.2 完全背包
+
+说完 01 背包，再看看完全背包。
+
+在[动态规划：关于完全背包，你该了解这些！](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486748&idx=1&sn=dca9f65b75a75c50c502ae8aba279877&scene=21#wechat_redirect)中，讲解了纯完全背包的一维 dp 数组实现，先遍历物品还是先遍历背包都是可以的，且第二层 for 循环是==从小到大遍历==。
+
+但是仅仅是纯完全背包的遍历顺序是这样的，题目稍有变化，两个 for 循环的先后顺序就不一样了。
+
+**如果求组合数就是外层 for 循环遍历物品，内层 for 遍历背包**。
+
+**如果求排列数就是外层 for 遍历背包，内层 for 循环遍历物品**。
+
+相关题目如下：
+
+- 求组合数：[动态规划：518. 零钱兑换 II](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486757&idx=1&sn=36f5eb60bfe4d8993cf3b3def5645a34&scene=21#wechat_redirect)
+- 求排列数：[动态规划：377. 组合总和 Ⅳ](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486826&idx=2&sn=80de2ae278bfd0c906d51fd012d37565&scene=21#wechat_redirect)、 [动态规划：70. 爬楼梯进阶版（完全背包）](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486833&idx=1&sn=beda10fdf8f53e8596dd3ad56ff751d5&scene=21#wechat_redirect)
+
+如果求最小数，那么两层 for 循环的先后顺序就无所谓了，相关题目如下：
+
+- 求最小数：[动态规划：322. 零钱兑换](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486848&idx=1&sn=fec1c0c36789f4929a9067910afd600b&scene=21#wechat_redirect)、[动态规划：279. 完全平方数](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247486872&idx=2&sn=01a3b81edafd125812d8860e89a6407f&scene=21#wechat_redirect)
+
+**对于背包问题，其实递推公式算是容易的，难是难在遍历顺序上，如果把遍历顺序搞透，才算是真正理解了**。
 
 
 
@@ -6483,7 +8662,7 @@ class Solution:
 > 解释：你不能先偷窃 1 号房屋（金额 = 2），然后偷窃 3 号房屋（金额 = 2）, 因为他们是相邻的。
 > ```
 
-这和上一题唯一的区别就是成环了，对于一个数组，承欢的话主要有如下三种情况：
+这和上一题唯一的区别就是成环了，对于一个数组，成环的话主要有如下三种情况：
 
 1. 考虑不包含首尾元素：
 
@@ -6518,7 +8697,7 @@ class Solution:
       return dp[end]
 ```
 
-### 3. 打家劫舍 III
+### ==3. 打家劫舍 III==
 
 > 小偷又发现了一个新的可行窃的地区。这个地区只有一个入口，我们称之为 root 。
 >
@@ -6540,16 +8719,15 @@ class Solution:
 
 暴力搜索方式对节点偷与不偷得到的最大金钱都没有做记录，而是需要实时计算。而动态规划其实就是使用状态转移容器来记录状态的变化，这里可以使用一个长度为 2 的数组，记录当前节点偷与不偷所得到的最大金钱。
 
-1. ==确定递归函数的参数和返回值==：这里我们要求一个节点 偷与不偷的两个状态所得到的金钱，那么返回值就是一个长度为 2 的数组。下标为 0 记录不偷该节点所得到的的最大金钱，下标为 1 记录偷该节点所得到的的最大金钱。所以本题 dp 数组就是一个长度为 2 的数组！
+1. ==确定递归函数的参数和返回值==：这里我们要求一个节点偷与不偷的两个状态所得到的金钱，那么返回值就是一个长度为 2 的数组。==下标为 0 记录不偷该节点所得到的的最大金钱，下标为 1 记录偷该节点所得到的的最大金钱==。所以本题 dp 数组就是一个长度为 2 的数组！
 
 2. ==确定终止条件==：在遍历的过程中，如果遇到空间点的话，很明显无论偷还是不偷都是 0
 
 3. ==确定遍历顺序==：首先明确的是使用后序遍历。因为通过递归函数的返回值来做下一步计算。
-
    - 通过递归左节点，得到左节点偷与不偷的金钱。
-
+   
    - 通过递归右节点，得到右节点偷与不偷的金钱。
-
+   
 4. ==确定单层递归的逻辑==：
    1. 如果是偷当前节点，那么左右孩子就不能偷，`val1 = cur->val + left [0] + right [0]`;  （**如果对下标含义不理解就在回顾一下 dp 数组的含义**）
    2. 如果不偷当前节点，那么左右孩子就可以偷，至于到底偷不偷一定是选一个最大的 (可偷可不偷)，所以：`val2 = max (left [0], left [1]) + max (right [0], right [1])`;
@@ -6577,6 +8755,7 @@ class Solution:
     def rob_tree(self, node):
         if node is None:
             return (0, 0) # (偷当前节点金额，不偷当前节点金额)
+        # 后序遍历
         left = self.rob_tree(node.left)
         right = self.rob_tree(node.right)
         val1 = node.val + left[1] + right[1] # 偷当前节点，不能偷子节点
@@ -6924,7 +9103,7 @@ class Solution:
 
 ==什么时候用单调栈？==
 
-通常是一维数组，要寻找任意一个元素的右边或者左边第一个比自己大或者小的元素的位置，此时我们就要想到可以用单调栈。
+通常是一维数组，要寻找任意一个元素的右边或者左边==第一个比自己大或者小的元素的位置==，此时我们就要想到可以用单调栈。
 
 那么单调栈的原理是什么呢？为什么时间复杂度是 O (n) 就可以找到每一个元素的右边第一个比它大的元素位置呢？
 
@@ -7095,7 +9274,7 @@ class Solution:
 
 > 想要加入栈的元素都在栈内元素的右边（因为是按下标顺序入栈的），如果想要入栈的元素更大，势必会引发 pop 操作。
 
-### 3. 下一个更大元素 II
+### ==3. 下一个更大元素 II==
 
 > 给定一个循环数组 nums （ nums[nums.length - 1] 的下一个元素是 nums[0] ），返回 nums 中每个元素的 下一个更大元素 。
 >
@@ -7109,7 +9288,7 @@ class Solution:
 
 ==如何处理循环数组？==
 
-一个直观的想法就是直接把两个数组拼接在一起，然后使用单调栈求下一个最大值，最后再把结果集即 result 数组 resize 到原数组大小就可以了。
+一个直观的想法就是==直接把两个数组拼接在一起==，然后使用单调栈求下一个最大值，最后再把结果集即 result 数组 resize 到原数组大小就可以了。
 
 这种写法很直观，但是做了很多无用操作，例如修改了 nums 数组，而且最后还要把 result 数组 resize 回去。
 
@@ -7130,7 +9309,7 @@ class Solution:
         return dp
 ```
 
-### 4. 接雨水
+### ==4. 接雨水==
 
 > 给定 `n` 个非负整数表示每个宽度为 `1` 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
 >
@@ -7249,7 +9428,7 @@ class Solution:
 
 从大到小还是从小到大呢？从栈头（元素从栈头弹出）到栈底的顺序应该是==从小到大==的顺序。
 
-因为一旦发现添加的柱子高度大于栈头元素了，此时就出现凹槽了，栈头元素就是凹槽底部的柱子，栈头第二个元素就是凹槽左边的柱子，而添加的元素就是凹槽右边的柱子。
+**因为一旦发现添加的柱子高度大于栈头元素了，此时就出现凹槽了，栈头元素就是凹槽底部的柱子，栈头第二个元素就是凹槽左边的柱子，而添加的元素就是凹槽右边的柱子。**
 
 <img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv70JQho3UqAvofRwABWKtxJOuBBE2sCgtTsydibqicwaCq6cNzWYztErjavlmV0CacQcykRnoUuTORw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom: 67%;" />
 
@@ -7365,7 +9544,7 @@ class Solution:
         return result
 ```
 
-### 5. 柱状图中最大的矩形
+### ==5. 柱状图中最大的矩形==
 
 > 给定 *n* 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
 >
@@ -7463,8 +9642,6 @@ class Solution:
             stack.append(i)
         return result
 ```
-
-
 
 
 
@@ -7574,7 +9751,7 @@ class Solution:
         return -maxHeap[0]
 ```
 
-### 4. 有多少小于当前数字的数字
+### ==4. 有多少小于当前数字的数字==：排序 + 字典
 
 > 给你一个数组 nums，对于其中每个元素 nums[i]，请你统计数组中比它小的所有数字的数目。
 >
@@ -7621,7 +9798,7 @@ class Solution:
         return res
 ```
 
-### 5. 比较含退格的字符串
+### ==5. 比较含退格的字符串==
 
 > 给定 s 和 t 两个字符串，当它们分别被输入到空白的文本编辑器后，如果两者相等，返回 true 。# 代表退格字符。
 >
@@ -7757,7 +9934,7 @@ class Solution:
         reverse(k, n - 1)
 ```
 
-### 7. [Dota2 参议院](https://leetcode-cn.com/problems/dota2-senate/)
+### ==7. [Dota2 参议院](https://leetcode-cn.com/problems/dota2-senate/)==
 
 > 输入："RD"
 > 输出："Radiant"
@@ -7867,7 +10044,7 @@ class Solution:
             return False  
 ```
 
-### 9. 独一无二的出现次数
+### ==9. 独一无二的出现次数==：使用两个字典，k | v 互换
 
 > 给你一个整数数组 `arr`，请你帮忙统计数组中每个数的出现次数。
 >
@@ -7928,17 +10105,18 @@ class Solution:
         numSum = sum(nums) #数组总和
         leftSum = 0
         for i in range(len(nums)):
+            # 注意这里，不要重复计算，把 左边的和 存起来
             if numSum - leftSum -nums[i] == leftSum: #左右和相等
                 return i
             leftSum += nums[i]
         return -1
 ```
 
-### 11. [按奇偶排序数组 II](https://leetcode-cn.com/problems/sort-array-by-parity-ii/)
+### ==11. [按奇偶排序数组 II](https://leetcode-cn.com/problems/sort-array-by-parity-ii/)==：快排思想
 
 > 给定一个非负整数数组 nums，  nums 中一半整数是 奇数 ，一半整数是 偶数 。
 >
-> 对数组进行排序，以便当 nums[i] 为奇数时，i 也是 奇数 ；当 nums[i] 为偶数时， i 也是 偶数 。
+> 对数组进行排序，以便当 nums[i] 为奇数时，i 也是奇数 ；当 nums[i] 为偶数时， i 也是偶数 。
 >
 > ```
 > 输入：nums = [4,2,5,7]
@@ -7960,6 +10138,8 @@ class Solution:
                 nums[i], nums[oddIndex] = nums[oddIndex], nums[i]
         return nums
 ```
+
+感觉有点快速排序的意思：找到不应该呆在相应位置的两个元素，交换。
 
 ### 12. 搜索插入位置
 
@@ -8025,8 +10205,6 @@ class Solution:
         return True
 ```
 
-
-
 #### 13.2 反转后半部分链表
 
 分为如下几步：
@@ -8054,7 +10232,7 @@ class Solution:
             fast = fast.next.next
 
         pre.next = None # 分割链表
-        cur1 = head # 前半部分
+        cur1 = head # 前半部分，是短的那部分，所以 while 循环时看 cur1 就行了
         cur2 = self.reverseList(slow) # 反转后半部分，总链表长度如果是奇数，cur2 比 cur1多一个节点
         while cur1:
             if cur1.val != cur2.val:
@@ -8081,7 +10259,7 @@ class Solution:
 
 终于明白指针的含义了，节点有两个属性：val 和 next，只要不改变 `node.val` 或者 `node.next`，链表就不会改变，pre、slow和 fast 就只是一个指针；如果想要改变链表，可以使用：`fast.next = fast.next.next` 类似这种代码。
 
-### 14. 重排链表
+### ==14. 重排链表==：双向队列
 
 > 给定一个单链表 L 的头节点 head ，单链表 L 表示为：
 >
@@ -8119,8 +10297,10 @@ class Solution:
             tmp = tmp.next
         tmp = head
         while len(d): # 一后一前加入链表
+            # 在 pop 之前检查长度够不够
             tmp.next = d.pop()
             tmp = tmp.next
+            # 在 pop 之前检查长度够不够
             if len(d):
                 tmp.next = d.popleft()
                 tmp = tmp.next
@@ -8204,6 +10384,7 @@ class Solution:
 # 3、如果二分查找成功，则 binarySearch 返回 nums 中值为 target 的一个下标。然后，通过左右滑动指针，来找到符合题意的区间
 class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
+        
         def binarySearch(nums:List[int], target:int) -> int:
             left, right = 0, len(nums)-1
             while left<=right: # 不变量：左闭右闭区间
@@ -8216,6 +10397,8 @@ class Solution:
                     return middle
             # 如果没有找到，返回 -1
             return -1
+        
+        # 因为是二分查找，不确定找到的这个值是第几个值，所以需要向前向后找边界
         index = binarySearch(nums, target)
         # nums 中不存在 target，直接返回 {-1, -1}
         if index == -1:
