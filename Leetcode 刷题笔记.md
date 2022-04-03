@@ -73,6 +73,8 @@ def HalfSearch(OrderedList, key, left, right):
         return HalfSearch(OrderedList, key, left, mid - 1)
 ```
 
+
+
 二分查找的时间复杂度是 $O(logn)$，那么递归二分查找的空间复杂度是多少呢？
 
 我们依然看 **每次递归的空间复杂度和递归的深度**
@@ -117,7 +119,7 @@ def HalfSearch(OrderedList, key, left, right):
 
 例如删除下标为 3 的元素，需要对下标为 3 的元素后面的所有元素都要做移动操作，如图所示：
 
-![图片](https://gitee.com/lockegogo/markdown_photo/raw/master/202201291418145.webp)
+![图片](https://gitee.com/lockegogo/markdown_photo/blob/master/202201291418145.webp)
 
  Java 是没有指针的，同时也不对程序员暴漏其元素的地址，寻址操作完全交给虚拟机。 Java 的二维数组可能是如下排列的方式：
 
@@ -162,8 +164,6 @@ print(search(12, arr))
 ```
 
 > 这种解法感觉比较直观一点。
-
-<img src="https://gitee.com/lockegogo/markdown_photo/raw/master/202201291557553.webp" alt="图片" style="zoom: 80%;" />
 
 #### 1.2 左闭右开
 
@@ -3261,7 +3261,7 @@ class Solution:
             # 中
             path.append(root.val)
             
-            if (not root.left)and (not root.right):
+            if (not root.left) and (not root.right):
                res.append(path[:])
             
             ways=[]
@@ -3393,11 +3393,11 @@ class Solution:
         return leftmost_val
 ```
 
-不懂0.0
+不懂0.0，第二遍还是不懂，深信孰能生巧的我，倒要看看我到底看几遍才能懂！生气！
 
 #### 13.2 迭代：层序遍历
 
-本题使用层序遍历再合适不过了，比递归要好理解的多！只需要记录最后一行第一个节点的数值就可以了。
+本题使用==层序遍历==再合适不过了，比递归要好理解的多！只需要记录最后一行第一个节点的数值就可以了。
 
 ```python
 class Solution:
@@ -3408,7 +3408,8 @@ class Solution:
         result = 0
         while queue: 
             q_len = len(queue)
-            for i in range(q_len): 
+            for i in range(q_len):
+                # 只取最左边的值
                 if i == 0: 
                     result = queue[i].val 
                 cur = queue.popleft()
@@ -3482,7 +3483,7 @@ class solution:
             return isornot(root, targetsum - root.val)
 ```
 
-
+有点意思。
 
 ### ==15. 路径总和 II==
 
@@ -3758,7 +3759,7 @@ class Solution:
 
 接下来 t1 的左子树是：合并 t1 左子树 t2 左子树之后的左子树。
 
-t1 的右子树：是 合并 t1 右子树 t2 右子树之后的右子树。
+t1 的右子树：是合并 t1 右子树 t2 右子树之后的右子树。
 
 最终 t1 就是合并之后的根节点。
 
@@ -4164,7 +4165,7 @@ class Solution:
 
 **如果找到一个节点，发现左子树出现结点 p，右子树出现节点 q，或者 左子树出现结点 q，右子树出现节点 p，那么该节点就是节点 p 和 q 的最近公共祖先。**
 
-使用后序遍历，回溯的过程，就是从底向上遍历节点，一旦发现如何这个条件的节点，就是最近公共节点了。
+使用后序遍历，回溯的过程，就是从底向上遍历节点，一旦发现满足这个条件的节点，就是最近公共节点了。
 
 递归三部曲：
 
@@ -4233,6 +4234,8 @@ left 与 right的逻辑处理;
 可以说这里每一步，都是有难度的，都需要对二叉树，递归和回溯有一定的理解。
 
 好复杂的逻辑啊，第一遍还不太理解。
+
+第二遍，心里有点数了。
 
 ```python
 class Solution:
@@ -4357,6 +4360,7 @@ class Solution:
     def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
         # 第一种情况：没找到删除的节点，遍历到空节点直接返回了
         if not root: return root  
+        
         if root.val == key:  
             # 第二种情况：左右孩子都为空（叶子节点），直接删除节点， 返回NULL为根节点
             if not root.left and not root.right:  
@@ -4386,9 +4390,9 @@ class Solution:
                 return root
         
         if root.val > key: 
-            root.left = self.deleteNode(root.left,key)  #左递归
+            root.left = self.deleteNode(root.left, key)  # 左递归
         if root.val < key: 
-            root.right = self.deleteNode(root.right,key)  #右递归
+            root.right = self.deleteNode(root.right, key)  # 右递归
         return root
 ```
 
@@ -4427,7 +4431,7 @@ class Solution:
 
 3. 确定单层递归的逻辑
 
-如果 root（当前节点）的元素小于 low 的数值，那么应该递归右子树，并返回右子树符合条件的头结点。
+如果 root (当前节点) 的元素小于 low 的数值，那么应该递归右子树，并返回右子树符合条件的头结点。
 
 如果 root (当前节点) 的元素大于 high 的，那么应该递归左子树，并返回左子树符合条件的头结点。
 
@@ -4552,7 +4556,7 @@ class Solution:
 
 因为数组大家都知道怎么遍历啊，从后向前，挨个累加就完事了，这换成了二叉搜索树，看起来就别扭了一些是不是。
 
-那么知道如何遍历这个二叉树，也就迎刃而解了，**从树中可以看出累加的顺序是右中左，所以我们需要反中序遍历这个二叉树，然后顺序累加就可以了**。
+那么知道如何遍历这个二叉树，也就迎刃而解了，**从树中可以看出累加的顺序是==右中左==，所以我们需要反中序遍历这个二叉树，然后顺序累加就可以了**。
 
 <img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4MT9C2BlSHE7icxicsBhIsIjiaq4zRbwSNAMe9AQ7pQHSMiarmAgDJcrzc2wAPmZ5wTd9QiaRxibH8beeg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
 
@@ -7280,8 +7284,8 @@ class Solution:
          # 初始化
          dp = [1 for i in range(len(nums))]
          for i in range(1, len(nums)):
-                 if nums[i] > nums[i-1]:
-                     dp[i] = dp[i-1] + 1
+             if nums[i] > nums[i-1]:
+                 dp[i] = dp[i-1] + 1
   
          return max(dp)
  ```
@@ -7760,7 +7764,7 @@ class Solution:
         return dp[0][-1]
 ```
 
-这题和最长回文子串的区别就是，它不要求求出的值是连续的，这就意味着当左右两端的字符串无法提高最长回文串的长度时，我们可以继承它的子串的最大回文串长度，而最长回文串不行。
+这题和最长回文子串的区别就是，它不要求求出的值是连续的，这就意味着当左右两端的字符串无法提高最长回文串的长度时，我们可以==继承==它的子串的最大回文串长度，而最长回文串不行。
 
 ---
 
@@ -8269,7 +8273,7 @@ if __name__ == '__main__':
 
 **组合不强调元素之间的顺序，排列强调元素之间的顺序**。
 
-那我为什么要介绍这些呢，因为这和下文讲解遍历顺序息息相关！
+那我为什么要介绍这些呢，因为这和下文讲解==遍历顺序==息息相关！
 
 回归本题，动规五步曲来分析如下：
 
@@ -8463,6 +8467,7 @@ class Solution:
 ```python
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
+        # 初始化成一个很大的数
         dp = [amount + 1] * (amount + 1)
         # 凑成 0 所需要的钱币数为 0
         dp[0] = 0
@@ -8505,15 +8510,15 @@ class Solution:
    <img src="https://mmbiz.qpic.cn/mmbiz_jpg/ciaqDnJprwv59icsE0DRLswib5mv7y1qjY0ajSOAh8k9rOEAJwMhLyy6JkmcBTfqYVwmDUEtlO5ow32MF7OGvpTHw/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
 
 ```python
-   class Solution:
-       def numSquares(self, n: int) -> int:
-           nums = [i**2 for i in range(1, n + 1) if i**2 <= n]
-           dp = [n]*(n+1)
-           dp[0] = 0
-           for i in range(len(nums)):
-               for j in range(nums[i], n+1):
-                   dp[j] = min(dp[j], dp[j-nums[i]] + 1)
-           return dp[-1] 
+class Solution:
+    def numSquares(self, n: int) -> int:
+        nums = [i**2 for i in range(1, n + 1) if i**2 <= n]
+        dp = [n]*(n+1)
+        dp[0] = 0
+        for i in range(len(nums)):
+            for j in range(nums[i], n+1):
+                dp[j] = min(dp[j], dp[j-nums[i]] + 1)
+                return dp[-1] 
 ```
 
 ### ==34. 单词拆分==
@@ -8533,7 +8538,7 @@ class Solution:
 1. ==确定 dp 数组以及下标的含义==：**dp [i] : 字符串长度为 i 的话，dp [i] 为 true，表示可以拆分为一个或多个在字典中出现的单词**。
 2. ==确定递推公式==：如果确定 dp [j] 是 true，且 [j, i] 这个区间的子串出现在字典里，那么 dp [i] 一定是 true。（j < i ）。==所以递推公式是 if ([j, i] 这个区间的子串出现在字典里 && dp [j] 是 true) 那么 dp [i] = true。==
 3. ==dp 数组如何初始化==：从递归公式中可以看出，dp [i] 的状态依靠 dp [j] 是否为 true，那么 dp [0] 就是递归的根基，dp [0] 一定要为 true，否则递归下去后面都都是 false 了。dp [0] 初始为 true 完全就是为了推导公式。下标非 0 的 dp [i] 初始化为 false，只要没有被覆盖说明都是不可拆分为一个或多个在字典中出现的单词。
-4. ==确定遍历顺序==：题目中说是拆分为一个或多个在字典中出现的单词，所以这是完全背包。本题最终要求的是是否都出现过，所以对出现单词集合里的元素是组合还是排列，并不在意！所以遍历顺序无关紧要。但本题还有特殊性，因为是要求子串，最好是遍历背包放在外循环，将遍历物品放在内循环。如果要是外层 for 循环遍历物品，内层 for 遍历背包，就需要把所有的子串都预先放在一个容器里。（如果不理解的话，可以自己尝试这么写一写就理解了）**所以最终我选择的遍历顺序为：遍历背包放在外循环，将遍历物品放在内循环。内循环从前到后**。
+4. ==确定遍历顺序==：题目中说是拆分为一个或多个在字典中出现的单词，所以这是完全背包。本题最终要求的是是否都出现过，所以对出现单词集合里的元素是组合还是排列，并不在意！所以遍历顺序无关紧要。==但本题还有特殊性，因为是要求子串，最好是遍历背包放在外循环，将遍历物品放在内循环。==如果要是外层 for 循环遍历物品，内层 for 遍历背包，就需要把所有的子串都预先放在一个容器里。（如果不理解的话，可以自己尝试这么写一写就理解了）**所以最终我选择的遍历顺序为：遍历背包放在外循环，将遍历物品放在内循环。内循环从前到后**。
 5. ==举例推导 dp [i]==：以输入: s = "leetcode", wordDict = ["leet", "code"] 为例，dp 状态如图：
 
 <img src="https://mmbiz.qpic.cn/mmbiz_jpg/ciaqDnJprwv4OzUSt6CuQgdJmYTVT0KVLjX4Xspxny6xQNVdHD0ficpgRicBCA6Sjsd4xj4QNibqB31uVudB15icrVQ/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
@@ -8612,20 +8617,20 @@ class Solution:
 
 
 
-## 打家劫舍系列
+## ==打家劫舍系列==
 
 ### 1. 开始打家劫舍
 
 > 你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
 >
-> 给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
+> 给定一个代表每个房屋存放金额的非负整数数组，计算你不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
 >
 > 输入：[1,2,3,1]
 > 输出：4
 > 解释：偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。偷窃到的最高金额 = 1 + 3 = 4 。
 
-1. ==确定 dp 数组（dp table）以及下标的含义==：**dp [i]：考虑下标 i（包括 i）以内的房屋，最多可以偷窃的金额为 dp [i]**。
-2. ==确定递推公式==：决定 dp[i] 的因素就是第 i 个房间偷还是不偷，
+1. ==确定 dp 数组（dp table）以及下标的含义==：**dp [i]：==考虑==（注意这两个字，是考虑！！！）下标 i（包括 i）以内的房屋，最多可以偷窃的金额为 dp [i]**。
+2. ==确定递推公式==：决定 dp[i] 的因素就是第 i 个房间偷还是不偷，==千万注意，这里不用非要偷第 i 个房间，注意和连续自序和的区别！！==
    1. 如果偷第 i 房间，那么 dp [i] = dp [i - 2] + nums [i] ，即：第 i-1 房一定是不考虑的，找出 下标 i-2（包括 i-2）以内的房屋，最多可以偷窃的金额为 dp [i-2] 加上第 i 房间偷到的钱；
    2. 如果不偷第 i 房间，那么 dp [i] = dp [i - 1]，即考虑 i-1 房，（**注意这里是考虑，并不是一定要偷 i-1 房，这是很多同学容易混淆的点**）
    3. 然后 dp [i] 取最大值，即 dp [i] = max (dp [i - 2] + nums [i], dp [i - 1]);
@@ -9647,7 +9652,7 @@ class Solution:
 
 ## 补充题目
 
-### 1. 快速排序
+### ==1. 快速排序==
 
 > 给你一个整数数组 `nums`，请你将该数组升序排列。
 >
@@ -10412,6 +10417,330 @@ class Solution:
         while right+1 < len(nums) and nums[right + 1] == target:
             right +=1
         return [left, right]
+```
+
+### ==16. 矩阵置零==
+
+> 给定一个 `m x n` 的矩阵，如果一个元素为 **0** ，则将其所在行和列的所有元素都设为 **0** 。请使用 **[原地](http://baike.baidu.com/item/原地算法)** 算法**。**
+>
+> ![img](https://assets.leetcode.com/uploads/2020/08/17/mat1.jpg)
+
+### 16.1 用 O(m+n) 额外空间
+
+两遍扫 `matrix`, 第一遍用集合记录哪些行，哪些列有 `0`; 第二遍置 `0`
+
+```python
+class Solution:
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        row = len(matrix)
+        col = len(matrix[0])
+        row_zero = set()
+        col_zero = set()
+        for i in range(row):
+            for j in range(col):
+                if matrix[i][j] == 0:
+                    row_zero.add(i)
+                    col_zero.add(j)
+        for i in range(row):
+            for j in range(col):
+                if i in row_zero or j in col_zero:
+                    matrix[i][j] = 0
+
+```
+
+### 16.2 用 O(1) 空间 
+
+关键思想：用 matrix 第一行和第一列记录该行该列是否有 0, 作为标志位
+
+但是对于第一行，和第一列要设置一个标志位，为了防止自己这一行 (一列) 也有 0 的情况。注释写在代码里，直接看代码很好理解！
+
+```python
+lass Solution:
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        row = len(matrix)
+        col = len(matrix[0])
+        row0_flag = False
+        col0_flag = False
+        # 找第一行是否有0
+        for j in range(col):
+            if matrix[0][j] == 0:
+                row0_flag = True
+                break
+        # 第一列是否有0
+        for i in range(row):
+            if matrix[i][0] == 0:
+                col0_flag = True
+                break
+
+        # 把第一行或者第一列作为 标志位
+        for i in range(1, row):
+            for j in range(1, col):
+                if matrix[i][j] == 0:
+                    matrix[i][0] = matrix[0][j] = 0
+        #print(matrix)
+        # 置0
+        for i in range(1, row):
+            for j in range(1, col):
+                if matrix[i][0] == 0 or matrix[0][j] == 0:
+                    matrix[i][j] = 0
+
+        if row0_flag:
+            for j in range(col):
+                matrix[0][j] = 0
+        if col0_flag:
+            for i in range(row):
+                matrix[i][0] = 0
+
+```
+
+### 17. 岛屿问题
+
+在 LeetCode 中，「岛屿问题」是一个系列系列问题，比如：岛屿数量、岛屿的周长、岛屿的最大面积、最大人工岛。我们所熟悉的 DFS 深度优先搜索问题通常是在树或者图结构上进行的，而我们今天要讨论的 DFS 问题，是在一种网格结构中进行的，岛屿问题是这类网格 DFS 问题的典型代表。网格结构遍历起来要比二叉树复杂一些，如果没有掌握一定的方法，DFS 代码容易写的冗长繁杂。
+
+==网格类问题问题的 DFS 遍历方法：==
+
+==网格问题的基本概念==
+
+网格问题是由 m×n 个小方格组成一个网格，每个小方格与其上下左右四个方格认为是相邻的，要在这样的网格上进行某种搜索。
+
+岛屿问题是一类典型的网格问题。每个格子中的数字可能是 0 或者 1。我们把数字为 0 的格子看成海洋格子，数字为 1 的格子看成陆地格子，这样相邻的陆地格子就连接成一个岛屿。
+
+![岛屿问题示例](https://pic.leetcode-cn.com/c36f9ee4aa60007f02ff4298bc355fd6160aa2b0d628c3607c9281ce864b75a2.jpg)
+
+在这样一个设定下，就出现了各种岛屿问题的变种，包括岛屿的数量、面积、周长等，不过这些问题，基本都可以用 DFS 遍历解决。
+
+==DFS 的基本结构：==
+
+网格结构要比二叉树结构稍微复杂一些，它其实是一种简化版的图结构。要写好网格上的 DFS 遍历，我们首先要理解二叉树上的 DFS 遍历方法，再类比写出网格结构上的 DFS 遍历：
+
+```python
+def traverse(root):
+    if root == None:
+        return
+    traverse(root.left)
+    traverse(root.right)
+```
+
+可以看到，二叉树的 DFS 有两个要素：
+
+- 访问相邻节点
+- 判断 base case
+
+第一个要素是==访问相邻节点==。二叉树的相邻节点非常简单，只有左节点和右节点两个。二叉树本身是一个递归定义的结构：一棵二叉树，它的左子树和右子树也是一棵二叉树。那么我们的 DFS 遍历只需要递归调用左子树和右子树即可。
+
+第二个要素是判断 base case。一般来说，二叉树遍历的 base case 是 `root == None`，这样一个条件判断其实有两个含义：一方面，这表示 root 指向的子树为空，不需要再往下遍历了；另一方面，在 `root == None` 的时候及时返回，可以让后面的 `root.left`和 `root.right`操作不会出现空指针异常。
+
+对于网格上的 DFS，我们完全可以参考二叉树的 DFS，写出网格 DFS 的两个要素：
+
+ 首先，网格结构中的格子有多少相邻节点？答案是上下左右四个。对于格子 `(r,c)` 来说，四个相邻的格子分别是 `(r-1, c)`、`(r+1, c)`、`(r, c-1)`、`(r, c+1)`。换句话说，网格结构是「四叉」的。
+
+<img src="https://pic.leetcode-cn.com/63f5803e9452ccecf92fa64f54c887ed0e4e4c3434b9fb246bf2b410e4424555.jpg" alt="网格结构中四个相邻的格子" style="zoom:67%;" />
+
+其次，网格  DFS 中的 base case 是什么？从二叉树的 base case 对应过来，应该是网格中不需要继续遍历、`grid[r][c]`会出现数组下标越界异常的格子，也就是那些超出网格范围的格子。
+
+<img src="https://pic.leetcode-cn.com/5a91ec351bcbe8e631e7e3e44e062794d6e53af95f6a5c778de369365b9d994e.jpg" alt="网格 DFS 的 base case" style="zoom:67%;" />
+
+这稍微有些反直觉，坐标竟然可以临时超出网格的范围？这种方法我称为==先污染后治理==——甭管当前是在哪个格子，先往四个方向走一步再说，如果发现走出了网格范围再赶紧返回。这跟二叉树的遍历方法是一样的，先递归调用，发现 `root == None`再返回。这样我们就得到了网格 DFS 遍历的框架代码：
+
+```java
+void dfs(int[][] grid, int r, int c) {
+    // 判断 base case
+    // 如果坐标 (r, c) 超出了网格范围，直接返回
+    if (!inArea(grid, r, c)) {
+        return;
+    }
+    // 访问上、下、左、右四个相邻结点
+    dfs(grid, r - 1, c);
+    dfs(grid, r + 1, c);
+    dfs(grid, r, c - 1);
+    dfs(grid, r, c + 1);
+}
+
+// 判断坐标 (r, c) 是否在网格中
+boolean inArea(int[][] grid, int r, int c) {
+    return 0 <= r && r < grid.length 
+        	&& 0 <= c && c < grid[0].length;
+}
+```
+
+==如何避免重复遍历？==
+
+网格结构的 DFS 与二叉树的 DFS 最大的不同之处在于，**遍历中可能遇到遍历过的节点**，这是因为，网格结构本质上是一个图，我们可以把每个格子看成图中的节点，每个节点有向上下左右的四条边。在图中遍历时，自然可能会遇到重复遍历节点。
+
+这时候，DFS 可能会不停地「兜圈子」，永远停不下来，如下图所示：
+
+![DFS 遍历可能会兜圈子（动图）](https://pic.leetcode-cn.com/7fec64afe8ab72c5df17d6a41a9cc9ba3879f58beec54a8791cbf108b9fd0685.gif)
+
+如何避免这样的重复遍历呢？==答案是标记已经遍历过的格子==，以岛屿问题为例，我们需要在所有值为 1 的陆地格子上做 DFS 遍历，每走过一个陆地格子，就把格子的值改为 2，这样当我们遇到 2 的时候，就知道这是遍历过的格子了，也就是说，每个格子可能取三个值：
+
+- 0 —— 海洋格子
+- 1 —— 陆地格子（未遍历过）
+- 2 —— 陆地格子（已遍历过）
+
+我们在框架代码中加入避免重复遍历的语句：
+
+```java
+void dfs(int[][] grid, int r, int c) {
+    // 判断 base case
+    if (!inArea(grid, r, c)) {
+        return;
+    }
+    // 如果这个格子不是岛屿，直接返回
+    if (grid[r][c] != 1) {
+        return;
+    }
+    grid[r][c] = 2; // 将格子标记为「已遍历过」
+    
+    // 访问上、下、左、右四个相邻结点
+    dfs(grid, r - 1, c);
+    dfs(grid, r + 1, c);
+    dfs(grid, r, c - 1);
+    dfs(grid, r, c + 1);
+}
+
+// 判断坐标 (r, c) 是否在网格中
+boolean inArea(int[][] grid, int r, int c) {
+    return 0 <= r && r < grid.length 
+        	&& 0 <= c && c < grid[0].length;
+}
+
+作者：nettee
+链接：https://leetcode-cn.com/problems/number-of-islands/solution/dao-yu-lei-wen-ti-de-tong-yong-jie-fa-dfs-bian-li-/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+![标记已遍历的格子](https://pic.leetcode-cn.com/20fe202fb5e5fc5048e140c29310c1bcbb17661860d2441e8a3feb1236a2e44d.gif)
+
+这样，我们就得到了一个岛屿问题、乃至各种网格问题的通用 DFS 遍历方法。
+
+#### 17.1 ==[岛屿的最大面积](https://leetcode-cn.com/problems/max-area-of-island/)==
+
+> 给你一个大小为 m x n 的二进制矩阵 grid 。
+>
+> 岛屿 是由一些相邻的 1 (代表土地) 构成的组合，这里的「相邻」要求两个 1 必须在水平或者竖直的四个方向上 相邻。你可以假设 grid 的四个边缘都被 0（代表水）包围着。
+>
+> 岛屿的面积是岛上值为 1 的单元格的数目。
+>
+> 计算并返回 grid 中最大的岛屿面积。如果没有岛屿，则返回面积为 0 。
+>
+> <img src="https://assets.leetcode.com/uploads/2021/05/01/maxarea1-grid.jpg" alt="img" style="zoom:67%;" />
+
+这道题目只需要对每个岛屿做  DFS 遍历，求出每个岛屿的面积就可以了，每遍历到一个格子，就把面积加一。
+
+##### 17.1.1 深度优先搜索
+
+1. 遍历二维数组，对于每块土地，去其前后左右找相邻土地，再去前后左右的土地找其前后左右的土地，直到周围没有土地
+2. 对于每一块已找过的土地，为避免重复计算，将其置为 0
+3. 遍历所有岛屿，然后取这些岛屿的最大面积
+
+```python
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        def dfs(i, j):
+            if 0 <= i < m and 0 <= j < n and grid[i][j]:
+                grid[i][j] = 0
+                return 1 + dfs(i - 1, j) + dfs(i + 1, j) + dfs(i, j - 1) + dfs(i, j + 1)
+            # 这里是终止条件，x
+            return 0
+        
+        res = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]:
+                    res = max(res, dfs(i, j))
+        return res
+
+```
+
+#### 17.2 填海造陆问题
+
+> 在二维地图上， 0 代表海洋，1 代表陆地，我们最多只能将一格 0 （海洋）变成 1 （陆地）。进行填海之后，地图上最大的岛屿面积是多少？
+
+这道题目是岛屿最大面积问题的升级版，大致的思路我们不难想到，我们先计算出所有岛屿的面积，在所有的格子上标记出岛屿的面积。然后搜索出哪个海洋格子相邻的两个岛屿面积最大，例如下图中红色方框内的海洋格子，上边、左边都与岛屿相邻，我们可以计算出它变成陆地之后可以连接成的岛屿面积。
+
+![一个海洋格子连接起两个岛屿](https://pic.leetcode-cn.com/3a993272977112d82a37676380bf723f3f6b919a20da322e9a5c5afda07fa397.jpg)
+
+然而，这种做法可能遇到一个问题，如下图中红色方框内的海洋格子，它的上边、左边都与岛屿相邻，这时候连接成的岛屿面积难道是 7+1+7 ？显然不是。这两个 7 来自同一个岛屿，所以填海造陆之后得到的岛屿面积应该只有 7+1 = 8。
+
+![一个海洋格子与同一个岛屿有两个边相邻](https://pic.leetcode-cn.com/f519da076eb48fc993c7c71a0fa091b53bc6a1661163549eab60010606ee0e1c.jpg)
+
+可以看到，要让算法正确，我们得能区分一个海洋格子相邻的两个 7 是不是来自同一个岛屿。那么我们不能在方格中标记岛屿的面积，而应该标记岛屿的索引下标，另外用一个数组记录每个岛屿的面积，如下图所示，这样我们就可以发现红色方框内的海洋格子，它的两个相邻的岛屿实际上是同一个。
+
+![标记每个岛屿的索引（下标）](https://pic.leetcode-cn.com/56ec808215d4ff3014476ef22297522b3731602266f9a069a82daf41001f904c.jpg)
+
+可以看到，这道题实际上是对网格做了两遍 DFS：第一遍 DFS 遍历陆地格子，计算每个岛屿的面积并比较岛屿；第二遍 DFS 遍历海洋格子，观察每个海洋格子相邻的陆地格子。
+
+
+
+#### 17.3 岛屿的周长
+
+> 给定一个包含 0 和 1 的二维网格地图，其中 1 表示陆地，0 表示海洋。网格中的格子水平和垂直方向相连（对角线方向不相连）。整个网格被水完全包围，但其中恰好有一个岛屿（一个或多个表示陆地的格子相连组成岛屿）。
+>
+> 岛屿中没有 “湖”（“湖” 指水域在岛屿内部且不和岛屿周围的水相连）。格子是边长为 1 的正方形。计算这个岛屿的周长。
+>
+> ![题目示例](https://pic.leetcode-cn.com/562d8d63af78af0e3ef2105f065cc96465eec4bf1e8a28b668d6f383f0a1518b.jpg)
+
+对于岛屿，直接用数学的方法求周长会更容易。不过这道题是一个很好的理解 DFS 遍历过程的例题，不信你跟着我往下看。
+
+可以看到，dfs 函数直接返回有这几种情况：
+
+`!inArea(grid, r, c)`，即坐标 (r, c) 超出了网格的范围，也就是我所说的「先污染后治理」的情况
+`grid[r][c] != 1`，即当前格子不是岛屿格子，这又分为两种情况：
+`grid[r][c] == 0`，当前格子是海洋格子
+`grid[r][c] == 2`，当前格子是已遍历的陆地格子
+
+那么这些和我们岛屿的周长有什么关系呢？实际上，岛屿的周长是计算岛屿全部的边缘，而这些边缘就是我们在 DFS 遍历中，dfs 函数返回的位置。观察题目示例，我们可以将岛屿的周长中的边分为两类，如下图所示。黄色的边是与网格边界相邻的周长，而蓝色的边是与海洋格子相邻的周长。
+
+![将岛屿周长中的边分为两类](https://pic.leetcode-cn.com/66d817362c1037ebe7705aacfbc6546e321c2b6a2e4fec96791f47604f546638.jpg)
+
+当我们的 dfs 函数因为「坐标 (r, c) 超出网格范围」返回的时候，实际上就经过了一条黄色的边；而当函数因为「当前格子是海洋格子」返回的时候，实际上就经过了一条蓝色的边。这样，我们就把岛屿的周长跟 DFS 遍历联系起来了，我们的题解代码也呼之欲出：
+
+```java
+public int islandPerimeter(int[][] grid) {
+    for (int r = 0; r < grid.length; r++) {
+        for (int c = 0; c < grid[0].length; c++) {
+            if (grid[r][c] == 1) {
+                // 题目限制只有一个岛屿，计算一个即可
+                return dfs(grid, r, c);
+            }
+        }
+    }
+    return 0;
+}
+
+int dfs(int[][] grid, int r, int c) {
+    // 函数因为「坐标 (r, c) 超出网格范围」返回，对应一条黄色的边
+    if (!inArea(grid, r, c)) {
+        return 1;
+    }
+    // 函数因为「当前格子是海洋格子」返回，对应一条蓝色的边
+    if (grid[r][c] == 0) {
+        return 1;
+    }
+    // 函数因为「当前格子是已遍历的陆地格子」返回，和周长没关系
+    if (grid[r][c] != 1) {
+        return 0;
+    }
+    grid[r][c] = 2;
+    return dfs(grid, r - 1, c)
+        + dfs(grid, r + 1, c)
+        + dfs(grid, r, c - 1)
+        + dfs(grid, r, c + 1);
+}
+
+// 判断坐标 (r, c) 是否在网格中
+boolean inArea(int[][] grid, int r, int c) {
+    return 0 <= r && r < grid.length 
+        	&& 0 <= c && c < grid[0].length;
+}
 ```
 
 
