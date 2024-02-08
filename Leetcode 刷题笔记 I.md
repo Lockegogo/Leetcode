@@ -1,7 +1,5 @@
 # Leetcode 刷题笔记
 
-[TOC]
-
 ## 算法性能分析
 
 ### 大 $O$ 的定义
@@ -27,7 +25,7 @@
 
 ==空间复杂度（递归）==：**递归深度 * 每次递归的空间复杂度**
 
-> 空间复杂度：一个算法在运行过程中占用内存空间大小的量度，利用程序的 空间复杂度，可以对程序运行中需要多少内存有个预先估计。
+> 空间复杂度：一个算法在运行过程中占用内存空间大小的量度，利用程序的空间复杂度，可以对程序运行中需要多少内存有个预先估计。
 
 ```python
 # 斐波拉契求和
@@ -6928,6 +6926,7 @@ class Solution:
         def backtrack(digits, index):
             if len(path) == len(digits):
                 res.append(''.join(path))
+                # 递归出口
                 return
             
             # 横向在同一数字对应的字母中选
@@ -6962,8 +6961,8 @@ class Solution:
 
 ==本题还需要 startindex 来控制 for 循环的起始位置，对于组合问题，什么时候需要 startindex 呢？==
 
-- 如果是==一个集合==求组合，就需要 startindex
-- 如果是==多个集合==取组合，各个集合之间相互不影响，就不用 startindex（例如电话号码的字母组合）
+- 如果是==一个集合==求组合，就需要 `startindex`
+- 如果是==多个集合==取组合，各个集合之间相互不影响，就不用 `startindex`（例如电话号码的字母组合）
 
 本题单层 for 循环依然是从 startIndex 开始，搜索 candidates 集合。
 
@@ -7039,7 +7038,7 @@ class Solution:
                 return
             self.result.append(candidates[i])
             self.sum += candidates[i]
-            # 因为可以无限制选取同一个数字，所以是 i
+            # 因为可以无限制选取同一个数字，所以是 i，和下一题进行比较
             self.trackbacking(i, candidates, target)
             # 回溯
             self.result.pop()
@@ -7140,8 +7139,8 @@ class Solution:
             self.result.append(candidates[i])
             self.sum += candidates[i]
             self.used[i] = 1
+            # 同一个数字不能重复选，所以是 i+1
             self.trackbacking(i+1, candidates, target)
-            # 回溯
             self.result.pop()
             self.sum -= candidates[i]
             self.used[i] = 0
@@ -7179,10 +7178,10 @@ class Solution:
 
 ==回溯三部曲==：
 
-1. 递归函数参数：全局变量数组 path 存放切割后回文的子串，二维数组 result 存放结果集。还需要 startindex，因为切割过的地方，不能重复切割，和组合问题保持一致。
+1. 递归函数参数：全局变量数组 path 存放切割后回文的子串，二维数组 result 存放结果集。还需要 `startindex`，因为切割过的地方，不能重复切割，和组合问题保持一致。
 
-2. 递归函数终止条件：从树形结构图中可以看出，切割线找到了字符串的后面，说明找到了一种切割方法，此时就是本层递归的终止条件，==在代码中==，递归参数需要传入 startindex 表示下一轮递归遍历的起始位置，这个 startindex 就是切割线。
-3. 单层搜索的逻辑：在递归循环中，如何截取子串？我们 定义了起始位置 startIndex，那么 [startIndex, i] 就是要截取的子串。首先判断这个子串是不是回文，如果是回文，就加入 path，path 用来记录切割过的回文子串。**注意切割过的位置，不能重复切割，所以，backtracking (s, i + 1); 传入下一层的起始位置为 i + 1**。
+2. 递归函数终止条件：从树形结构图中可以看出，切割线找到了字符串的后面，说明找到了一种切割方法，此时就是本层递归的终止条件，==在代码中==，递归参数需要传入 `startindex` 表示下一轮递归遍历的起始位置，这个 `startindex` 就是切割线。
+3. 单层搜索的逻辑：在递归循环中，如何截取子串？我们 定义了起始位置 `startIndex`，那么 `[startIndex, i]` 就是要截取的子串。首先判断这个子串是不是回文，如果是回文，就加入 path，path 用来记录切割过的回文子串。**注意切割过的位置，不能重复切割，所以，`backtracking (s, i + 1)`; 传入下一层的起始位置为 `i + 1`**。
 
 ==判断回文子串==：
 
@@ -7511,7 +7510,7 @@ class Solution:
 
 <img src="https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv7lMMuvp0iakIvJyzQbPMFNiczcoia5MVNVg4yUKU71wDxW39kMLBrljKrWywUIRqz3F86l6meYbckCQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
 
-上述是只有求子集组合会出现的问题，因为求递增子序列我们已经强制所有的子集内元素递增，{2，1} 会在单层逻辑判断时被直接删除！！**所以递增子序列不用排序，但是子集需要排序**，他们都可以定义局部 used （每层一个新的）来进行去重，此外，子集还可以定义全局 used （同过 used[i-1] 来判断是在树枝还是树层）。
+上述是只有求子集组合会出现的问题，因为求递增子序列我们已经强制所有的子集内元素递增，{2，1} 会在单层逻辑判断时被直接删除！！**所以递增子序列不用排序，但是子集需要排序**，他们都可以定义局部 used （每层一个新的）来进行去重，此外，子集还可以定义全局 used （通过 `used[i-1]` 来判断是在树枝还是树层）。
 
 所以这两者 used 列表定义在了不同的地方，注意区别！！！！
 
@@ -7519,9 +7518,9 @@ class Solution:
 
 ==这一块有点模糊，重新看一看，搞清楚 used 数组到底应该放在哪里以及为什么！==
 
-### 全排列：注意排列和组合的区别，for 循环中有没有 startindex
+### 全排列：注意排列和组合的区别，for 循环中有没有 `startindex`
 
-在组合 / 子集问题中使用 startIndex 变量保证元素 `nums[start]` 之后只会出现 `nums[start+1:]` 中的元素，通过固定元素的相对位置来保证不出现重复的子集。
+在组合 / 子集问题中使用 `startIndex` 变量保证元素 `nums[start]` 之后只会出现 `nums[start+1:]` 中的元素，通过固定元素的相对位置来保证不出现重复的子集。
 
 **但是排列问题本身就是让穷举元素的位置，`nums[i]` 之后也可以出现 `nums[i]` 左边的元素，所以之前那一套玩不转了，需要额外使用 ==used 数组== 来标记哪些元素还可以被选择。**
 
@@ -7639,7 +7638,7 @@ class Solution:
                 self.used[i] = 0
 ```
 
-把 `used` 数组作为全局变量，就会把树枝的情况一并记录下来，不是在单纯的控制某一节点的同一层。
+把 `used` 数组作为**全局变量**，就会把树枝的情况一并记录下来，不是在单纯的控制某一节点的同一层。
 
 ### 重新安排行程
 
@@ -7787,7 +7786,7 @@ class Solution:
 
 
 
-### N 皇后
+### ==N 皇后==
 
 > n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
 >
@@ -7811,7 +7810,7 @@ class Solution:
 
 确定完约束条件，来看看究竟要怎么去搜索皇后们的位置，其实搜索皇后的位置，可以抽象为一棵树。
 
-下面我用一个 3*3 的棋牌，酱搜索过程抽象为一棵树，如图：
+下面我用一个 3*3 的棋牌，将搜索过程抽象为一棵树，如图：
 
 <img src="https://mmbiz.qpic.cn/mmbiz_jpg/ciaqDnJprwv5ENMbvducP3Z7xDAaCfYBIYfMY62cyGqicd1MSU1zFoDlCVL8Osxz7uuCW7eYOrEDvO3p0zpwu0uw/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
 

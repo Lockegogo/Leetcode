@@ -2,7 +2,6 @@
 
 # Leetcode 刷题笔记 II
 
-[TOC]
 
 
 ## 图论基础
